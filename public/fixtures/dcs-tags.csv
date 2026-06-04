@@ -1,0 +1,41 @@
+id,value,name,desc,category,fieldType,frequency,displayLabel,unit
+AG-2201/_.Start#Value,1,AG2201 Start,Reactor AG-2201 start command,Motor,digital,1min,AG-2201 Start,
+AG-2201/_.Run#Value,1,AG2201 Run,Reactor AG-2201 running status,Motor,digital,1min,AG-2201 Run,
+AG-2201/_.Speed#Value,1480,AG2201 Speed,Agitator speed feedback,Motor,analog,1min,AG-2201 Speed,RPM
+TE-3301/_.PV#Value,87.4,TE3301 PV,Reactor temperature PV,Temperature,analog,1min,Reactor Temp PV,°C
+TE-3301/_.SP#Value,90,TE3301 SP,Reactor temperature setpoint,Temperature,analog,1min,Reactor Temp SP,°C
+TE-3302/_.PV#Value,42.1,TE3302 PV,Jacket outlet temperature,Temperature,analog,5min,Jacket Temp PV,°C
+PT-1102/_.PV#Value,2.35,PT1102 PV,Header pressure,Pressure,analog,1min,Header Pressure,bar
+PT-2200/_.PV#Value,8.12,PT2200 PV,Vessel pressure,Pressure,analog,1min,Vessel Pressure,bar
+FT-2200/_.PV#Value,124.5,FT2200 PV,Feed flow,Flow,analog,1min,Feed Flow,m³/h
+FT-2201/_.PV#Value,118.2,FT2201 PV,Recycle flow,Flow,analog,1min,Recycle Flow,m³/h
+LT-4401/_.PV#Value,67.8,LT4401 PV,Tank level,Level,analog,5min,Tank Level,%
+LT-4402/_.PV#Value,41.2,LT4402 PV,Sump level,Level,analog,5min,Sump Level,%
+AE-1001/_.Alarm#Value,0,AE1001,Area alarm summary,Alarm,digital,1min,Area Alarm,
+PV-5501/_.Pos#Value,72,PV5501 Pos,Control valve position,Valve,analog,1min,CV-5501 Position,%
+XV-3300/_.Open#Value,1,XV3300 Open,Isolation valve open,Valve,digital,1min,XV-3300 Open,
+TE-1100/_.PV#Value,91.6,TE1100 PV,Stack temperature 6h avg source,Temperature,analog,1h,Stack Temp,°C
+TE-1101/_.PV#Value,35.2,TE1101 PV,Ambient temperature,Temperature,analog,1h,Ambient Temp,°C
+AG-3305/_.Start#Value,0,AG3305 Start,Secondary agitator start,Motor,digital,1min,AG-3305 Start,
+AG-3305/_.Run#Value,0,AG3305 Run,Secondary agitator run,Motor,digital,1min,AG-3305 Run,
+PT-3301/_.PV#Value,1.05,PT3301 PV,Filter differential pressure,Pressure,analog,5min,Filter dP,bar
+FI-9001/_.PV#Value,890,FI9001 PV,Steam flow,Flow,analog,1min,Steam Flow,kg/h
+TI-9002/_.PV#Value,152,TI9002 PV,Steam temperature,Temperature,analog,1min,Steam Temp,°C
+DO-7701/_.PV#Value,6.8,DO7701 PV,Dissolved oxygen,Quality,analog,5min,Dissolved O2,mg/L
+PH-7702/_.PV#Value,7.1,PH7702 PV,pH measurement,Quality,analog,5min,pH PV,
+WT-8801/_.PV#Value,102.4,WT8801 PV,Batch weight,Weight,analog,1min,Batch Weight,kg
+MS-9901/_.Speed#Value,3200,MS9901 Speed,Mill speed,Motor,analog,1min,Mill Speed,RPM
+HS-9902/_.Health#Value,1,HS9902 Health,Mill health OK,Motor,digital,1min,Mill Health,
+TE-4403/_.PV#Value,78.9,TE4403 PV,Exchanger outlet temp,Temperature,analog,1min,Exchanger Out,°C
+PT-4404/_.PV#Value,4.2,PT4404 PV,Cooling water pressure,Pressure,analog,5min,CW Pressure,bar
+FT-5502/_.PV#Value,45.6,FT5502 PV,Cooling water flow,Flow,analog,1min,CW Flow,m³/h
+LT-6601/_.PV#Value,88.1,LT6601 PV,Product tank level,Level,analog,1min,Product Tank,%
+AG-2201/_.Power#Value,185,AG2201 Power,Agitator power draw,Motor,analog,1min,AG-2201 Power,kW
+TE-3303/_.PV#Value,105.2,TE3303 PV,Hot spot temperature,Temperature,analog,1min,Hot Spot Temp,°C
+PT-1103/_.PV#Value,0.98,PT1103 PV,Vacuum pressure,Pressure,analog,1min,Vacuum,bar abs
+FT-3304/_.PV#Value,12.4,FT3304 PV,Nitrogen purge flow,Flow,analog,1min,N2 Purge,Nm³/h
+XV-2202/_.Closed#Value,0,XV2202 Closed,Vent valve closed,Valve,digital,1min,Vent Valve Closed,
+AE-2203/_.Trip#Value,0,AE2203 Trip,Reactor trip active,Alarm,digital,1min,Reactor Trip,
+TE-2204/_.PV#Value,62.5,TE2204 PV,Inlet temperature,Temperature,analog,1min,Inlet Temp,°C
+FT-2205/_.PV#Value,201.3,FT2205 PV,Outlet flow,Flow,analog,1min,Outlet Flow,m³/h
+LT-2206/_.PV#Value,55,LT2206 PV,Separator level,Level,analog,5min,Separator Level,%
