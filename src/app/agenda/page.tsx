@@ -23,6 +23,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { usePlaybookStore } from "@/stores/playbook-store";
 import { useDcsStore } from "@/stores/dcs-store";
+import { AlertDetailModal } from "@/components/agenda/alert-detail-modal";
+import type { AlertAgendaItem } from "@/lib/types";
 
 function formatTime(ts: number) {
   return new Date(ts).toLocaleTimeString(undefined, {
@@ -44,6 +46,10 @@ export default function AgendaPage() {
   const prevCountRef = useRef(0);
   const [agendaDateKey, setAgendaDateKey] = useState(todayKey);
   const [syncError, setSyncError] = useState<string | null>(null);
+  const [selectedAlert, setSelectedAlert] = useState<AlertAgendaItem | null>(
+    null,
+  );
+  const [detailOpen, setDetailOpen] = useState(false);
 
   useEffect(() => {
     if (useAlertHistoryStore.persist.hasHydrated()) {
@@ -131,6 +137,11 @@ export default function AgendaPage() {
     }
     prevCountRef.current = todayItems.length;
   }, [todayItems]);
+
+  const openAlertDetail = (item: AlertAgendaItem) => {
+    setSelectedAlert(item);
+    setDetailOpen(true);
+  };
 
   const todayLabel = new Date(
     agendaDateKey + "T12:00:00",
@@ -277,7 +288,17 @@ export default function AgendaPage() {
                   )}
                 />
                 <Card
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => openAlertDetail(item)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      openAlertDetail(item);
+                    }
+                  }}
                   className={cn(
+                    "cursor-pointer transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5",
                     item.status === "active" &&
                       "border-amber-500/40 shadow-md shadow-amber-500/10",
                     highlightId === item.id &&
@@ -327,6 +348,9 @@ export default function AgendaPage() {
                     <p className="text-xs font-mono text-primary/80">
                       IF {item.conditionsSummary}
                     </p>
+                    <p className="text-xs text-primary/70 pt-1">
+                      Click for response brief →
+                    </p>
                   </CardContent>
                 </Card>
               </li>
@@ -334,6 +358,12 @@ export default function AgendaPage() {
           </ul>
         </div>
       )}
+
+      <AlertDetailModal
+        alert={selectedAlert}
+        open={detailOpen}
+        onOpenChange={setDetailOpen}
+      />
     </div>
   );
 }
