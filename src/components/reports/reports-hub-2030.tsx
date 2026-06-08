@@ -47,9 +47,9 @@ const REPORTS: ReportCard[] = [
   },
   {
     id: "batch",
-    name: "Batch / fermentation record",
-    abbr: "BFR",
-    cadence: "Per batch · drop to drop",
+    name: "Batch / production record",
+    abbr: "BPR",
+    cadence: "Per batch · start to close",
     audience: "Production & quality",
     wasManual: "Excel batch folder, PV peaks copied manually",
     future: "Linked to batch ID, trends, and playbook triggers",
@@ -62,7 +62,7 @@ const REPORTS: ReportCard[] = [
     cadence: "Daily + per sample campaign",
     audience: "QA, lab coordinator",
     wasManual: "LIMS export + manual comments in shared drive",
-    future: "pH, DO, EtOH @ drop pulled from historian",
+    future: "Key quality metrics pulled from historian",
     accent: "violet",
   },
   {
@@ -80,7 +80,7 @@ const REPORTS: ReportCard[] = [
     name: "Weekly production KPI pack",
     abbr: "WPP",
     cadence: "Monday morning",
-    audience: "Plant leadership",
+    audience: "Site leadership",
     wasManual: "PowerPoint built from multiple spreadsheets",
     future: "One-click rollup: throughput, yield, energy, alerts",
     accent: "cyan",
@@ -162,7 +162,7 @@ export function ReportsHub2030() {
                 Teams still build critical packs manually — copy-paste from DCS,
                 shift notes, and spreadsheets. <strong className="text-foreground">DORs</strong>, shift
                 handovers, and batch records take hours and drift out of sync
-                with live plant data.
+                with live operational data.
               </p>
               <div className="flex flex-wrap gap-2 pt-1">
                 <Badge variant="outline" className="text-xs border-amber-500/30">

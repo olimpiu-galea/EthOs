@@ -24,7 +24,7 @@ export default function HomePage() {
     <div className="p-8 max-w-5xl mx-auto space-y-12 pb-16">
       <section className="space-y-6">
         <Badge variant="outline" className="text-primary border-primary/40">
-          EthOS
+          SignalRelay
         </Badge>
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
           Turn live signals into{" "}
@@ -33,7 +33,7 @@ export default function HomePage() {
         <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
           Connect operational signal sources, define when alerts should fire,
           and review what happened today — built for teams who work with live
-          plant and market data (DCS today; more sources soon).
+          site and market data (DCS today; more sources soon).
         </p>
         <Button asChild size="lg" className="gap-2">
           <Link href="/integrations">
@@ -130,7 +130,7 @@ export default function HomePage() {
                 <p className="font-medium text-sm">Analyze trends</p>
                 <p className="text-xs text-muted-foreground">
                   AI reviews signal history and playbook outcomes for your role
-                  and plant area.
+                  and site area.
                 </p>
               </div>
               <div className="rounded-lg border border-border/60 bg-card/80 p-4 space-y-2">
@@ -145,8 +145,8 @@ export default function HomePage() {
                 <Activity className="h-5 w-5 text-emerald-400" />
                 <p className="font-medium text-sm">Category focus</p>
                 <p className="text-xs text-muted-foreground">
-                  Target a process category (Fermentation, Distillation, etc.)
-                  for sharper recommendations.
+                  Target a process category (Production, Quality, Compliance,
+                  etc.) for sharper recommendations.
                 </p>
               </div>
             </div>
@@ -156,15 +156,15 @@ export default function HomePage() {
                 Example suggestion
               </p>
               <p className="text-sm leading-relaxed">
-                Based on <strong>Fermentation</strong> data for your site, AI
+                Based on <strong>Production</strong> data for your site, AI
                 recommends playbooks that could raise{" "}
-                <strong>ethanol at drop</strong> by approximately{" "}
+                <strong>yield at batch close</strong> by approximately{" "}
                 <strong className="text-primary">+0.5%</strong> — e.g. tighter
                 temperature bands on TE-3301, adjusted feed timing, and early
                 warning on AG-2201 run status before excursions.
               </p>
               <p className="text-xs text-muted-foreground font-mono">
-                Suggested playbook · Fermentation · Goal: EtOH @ drop +0.5%
+                Suggested playbook · Production · Goal: yield @ close +0.5%
               </p>
             </div>
 

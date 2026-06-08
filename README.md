@@ -1,6 +1,6 @@
-# EthOS
+# SignalRelay
 
-Operations platform for live **signals**, playbook-based alerting, plant views, and reporting. Frontend-only mock integration today (DCS nine-field template); designed for additional sources later.
+Turn live **signals** into playbooks, alerts, and guided action. Cross-industry operations platform — manufacturing, regulated production, and more. Frontend-only mock integration today (DCS nine-field template); designed for additional sources (inventory, market) later.
 
 ## Quick start
 
@@ -22,6 +22,7 @@ npm run build   # production build
 - **Integrations** — Signal sources (DCS mock today), live signal table, KPIs
 - **Playbooks** — Create, edit, activate playbooks; flat conditions with ALL/ANY matching
 - **Agenda** — Today’s alert timeline (completed = past, active = recent)
+- **Operations suite** — DCS overview, Batches, Reports (coming soon)
 
 ## Demo timeline data
 

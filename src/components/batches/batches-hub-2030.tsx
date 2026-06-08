@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
-  FERM_FIELD_GROUPS,
+  BATCH_FIELD_GROUPS,
   MOCK_BATCHES,
   type BatchRecord,
 } from "@/lib/batch-fixture-data";
@@ -111,7 +111,7 @@ function ProcessSchematic() {
       </text>
       <ellipse cx="160" cy="105" rx="45" ry="55" fill="none" stroke="currentColor" strokeWidth="2" />
       <text x="160" y="45" textAnchor="middle" className="fill-[10px] font-bold fill-primary">
-        Ferm
+        Reactor
       </text>
       <rect x="280" y="75" width="40" height="60" rx="4" fill="none" stroke="currentColor" strokeOpacity="0.4" />
       <text x="300" y="65" textAnchor="middle" className="fill-[9px] fill-muted-foreground">
@@ -164,7 +164,7 @@ export function BatchesHub2030() {
               Batch intelligence · 2030
             </p>
             <h1 className="text-xl font-bold tracking-tight">
-              Fermentation batches — lifecycle & compare
+              Production batches — lifecycle & compare
             </h1>
           </div>
         </div>
@@ -208,7 +208,7 @@ export function BatchesHub2030() {
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">{b.ferm}</p>
                 <p className="text-xs text-emerald-400/90 mt-2 tabular-nums">
-                  EtOH @ drop {b.dropEtOH}%
+                  Yield @ close {b.dropEtOH}%
                 </p>
               </button>
             ))}
@@ -325,15 +325,15 @@ export function BatchesHub2030() {
               <MiniCompareChart
                 a={selected.dropEtOH}
                 b={compare.dropEtOH}
-                metric="EtOH @ drop"
+                metric="Yield @ close"
               />
               <MiniCompareChart
                 a={selected.brixDrop}
                 b={compare.brixDrop}
-                metric="Brix @ drop"
+                metric="Quality @ close"
               />
               <p className="text-[10px] text-muted-foreground leading-snug">
-                Delta EtOH:{" "}
+                Delta yield:{" "}
                 <strong className="text-foreground">
                   {(selected.dropEtOH - compare.dropEtOH).toFixed(1)} pts
                 </strong>{" "}
@@ -349,14 +349,14 @@ export function BatchesHub2030() {
         {/* Field dictionary */}
         <div className="rounded-xl border border-dashed border-emerald-500/20 bg-muted/5 p-5">
           <p className="text-sm font-semibold mb-1">
-            Ferm Data field dictionary (preview)
+            Batch field dictionary (preview)
           </p>
           <p className="text-xs text-muted-foreground mb-4 max-w-3xl">
-            Future batch view maps vertical lab rows and DCS markers to a single
-            timeline — same fields operators use in spreadsheets today.
+            Future batch view maps lab rows and DCS markers to a single
+            timeline — configurable per industry and site.
           </p>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {FERM_FIELD_GROUPS.map((g) => (
+            {BATCH_FIELD_GROUPS.map((g) => (
               <div
                 key={g.group}
                 className="rounded-lg border border-border/50 bg-card/40 p-3"
@@ -385,7 +385,7 @@ export function BatchesHub2030() {
           </p>
           <Button asChild variant="outline" size="sm" className="gap-2">
             <Link href="/dcs">
-              Plant overview (DCS)
+              Process overview (DCS)
               <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>

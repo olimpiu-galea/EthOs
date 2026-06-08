@@ -8,8 +8,8 @@ import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "EthOS",
-  description: "Live signals, playbooks, and plant operations intelligence",
+  title: "SignalRelay",
+  description: "Turn live signals into playbooks, alerts, and guided action",
 };
 
 export default function RootLayout({

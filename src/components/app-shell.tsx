@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  Activity,
+  ArrowRightLeft,
   BookOpen,
   CalendarDays,
   FileBarChart,
@@ -24,7 +24,7 @@ const mainNav = [
   { href: "/agenda", label: "Agenda", icon: CalendarDays },
 ];
 
-const plantSuiteNav = [
+const operationsSuiteNav = [
   { href: "/dcs", label: "DCS", icon: Monitor },
   { href: "/batches", label: "Batches", icon: Layers },
   { href: "/reports", label: "Reports", icon: FileBarChart },
@@ -59,10 +59,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <aside className="w-64 border-r border-border/60 bg-card/50 flex flex-col shrink-0">
         <div className="p-6 border-b border-border/60">
           <div className="flex items-center gap-2">
-            <Activity className="h-7 w-7 text-primary" />
+            <ArrowRightLeft className="h-7 w-7 text-primary" />
             <div>
-              <p className="font-semibold tracking-tight">EthOS</p>
-              <p className="text-xs text-muted-foreground">Plant operations</p>
+              <p className="font-semibold tracking-tight">
+                <span>Signal</span>
+                <span className="text-primary">Relay</span>
+              </p>
+              <p className="text-xs text-muted-foreground">Signals to action</p>
             </div>
           </div>
         </div>
@@ -73,9 +76,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
           <div className="relative mt-4 rounded-xl border border-primary/25 bg-gradient-to-b from-primary/5 to-transparent p-2 space-y-0.5">
             <p className="px-2 pt-1 pb-1 text-[9px] font-semibold uppercase tracking-[0.15em] text-primary/70">
-              Plant suite
+              Operations suite
             </p>
-            {plantSuiteNav.map(({ href, label, icon: Icon }) =>
+            {operationsSuiteNav.map(({ href, label, icon: Icon }) =>
               navLink(href, label, Icon),
             )}
             <span className="absolute bottom-1.5 right-1.5 text-[8px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded border border-violet-400/40 bg-violet-500/15 text-violet-300 pointer-events-none">

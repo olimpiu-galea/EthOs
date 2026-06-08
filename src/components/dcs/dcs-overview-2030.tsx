@@ -231,13 +231,13 @@ export function DcsOverview2030() {
               Process overview · 2030 HMI
             </p>
             <h1 className="text-xl font-bold tracking-tight">
-              Fermentation train — full plant schematic
+              Process line — full site schematic
             </h1>
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <Badge variant="outline" className="border-primary/40 text-primary">
-            Batch FRM-2847 · Fermentation
+            Batch LOT-2847 · Primary process
           </Badge>
           <Badge
             variant={connected ? "success" : "secondary"}
@@ -258,7 +258,7 @@ export function DcsOverview2030() {
           <svg
             viewBox="0 0 960 540"
             className="w-full h-full drop-shadow-[0_0_40px_hsl(var(--primary)/0.15)]"
-            aria-label="Fermentation process overview"
+            aria-label="Process line overview"
           >
             <defs>
               <linearGradient id="pipeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -335,7 +335,7 @@ export function DcsOverview2030() {
               </text>
             </g>
 
-            {/* Fermentor R-2201 */}
+            {/* Reactor R-2201 */}
             <g filter="url(#glow)">
               <ellipse
                 cx="360"
@@ -379,7 +379,7 @@ export function DcsOverview2030() {
                 textAnchor="middle"
                 className="fill-[10px] fill-muted-foreground"
               >
-                Primary fermentor
+                Primary reactor
               </text>
             </g>
 
@@ -416,7 +416,7 @@ export function DcsOverview2030() {
                 textAnchor="middle"
                 className="fill-[9px] fill-muted-foreground"
               >
-                Harvest
+                Product
               </text>
             </g>
 
@@ -507,7 +507,7 @@ export function DcsOverview2030() {
             <p className="text-sm text-muted-foreground leading-relaxed">
               Full operator HMI: click vessels for faceplates, trend stacks,
               valve control, tank switchover, and live drill-down on every
-              sensor. This overview shows how the whole fermentation train
+              sensor. This overview shows how the whole process line
               will be represented in one screen.
             </p>
             <div className="flex flex-wrap justify-center gap-2 pt-1">

@@ -1,8 +1,8 @@
 import { ReportsHub2030 } from "@/components/reports/reports-hub-2030";
 
 export const metadata = {
-  title: "Reports | EthOS",
-  description: "Operations reporting — DOR and plant packs",
+  title: "Reports | SignalRelay",
+  description: "Operations reporting — DOR and site packs",
 };
 
 export default function ReportsPage() {
