@@ -1,0 +1,1063 @@
+{
+  "sourceFile": "mockAlerts/DOR 01-01-25.xlsx",
+  "generatedAt": "2026-06-11T19:18:43.471Z",
+  "sections": [
+    {
+      "title": "Report header",
+      "description": "Daily Operations Report cover fields",
+      "fields": [
+        {
+          "id": "facilityName",
+          "label": "Facility",
+          "type": "text"
+        },
+        {
+          "id": "reportTitle",
+          "label": "Report title",
+          "type": "text"
+        },
+        {
+          "id": "asOfLabel",
+          "label": "As-of label",
+          "type": "text"
+        },
+        {
+          "id": "reportDate",
+          "label": "Report date",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "title": "CORN (BSHLS)",
+      "description": "From DOR Operations Report",
+      "fields": [
+        {
+          "id": "peg_corn_bshls_daily_receipts",
+          "label": "PEG — DAILY Receipts",
+          "type": "text",
+          "placeholder": "63727"
+        },
+        {
+          "id": "peg_corn_bshls_daily_grind",
+          "label": "PEG — DAILY Grind",
+          "type": "text"
+        },
+        {
+          "id": "peg_corn_bshls_daily_avail_inv",
+          "label": "PEG — DAILY Avail Inv",
+          "type": "text",
+          "placeholder": "1153276.57"
+        },
+        {
+          "id": "peg_corn_bshls_mtd_receipts",
+          "label": "PEG — MTD Receipts",
+          "type": "text",
+          "placeholder": "1791297"
+        },
+        {
+          "id": "peg_corn_bshls_mtd_grind",
+          "label": "PEG — MTD Grind",
+          "type": "text"
+        },
+        {
+          "id": "peg_corn_bshls_ytd_receipts",
+          "label": "PEG — YTD Receipts",
+          "type": "text",
+          "placeholder": "1791297"
+        },
+        {
+          "id": "peg_corn_bshls_ytd_grind",
+          "label": "PEG — YTD Grind",
+          "type": "text"
+        },
+        {
+          "id": "pe_corn_bshls_daily_receipts",
+          "label": "PE — DAILY Receipts",
+          "type": "text"
+        },
+        {
+          "id": "pe_corn_bshls_daily_grind",
+          "label": "PE — DAILY Grind",
+          "type": "text",
+          "placeholder": "55524"
+        },
+        {
+          "id": "pe_corn_bshls_daily_avail_inv",
+          "label": "PE — DAILY Avail Inv",
+          "type": "text",
+          "placeholder": "11644"
+        },
+        {
+          "id": "pe_corn_bshls_mtd_receipts",
+          "label": "PE — MTD Receipts",
+          "type": "text"
+        },
+        {
+          "id": "pe_corn_bshls_mtd_grind",
+          "label": "PE — MTD Grind",
+          "type": "text",
+          "placeholder": "1763859"
+        },
+        {
+          "id": "pe_corn_bshls_ytd_receipts",
+          "label": "PE — YTD Receipts",
+          "type": "text"
+        },
+        {
+          "id": "pe_corn_bshls_ytd_grind",
+          "label": "PE — YTD Grind",
+          "type": "text",
+          "placeholder": "1763859"
+        },
+        {
+          "id": "total_corn_bshls_daily_receipts",
+          "label": "Total — DAILY Receipts",
+          "type": "text",
+          "placeholder": "63727"
+        },
+        {
+          "id": "total_corn_bshls_daily_grind",
+          "label": "Total — DAILY Grind",
+          "type": "text",
+          "placeholder": "55524"
+        },
+        {
+          "id": "total_corn_bshls_daily_avail_inv",
+          "label": "Total — DAILY Avail Inv",
+          "type": "text",
+          "placeholder": "1164920.57"
+        },
+        {
+          "id": "total_corn_bshls_mtd_receipts",
+          "label": "Total — MTD Receipts",
+          "type": "text",
+          "placeholder": "1791297"
+        },
+        {
+          "id": "total_corn_bshls_mtd_grind",
+          "label": "Total — MTD Grind",
+          "type": "text",
+          "placeholder": "1763859"
+        },
+        {
+          "id": "total_corn_bshls_ytd_receipts",
+          "label": "Total — YTD Receipts",
+          "type": "text",
+          "placeholder": "1791297"
+        },
+        {
+          "id": "total_corn_bshls_ytd_grind",
+          "label": "Total — YTD Grind",
+          "type": "text",
+          "placeholder": "1763859"
+        }
+      ]
+    },
+    {
+      "title": "DENATURANT (GLS)",
+      "description": "From DOR Operations Report",
+      "fields": [
+        {
+          "id": "trk_denaturant_gls_daily_receipts",
+          "label": "Trk — DAILY Receipts",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "trk_denaturant_gls_daily_transfers",
+          "label": "Trk — DAILY Transfers",
+          "type": "text",
+          "placeholder": "4295"
+        },
+        {
+          "id": "trk_denaturant_gls_daily_avail_inv",
+          "label": "Trk — DAILY Avail Inv",
+          "type": "text",
+          "placeholder": "26327"
+        },
+        {
+          "id": "trk_denaturant_gls_mtd_receipts",
+          "label": "Trk — MTD Receipts",
+          "type": "text",
+          "placeholder": "99116"
+        },
+        {
+          "id": "trk_denaturant_gls_mtd_transfers",
+          "label": "Trk — MTD Transfers",
+          "type": "text",
+          "placeholder": "108789"
+        },
+        {
+          "id": "trk_denaturant_gls_ytd_receipts",
+          "label": "Trk — YTD Receipts",
+          "type": "text",
+          "placeholder": "99116"
+        },
+        {
+          "id": "trk_denaturant_gls_ytd_transfers",
+          "label": "Trk — YTD Transfers",
+          "type": "text",
+          "placeholder": "108789"
+        },
+        {
+          "id": "total_denaturant_gls_daily_receipts",
+          "label": "Total — DAILY Receipts",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "total_denaturant_gls_daily_transfers",
+          "label": "Total — DAILY Transfers",
+          "type": "text",
+          "placeholder": "4295"
+        },
+        {
+          "id": "total_denaturant_gls_daily_avail_inv",
+          "label": "Total — DAILY Avail Inv",
+          "type": "text",
+          "placeholder": "26327"
+        },
+        {
+          "id": "total_denaturant_gls_mtd_receipts",
+          "label": "Total — MTD Receipts",
+          "type": "text",
+          "placeholder": "99116"
+        },
+        {
+          "id": "total_denaturant_gls_mtd_transfers",
+          "label": "Total — MTD Transfers",
+          "type": "text",
+          "placeholder": "108789"
+        },
+        {
+          "id": "total_denaturant_gls_ytd_receipts",
+          "label": "Total — YTD Receipts",
+          "type": "text",
+          "placeholder": "99116"
+        },
+        {
+          "id": "total_denaturant_gls_ytd_transfers",
+          "label": "Total — YTD Transfers",
+          "type": "text",
+          "placeholder": "108789"
+        }
+      ]
+    },
+    {
+      "title": "ETHANOL",
+      "description": "From DOR Operations Report",
+      "fields": [
+        {
+          "id": "rail_ethanol_daily_shipments",
+          "label": "RAIL — DAILY Shipments",
+          "type": "text",
+          "placeholder": "231148"
+        },
+        {
+          "id": "rail_ethanol_daily_production",
+          "label": "RAIL — DAILY Production",
+          "type": "text",
+          "placeholder": "170426"
+        },
+        {
+          "id": "rail_ethanol_daily_avail_inv",
+          "label": "RAIL — DAILY Avail Inv",
+          "type": "text",
+          "placeholder": "684296"
+        },
+        {
+          "id": "rail_ethanol_mtd_shipments",
+          "label": "RAIL — MTD Shipments",
+          "type": "text",
+          "placeholder": "5148108"
+        },
+        {
+          "id": "rail_ethanol_mtd_production",
+          "label": "RAIL — MTD Production",
+          "type": "text",
+          "placeholder": "5199290"
+        },
+        {
+          "id": "rail_ethanol_ytd_shipments",
+          "label": "RAIL — YTD Shipments",
+          "type": "text",
+          "placeholder": "5148108"
+        },
+        {
+          "id": "rail_ethanol_ytd_production",
+          "label": "RAIL — YTD Production",
+          "type": "text",
+          "placeholder": "5199290"
+        },
+        {
+          "id": "truck_ethanol_daily_shipments",
+          "label": "Truck — DAILY Shipments",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "truck_ethanol_daily_production",
+          "label": "Truck — DAILY Production",
+          "type": "text"
+        },
+        {
+          "id": "truck_ethanol_daily_avail_inv",
+          "label": "Truck — DAILY Avail Inv",
+          "type": "text"
+        },
+        {
+          "id": "truck_ethanol_mtd_shipments",
+          "label": "Truck — MTD Shipments",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "truck_ethanol_mtd_production",
+          "label": "Truck — MTD Production",
+          "type": "text"
+        },
+        {
+          "id": "truck_ethanol_ytd_shipments",
+          "label": "Truck — YTD Shipments",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "truck_ethanol_ytd_production",
+          "label": "Truck — YTD Production",
+          "type": "text"
+        },
+        {
+          "id": "lemars_ethanol_daily_shipments",
+          "label": "LeMars — DAILY Shipments",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "lemars_ethanol_daily_production",
+          "label": "LeMars — DAILY Production",
+          "type": "text"
+        },
+        {
+          "id": "lemars_ethanol_daily_avail_inv",
+          "label": "LeMars — DAILY Avail Inv",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "lemars_ethanol_mtd_shipments",
+          "label": "LeMars — MTD Shipments",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "lemars_ethanol_mtd_production",
+          "label": "LeMars — MTD Production",
+          "type": "text"
+        },
+        {
+          "id": "lemars_ethanol_ytd_shipments",
+          "label": "LeMars — YTD Shipments",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "lemars_ethanol_ytd_production",
+          "label": "LeMars — YTD Production",
+          "type": "text"
+        },
+        {
+          "id": "total_gallons_ethanol_daily_shipments",
+          "label": "Total Gallons — DAILY Shipments",
+          "type": "text",
+          "placeholder": "231148"
+        },
+        {
+          "id": "total_gallons_ethanol_daily_production",
+          "label": "Total Gallons — DAILY Production",
+          "type": "text",
+          "placeholder": "170426"
+        },
+        {
+          "id": "total_gallons_ethanol_daily_avail_inv",
+          "label": "Total Gallons — DAILY Avail Inv",
+          "type": "text",
+          "placeholder": "684296"
+        },
+        {
+          "id": "total_gallons_ethanol_mtd_shipments",
+          "label": "Total Gallons — MTD Shipments",
+          "type": "text",
+          "placeholder": "5148108"
+        },
+        {
+          "id": "total_gallons_ethanol_mtd_production",
+          "label": "Total Gallons — MTD Production",
+          "type": "text",
+          "placeholder": "5199290"
+        },
+        {
+          "id": "total_gallons_ethanol_ytd_shipments",
+          "label": "Total Gallons — YTD Shipments",
+          "type": "text",
+          "placeholder": "5148108"
+        },
+        {
+          "id": "total_gallons_ethanol_ytd_production",
+          "label": "Total Gallons — YTD Production",
+          "type": "text",
+          "placeholder": "5199290"
+        },
+        {
+          "id": "ethanol_yield_ethanol_daily",
+          "label": "Ethanol Yield · Daily",
+          "type": "text",
+          "placeholder": "3.0694"
+        },
+        {
+          "id": "ethanol_yield_ethanol_mtd",
+          "label": "Ethanol Yield · MTD",
+          "type": "text",
+          "placeholder": "2.9477"
+        },
+        {
+          "id": "ethanol_yield_ethanol_ytd",
+          "label": "Ethanol Yield · YTD",
+          "type": "text",
+          "placeholder": "2.9477"
+        }
+      ]
+    },
+    {
+      "title": "CORN OIL (LBS)",
+      "description": "From DOR Operations Report",
+      "fields": [
+        {
+          "id": "trk_corn_oil_lbs_daily_shipments",
+          "label": "Trk — DAILY Shipments",
+          "type": "text",
+          "placeholder": "54220"
+        },
+        {
+          "id": "trk_corn_oil_lbs_daily_production",
+          "label": "Trk — DAILY Production",
+          "type": "text",
+          "placeholder": "55681"
+        },
+        {
+          "id": "trk_corn_oil_lbs_daily_avail_inv",
+          "label": "Trk — DAILY Avail Inv",
+          "type": "text",
+          "placeholder": "173285"
+        },
+        {
+          "id": "trk_corn_oil_lbs_mtd_shipments",
+          "label": "Trk — MTD Shipments",
+          "type": "text",
+          "placeholder": "1609821"
+        },
+        {
+          "id": "trk_corn_oil_lbs_mtd_production",
+          "label": "Trk — MTD Production",
+          "type": "text",
+          "placeholder": "1651106"
+        },
+        {
+          "id": "trk_corn_oil_lbs_ytd_shipments",
+          "label": "Trk — YTD Shipments",
+          "type": "text",
+          "placeholder": "1609821"
+        },
+        {
+          "id": "trk_corn_oil_lbs_ytd_production",
+          "label": "Trk — YTD Production",
+          "type": "text",
+          "placeholder": "1651106"
+        },
+        {
+          "id": "total_gallons_corn_oil_lbs_daily_shipments",
+          "label": "Total Gallons — DAILY Shipments",
+          "type": "text",
+          "placeholder": "54220"
+        },
+        {
+          "id": "total_gallons_corn_oil_lbs_daily_production",
+          "label": "Total Gallons — DAILY Production",
+          "type": "text",
+          "placeholder": "55681"
+        },
+        {
+          "id": "total_gallons_corn_oil_lbs_daily_avail_inv",
+          "label": "Total Gallons — DAILY Avail Inv",
+          "type": "text",
+          "placeholder": "173285"
+        },
+        {
+          "id": "total_gallons_corn_oil_lbs_mtd_shipments",
+          "label": "Total Gallons — MTD Shipments",
+          "type": "text",
+          "placeholder": "1609821"
+        },
+        {
+          "id": "total_gallons_corn_oil_lbs_mtd_production",
+          "label": "Total Gallons — MTD Production",
+          "type": "text",
+          "placeholder": "1651106"
+        },
+        {
+          "id": "total_gallons_corn_oil_lbs_ytd_shipments",
+          "label": "Total Gallons — YTD Shipments",
+          "type": "text",
+          "placeholder": "1609821"
+        },
+        {
+          "id": "total_gallons_corn_oil_lbs_ytd_production",
+          "label": "Total Gallons — YTD Production",
+          "type": "text",
+          "placeholder": "1651106"
+        },
+        {
+          "id": "corn_oil_yield_corn_oil_lbs_daily",
+          "label": "Corn Oil Yield · Daily",
+          "type": "text",
+          "placeholder": "1.0028"
+        },
+        {
+          "id": "corn_oil_yield_corn_oil_lbs_mtd",
+          "label": "Corn Oil Yield · MTD",
+          "type": "text",
+          "placeholder": "0.9361"
+        },
+        {
+          "id": "corn_oil_yield_corn_oil_lbs_ytd",
+          "label": "Corn Oil Yield · YTD",
+          "type": "text",
+          "placeholder": "0.9361"
+        }
+      ]
+    },
+    {
+      "title": "SYRUP (TONS)",
+      "description": "From DOR Operations Report",
+      "fields": [
+        {
+          "id": "trk_syrup_tons_daily_shipments",
+          "label": "Trk — DAILY Shipments",
+          "type": "text",
+          "placeholder": "169.47"
+        },
+        {
+          "id": "trk_syrup_tons_daily_grind",
+          "label": "Trk — DAILY Grind",
+          "type": "text"
+        },
+        {
+          "id": "trk_syrup_tons_daily_avail_inv",
+          "label": "Trk — DAILY Avail Inv",
+          "type": "text"
+        },
+        {
+          "id": "trk_syrup_tons_mtd_shipments",
+          "label": "Trk — MTD Shipments",
+          "type": "text",
+          "placeholder": "4879.22"
+        },
+        {
+          "id": "trk_syrup_tons_mtd_grind",
+          "label": "Trk — MTD Grind",
+          "type": "text"
+        },
+        {
+          "id": "trk_syrup_tons_ytd_shipments",
+          "label": "Trk — YTD Shipments",
+          "type": "text",
+          "placeholder": "4879.22"
+        },
+        {
+          "id": "trk_syrup_tons_ytd_grind",
+          "label": "Trk — YTD Grind",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "title": "DDGS (TONS)",
+      "description": "From DOR Operations Report",
+      "fields": [
+        {
+          "id": "dry_trk_ddgs_tons_daily_shipments",
+          "label": "Dry Trk — DAILY Shipments",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "dry_trk_ddgs_tons_daily_production",
+          "label": "Dry Trk — DAILY Production",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "dry_trk_ddgs_tons_daily_avail_inv",
+          "label": "Dry Trk — DAILY Avail Inv",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "dry_trk_ddgs_tons_mtd_shipments",
+          "label": "Dry Trk — MTD Shipments",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "dry_trk_ddgs_tons_mtd_production",
+          "label": "Dry Trk — MTD Production",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "dry_trk_ddgs_tons_ytd_shipments",
+          "label": "Dry Trk — YTD Shipments",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "dry_trk_ddgs_tons_ytd_production",
+          "label": "Dry Trk — YTD Production",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "total_dry_ddgs_tons_daily_shipments",
+          "label": "Total Dry — DAILY Shipments",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "total_dry_ddgs_tons_daily_production",
+          "label": "Total Dry — DAILY Production",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "total_dry_ddgs_tons_daily_avail_inv",
+          "label": "Total Dry — DAILY Avail Inv",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "total_dry_ddgs_tons_mtd_shipments",
+          "label": "Total Dry — MTD Shipments",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "total_dry_ddgs_tons_mtd_production",
+          "label": "Total Dry — MTD Production",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "total_dry_ddgs_tons_ytd_shipments",
+          "label": "Total Dry — YTD Shipments",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "total_dry_ddgs_tons_ytd_production",
+          "label": "Total Dry — YTD Production",
+          "type": "text",
+          "placeholder": "0"
+        },
+        {
+          "id": "wet_trk_ddgs_tons_daily_shipments",
+          "label": "Wet Trk — DAILY Shipments",
+          "type": "text",
+          "placeholder": "972.4"
+        },
+        {
+          "id": "wet_trk_ddgs_tons_daily_production",
+          "label": "Wet Trk — DAILY Production",
+          "type": "text",
+          "placeholder": "1134.58"
+        },
+        {
+          "id": "wet_trk_ddgs_tons_daily_avail_inv",
+          "label": "Wet Trk — DAILY Avail Inv",
+          "type": "text",
+          "placeholder": "2100"
+        },
+        {
+          "id": "wet_trk_ddgs_tons_mtd_shipments",
+          "label": "Wet Trk — MTD Shipments",
+          "type": "text",
+          "placeholder": "32973.05"
+        },
+        {
+          "id": "wet_trk_ddgs_tons_mtd_production",
+          "label": "Wet Trk — MTD Production",
+          "type": "text",
+          "placeholder": "33909.13"
+        },
+        {
+          "id": "wet_trk_ddgs_tons_ytd_shipments",
+          "label": "Wet Trk — YTD Shipments",
+          "type": "text",
+          "placeholder": "32973.05"
+        },
+        {
+          "id": "wet_trk_ddgs_tons_ytd_production",
+          "label": "Wet Trk — YTD Production",
+          "type": "text",
+          "placeholder": "33909.13"
+        },
+        {
+          "id": "total_wet_ddgs_tons_daily_shipments",
+          "label": "Total Wet — DAILY Shipments",
+          "type": "text",
+          "placeholder": "972.4"
+        },
+        {
+          "id": "total_wet_ddgs_tons_daily_production",
+          "label": "Total Wet — DAILY Production",
+          "type": "text",
+          "placeholder": "1134.58"
+        },
+        {
+          "id": "total_wet_ddgs_tons_daily_avail_inv",
+          "label": "Total Wet — DAILY Avail Inv",
+          "type": "text",
+          "placeholder": "2100"
+        },
+        {
+          "id": "total_wet_ddgs_tons_mtd_shipments",
+          "label": "Total Wet — MTD Shipments",
+          "type": "text",
+          "placeholder": "32973.05"
+        },
+        {
+          "id": "total_wet_ddgs_tons_mtd_production",
+          "label": "Total Wet — MTD Production",
+          "type": "text",
+          "placeholder": "33909.13"
+        },
+        {
+          "id": "total_wet_ddgs_tons_ytd_shipments",
+          "label": "Total Wet — YTD Shipments",
+          "type": "text",
+          "placeholder": "32973.05"
+        },
+        {
+          "id": "total_wet_ddgs_tons_ytd_production",
+          "label": "Total Wet — YTD Production",
+          "type": "text",
+          "placeholder": "33909.13"
+        }
+      ]
+    },
+    {
+      "title": "Operations Detail",
+      "description": "Imported from DOR workbook — Operations Detail",
+      "fields": [
+        {
+          "id": "sheet_operations_detail",
+          "label": "Operations Detail",
+          "type": "textarea",
+          "placeholder": "Plymouth Energy, LLC\nDaily Production Report\nAs of 6AM"
+        }
+      ]
+    },
+    {
+      "title": "Corn and Ethanol Recap",
+      "description": "Imported from DOR workbook — Corn and Ethanol Recap",
+      "fields": [
+        {
+          "id": "sheet_corn_and_ethanol_recap",
+          "label": "Corn and Ethanol Recap",
+          "type": "textarea",
+          "placeholder": "Plymouth Energy, LLC\tPlymouth Energy, LLC\n45657\tPhysical Corn Grind\nPHYSICAL CALCULATION\tUNDENATURED"
+        }
+      ]
+    },
+    {
+      "title": "Tank Farm Inventory",
+      "description": "Imported from DOR workbook — Tank Farm Inventory",
+      "fields": [
+        {
+          "id": "sheet_tank_farm_inventory",
+          "label": "Tank Farm Inventory",
+          "type": "textarea",
+          "placeholder": "Plymouth Energy Inventory\nMorning Ethanol and Denaturant Tank Gauges and Inventory\nInventory"
+        }
+      ]
+    },
+    {
+      "title": "Rail Cars",
+      "description": "Imported from DOR workbook — Rail Cars",
+      "fields": [
+        {
+          "id": "sheet_rail_cars",
+          "label": "Rail Cars",
+          "type": "textarea",
+          "placeholder": "Rail Cars Summary\tDenatured - LOADED\tUndenatured - LOADED\tRail Cars on Site\nDate\tFilled/Sold\tGross Gallons\tNet Gallons\tDate\tFilled/Sold\tGross Gallons\tNet Gallons\tDate\tFilled/Sold\tGross Gallons\tNet Gallons\tFilled/Sold\tNet Gallons\tAvailable Inv\nBeginning Inventory\t62\t1800855\t1795507\tBeginning Inventory\t0\t0\t0\tBeginning Inventory\t0\t0\t0\t0\t0\t0"
+        }
+      ]
+    },
+    {
+      "title": "Corn Inventory",
+      "description": "Imported from DOR workbook — Corn Inventory",
+      "fields": [
+        {
+          "id": "sheet_corn_inventory",
+          "label": "Corn Inventory",
+          "type": "textarea",
+          "placeholder": "Plymouth Energy, LLC\nCorn Inventory\n2024"
+        }
+      ]
+    },
+    {
+      "title": "Corn Rolling Balance",
+      "description": "Imported from DOR workbook — Corn Rolling Balance",
+      "fields": [
+        {
+          "id": "sheet_corn_rolling_balance",
+          "label": "Corn Rolling Balance",
+          "type": "textarea",
+          "placeholder": "Plymouth Energy, LLC\nCorn Rolling Balance\n2024"
+        }
+      ]
+    },
+    {
+      "title": "Corn Contract Balance",
+      "description": "Imported from DOR workbook — Corn Contract Balance",
+      "fields": [
+        {
+          "id": "sheet_corn_contract_balance",
+          "label": "Corn Contract Balance",
+          "type": "textarea",
+          "placeholder": "Date\tVendor\tBushels\tCorn Cost\tCorn Cost/Bushel\n45628\tPlymouth Energy Grains\t230732\t945786.4\t4.0991\n45632\tPlymouth Energy Grains\t183818\t749174.42\t4.0756"
+        }
+      ]
+    },
+    {
+      "title": "Merrill Truck",
+      "description": "Imported from DOR workbook — Merrill Truck",
+      "fields": [
+        {
+          "id": "sheet_merrill_truck",
+          "label": "Merrill Truck",
+          "type": "textarea",
+          "placeholder": "Truck Cars Summary\tDenatured\tUndenatured\nDate\tFilled/Sold\tGross Gallons\tNet Gallons\tDate\tFilled/Sold\tGross Gallons\tNet Gallons\tDate\tFilled/Sold\tGross Gallons\tNet Gallons\nBeginning Inventory\t0\t0\t0\tBeginning Inventory\t0\t0\t0\tBeginning Inventory\t0\t0\t0"
+        }
+      ]
+    },
+    {
+      "title": "LeMars Loadout",
+      "description": "Imported from DOR workbook — LeMars Loadout",
+      "fields": [
+        {
+          "id": "sheet_lemars_loadout",
+          "label": "LeMars Loadout",
+          "type": "textarea",
+          "placeholder": "Beginning Inventory\tInbound\tOutbound\tEnding Inventory\nDate\tPE\tLVE\tPE Inventory Transfer\tTruck Sales to LVE\tLVE 3rd Party Gallons\tPE\tLVE\tPE\tLVE\tTotal\tTrucks Denat %\tDenaturant in Tank\tEthanol in Tank\tTank Denat %\tRail Car Denat %\n42705\t48882\t0\t0\t0\t0\t0\t0\t48882\t0"
+        }
+      ]
+    },
+    {
+      "title": "Boiler Gas Flow",
+      "description": "Imported from DOR workbook — Boiler Gas Flow",
+      "fields": [
+        {
+          "id": "sheet_boiler_gas_flow",
+          "label": "Boiler Gas Flow",
+          "type": "textarea",
+          "placeholder": "Boiler Gas Flow\nBoiler #1\tBoiler #2\tBTU/Gallon\n45627\t1574008\t1556827\t19262.88"
+        }
+      ]
+    },
+    {
+      "title": "D3 RIN TRACKING",
+      "description": "Imported from DOR workbook — D3 RIN TRACKING",
+      "fields": [
+        {
+          "id": "sheet_d3_rin_tracking",
+          "label": "D3 RIN TRACKING",
+          "type": "textarea",
+          "placeholder": "BEGINNING BALANCE\tUndenatured D3 Production\tSHIPMENTS\tENDING BALANCE\n45658\t0\t0\t0\t0\n45689\t0\t0\t0\t0"
+        }
+      ]
+    },
+    {
+      "title": "Yield Report",
+      "description": "Imported from DOR workbook — Yield Report",
+      "fields": [
+        {
+          "id": "sheet_yield_report",
+          "label": "Yield Report",
+          "type": "textarea",
+          "placeholder": "Plymouth Energy, LLC.\tPlymouth Energy, LLC.\nEthanol Conversion Rate\tCorn Oil Conversion Rate\n2018\t2018"
+        }
+      ]
+    },
+    {
+      "title": "Open items & alerts",
+      "description": "Playbook alerts and follow-ups (app-specific)",
+      "fields": [
+        {
+          "id": "openAlerts",
+          "label": "Open alerts / actions",
+          "type": "textarea",
+          "placeholder": "Outstanding playbook actions, follow-ups…"
+        },
+        {
+          "id": "batchStatus",
+          "label": "Batch status",
+          "type": "textarea",
+          "placeholder": "Fermenters, cook status, lab holds…"
+        },
+        {
+          "id": "shiftNotes",
+          "label": "Shift notes",
+          "type": "textarea",
+          "placeholder": "Key events, staffing, abnormal situations…"
+        }
+      ]
+    }
+  ],
+  "defaults": {
+    "reportDate": "1/1/2025",
+    "asOfLabel": "As of 6AM",
+    "reportTitle": "Daily Operations Report",
+    "facilityName": "PLYMOUTH ENERGY",
+    "peg_corn_bshls_daily_receipts": "63727",
+    "peg_corn_bshls_daily_grind": "",
+    "peg_corn_bshls_daily_avail_inv": "1153276.57",
+    "peg_corn_bshls_mtd_receipts": "1791297",
+    "peg_corn_bshls_mtd_grind": "",
+    "peg_corn_bshls_ytd_receipts": "1791297",
+    "peg_corn_bshls_ytd_grind": "",
+    "pe_corn_bshls_daily_receipts": "",
+    "pe_corn_bshls_daily_grind": "55524",
+    "pe_corn_bshls_daily_avail_inv": "11644",
+    "pe_corn_bshls_mtd_receipts": "",
+    "pe_corn_bshls_mtd_grind": "1763859",
+    "pe_corn_bshls_ytd_receipts": "",
+    "pe_corn_bshls_ytd_grind": "1763859",
+    "total_corn_bshls_daily_receipts": "63727",
+    "total_corn_bshls_daily_grind": "55524",
+    "total_corn_bshls_daily_avail_inv": "1164920.57",
+    "total_corn_bshls_mtd_receipts": "1791297",
+    "total_corn_bshls_mtd_grind": "1763859",
+    "total_corn_bshls_ytd_receipts": "1791297",
+    "total_corn_bshls_ytd_grind": "1763859",
+    "trk_denaturant_gls_daily_receipts": "0",
+    "trk_denaturant_gls_daily_transfers": "4295",
+    "trk_denaturant_gls_daily_avail_inv": "26327",
+    "trk_denaturant_gls_mtd_receipts": "99116",
+    "trk_denaturant_gls_mtd_transfers": "108789",
+    "trk_denaturant_gls_ytd_receipts": "99116",
+    "trk_denaturant_gls_ytd_transfers": "108789",
+    "total_denaturant_gls_daily_receipts": "0",
+    "total_denaturant_gls_daily_transfers": "4295",
+    "total_denaturant_gls_daily_avail_inv": "26327",
+    "total_denaturant_gls_mtd_receipts": "99116",
+    "total_denaturant_gls_mtd_transfers": "108789",
+    "total_denaturant_gls_ytd_receipts": "99116",
+    "total_denaturant_gls_ytd_transfers": "108789",
+    "rail_ethanol_daily_shipments": "231148",
+    "rail_ethanol_daily_production": "170426",
+    "rail_ethanol_daily_avail_inv": "684296",
+    "rail_ethanol_mtd_shipments": "5148108",
+    "rail_ethanol_mtd_production": "5199290",
+    "rail_ethanol_ytd_shipments": "5148108",
+    "rail_ethanol_ytd_production": "5199290",
+    "truck_ethanol_daily_shipments": "0",
+    "truck_ethanol_daily_production": "",
+    "truck_ethanol_daily_avail_inv": "",
+    "truck_ethanol_mtd_shipments": "0",
+    "truck_ethanol_mtd_production": "",
+    "truck_ethanol_ytd_shipments": "0",
+    "truck_ethanol_ytd_production": "",
+    "lemars_ethanol_daily_shipments": "0",
+    "lemars_ethanol_daily_production": "",
+    "lemars_ethanol_daily_avail_inv": "0",
+    "lemars_ethanol_mtd_shipments": "0",
+    "lemars_ethanol_mtd_production": "",
+    "lemars_ethanol_ytd_shipments": "0",
+    "lemars_ethanol_ytd_production": "",
+    "total_gallons_ethanol_daily_shipments": "231148",
+    "total_gallons_ethanol_daily_production": "170426",
+    "total_gallons_ethanol_daily_avail_inv": "684296",
+    "total_gallons_ethanol_mtd_shipments": "5148108",
+    "total_gallons_ethanol_mtd_production": "5199290",
+    "total_gallons_ethanol_ytd_shipments": "5148108",
+    "total_gallons_ethanol_ytd_production": "5199290",
+    "ethanol_yield_ethanol_daily": "3.0694",
+    "ethanol_yield_ethanol_mtd": "2.9477",
+    "ethanol_yield_ethanol_ytd": "2.9477",
+    "trk_corn_oil_lbs_daily_shipments": "54220",
+    "trk_corn_oil_lbs_daily_production": "55681",
+    "trk_corn_oil_lbs_daily_avail_inv": "173285",
+    "trk_corn_oil_lbs_mtd_shipments": "1609821",
+    "trk_corn_oil_lbs_mtd_production": "1651106",
+    "trk_corn_oil_lbs_ytd_shipments": "1609821",
+    "trk_corn_oil_lbs_ytd_production": "1651106",
+    "total_gallons_corn_oil_lbs_daily_shipments": "54220",
+    "total_gallons_corn_oil_lbs_daily_production": "55681",
+    "total_gallons_corn_oil_lbs_daily_avail_inv": "173285",
+    "total_gallons_corn_oil_lbs_mtd_shipments": "1609821",
+    "total_gallons_corn_oil_lbs_mtd_production": "1651106",
+    "total_gallons_corn_oil_lbs_ytd_shipments": "1609821",
+    "total_gallons_corn_oil_lbs_ytd_production": "1651106",
+    "corn_oil_yield_corn_oil_lbs_daily": "1.0028",
+    "corn_oil_yield_corn_oil_lbs_mtd": "0.9361",
+    "corn_oil_yield_corn_oil_lbs_ytd": "0.9361",
+    "trk_syrup_tons_daily_shipments": "169.47",
+    "trk_syrup_tons_daily_grind": "",
+    "trk_syrup_tons_daily_avail_inv": "",
+    "trk_syrup_tons_mtd_shipments": "4879.22",
+    "trk_syrup_tons_mtd_grind": "",
+    "trk_syrup_tons_ytd_shipments": "4879.22",
+    "trk_syrup_tons_ytd_grind": "",
+    "dry_trk_ddgs_tons_daily_shipments": "0",
+    "dry_trk_ddgs_tons_daily_production": "0",
+    "dry_trk_ddgs_tons_daily_avail_inv": "0",
+    "dry_trk_ddgs_tons_mtd_shipments": "0",
+    "dry_trk_ddgs_tons_mtd_production": "0",
+    "dry_trk_ddgs_tons_ytd_shipments": "0",
+    "dry_trk_ddgs_tons_ytd_production": "0",
+    "total_dry_ddgs_tons_daily_shipments": "0",
+    "total_dry_ddgs_tons_daily_production": "0",
+    "total_dry_ddgs_tons_daily_avail_inv": "0",
+    "total_dry_ddgs_tons_mtd_shipments": "0",
+    "total_dry_ddgs_tons_mtd_production": "0",
+    "total_dry_ddgs_tons_ytd_shipments": "0",
+    "total_dry_ddgs_tons_ytd_production": "0",
+    "wet_trk_ddgs_tons_daily_shipments": "972.4",
+    "wet_trk_ddgs_tons_daily_production": "1134.58",
+    "wet_trk_ddgs_tons_daily_avail_inv": "2100",
+    "wet_trk_ddgs_tons_mtd_shipments": "32973.05",
+    "wet_trk_ddgs_tons_mtd_production": "33909.13",
+    "wet_trk_ddgs_tons_ytd_shipments": "32973.05",
+    "wet_trk_ddgs_tons_ytd_production": "33909.13",
+    "total_wet_ddgs_tons_daily_shipments": "972.4",
+    "total_wet_ddgs_tons_daily_production": "1134.58",
+    "total_wet_ddgs_tons_daily_avail_inv": "2100",
+    "total_wet_ddgs_tons_mtd_shipments": "32973.05",
+    "total_wet_ddgs_tons_mtd_production": "33909.13",
+    "total_wet_ddgs_tons_ytd_shipments": "32973.05",
+    "total_wet_ddgs_tons_ytd_production": "33909.13",
+    "sheet_operations_detail": "Plymouth Energy, LLC\nDaily Production Report\nAs of 6AM\n45992\nUndenatured Production\tUndenatured Yield\tDenaturant Transferred\tDenatured Production\tDenatured Yield\nDate\tDCS Production\tPhysical/Flow Meter\t% Variance\tCorn Oil Produced\tCorn Ground\tDDGS (DRY)\tDDGS (Wet)\tSyrup\tDaily Oil Yield\nAdjustments\t-2302.76\n45627\t162532\t3.0726\t4279\t166811\t3.1535\t160379\t2153\t0.0134\t47000\t52897\t0\t1147.33\t171.62\t0.8885\n45628\t184925\t2.8383\t4868\t189793\t2.913\t179744\t5181\t0.0288\t64769\t65153\t0\t1083.91\t226.9\t0.9941\n45629\t148495\t2.842\t3909\t152404\t2.9168\t152367\t-3872\t-0.0254\t45765\t52251\t0\t960.85\t102.79\t0.8759\n45630\t143960\t2.8616\t3790\t147750\t2.937\t149310\t-5350\t-0.0358\t48303\t50307\t0\t850.59\t140.04\t0.9602\n45631\t200001\t2.9929\t940\t200941\t3.007\t194367\t5634\t0.029\t68832\t66825\t0\t1297.37\t126.49\t1.03\n45632\t184281\t3.1351\t4851\t189132\t3.2176\t189399\t-5118\t-0.027\t52484\t58780\t0\t1063.47\t147.72\t0.8929\n45633\t182269\t2.8515\t4798\t187067\t2.9265\t177609\t4660\t0.0262\t55794\t63921\t0\t997\t105.93\t0.8729",
+    "sheet_corn_and_ethanol_recap": "Plymouth Energy, LLC\tPlymouth Energy, LLC\n45657\tPhysical Corn Grind\nPHYSICAL CALCULATION\tUNDENATURED\nDate\tBeg Inv\tRec'd     #2 YC\tRec'd ENOGEN\tAvailable\tPhy Grind\tEnding Inv\tBook Inv\tVariance - Long (Short)\tBerthold (Grind) - CORN\tBerthold (Grind) - ENOGEN\tBerthold (Grind) - TOTAL\tGrind Variance\tBeg Inv\tDCS Production\tAvailable\tShipments and Transfers\tDenaturant\tEnding Inv\tTank Farm Inv\tInv. Variance (MTD)\tNOTES\nSATURDAY\t45626\t0\t0\t0\t0\t0\t1137482.57\t1137482.57\t0\t0\t0\t0\t0\t0\t0\t0\t0\t0\t770379\t770379\nSUNDAY\t45627\t1137482.57\t4231\t0\t1141713.57\t52897\t1088816.57\t1088816.57\t0\t52897\t0\t52897\t0\t610000\t160379\t770379\t0\t4279\t770379\t768651.1\t-1727.9\nMONDAY\t45628\t1088816.57\t70449\t0\t1159265.57\t65153\t1094112.57\t1094112.57\t0\t65153\t0\t65153\t0\t770379\t179744\t950123\t261648\t4868\t688475\t689494.91\t1019.91\nTUESDAY\t45629\t1094112.57\t61667\t0\t1155779.57\t52251\t1103528.57\t1103528.57\t0\t52251\t0\t52251\t0\t688475\t152367\t840842\t232065\t3909\t608777\t610571.49\t1794.49\nWEDNESDAY\t45630\t1103528.57\t86887\t0\t1190415.57\t50307\t1140108.57\t1140108.57\t0\t50307\t0\t50307\t0\t608777\t149310\t758087\t229813\t3790\t528274\t525920.56\t-2353.44\nTHURSDAY\t45631\t1140108.57\t80213\t0\t1220321.57\t66825\t1153496.57\t1153496.57\t0\t66825\t0\t66825\t0\t528274\t194367\t722641\t259632\t940\t463009\t460849.48\t-2159.52\nFRIDAY\t45632\t1153496.57\t106018\t0\t1259514.57\t58780\t1200734.57\t1200734.57\t0\t58780\t0\t58780\t0\t463009\t189399\t652408\t259429\t4851\t392979\t395941.57\t2962.57\nSATURDAY\t45633\t1200734.57\t13535\t0\t1214269.57\t63921\t1150348.57\t1150348.57\t0\t63921\t0\t63921\t0\t392979\t177609\t570588\t116093\t4798\t454495\t451662.87\t-2832.13\nSUNDAY\t45634\t1150348.57\t5019\t0\t1155367.57\t49251\t1106116.57\t1106116.57\t0\t49251\t0\t49251\t0\t454495\t152156\t606651\t0\t717\t606651\t603548.28\t-3102.72\nMONDAY\t45635\t1106116.57\t59189\t0\t1165305.57\t60827\t1104478.57\t1104478.57\t0\t60827\t0\t60827\t0\t606651\t169513\t776164\t28766\t4545\t747398\t750679.01\t3281.01\nTUESDAY\t45636\t1104478.57\t94520\t0\t1198998.57\t59867\t1139131.57\t1139131.57\t0\t59867\t0\t59867\t0\t747398\t173263\t920661\t233019\t4488\t687642\t689897.65\t2255.65\nWEDNESDAY\t45637\t1139131.57\t62404\t0\t1201535.57\t59749\t1141786.57\t1141786.57\t0\t59749\t0\t59749\t0\t687642\t186569\t874211\t259230\t4869\t614981\t612261.47\t-2719.53\nTHURSDAY\t45638\t1141786.57\t67277\t0\t1209063.57\t68758\t1140305.57\t1140305.57\t0\t68758\t0\t68758\t0\t614981\t187938\t802919\t261952\t5111\t540967\t542227.94\t1260.94\nFRIDAY\t45639\t1140305.57\t81814\t0\t1222119.57\t56352\t1165767.57\t1165767.57\t0\t56352\t0\t56352\t0\t540967\t161644\t702611\t232701\t4260\t469910\t467298.9\t-2611.1\nSATURDAY\t45640\t1165767.57\t16412\t0\t1182179.57\t50611\t1131568.57\t1131568.57\t0\t50611\t0\t50611\t0\t469910\t148401\t618311\t0\t704\t618311\t616872.19\t-1438.81\nSUNDAY\t45641\t1131568.57\t4609\t0\t1136177.57\t54012\t1082165.57\t1082165.57\t0\t54012\t0\t54012\t0\t618311\t157709\t776020\t0\t4246\t776020\t775023.43\t-996.5683\nMONDAY\t45642\t1082165.57\t62811\t0\t1144976.57\t57040\t1087936.57\t1087936.57\t0\t57040\t0\t57040\t0\t776020\t158508\t934528\t29033\t753\t905495\t908827.27\t3332.27\nTUESDAY\t45643\t1087936.57\t104489\t0\t1192425.57\t43421\t1149004.57\t1149004.57\t0\t43421\t0\t43421\t0\t905495\t125094\t1030589\t230420\t3302\t800169\t802339.79\t2170.79",
+    "sheet_tank_farm_inventory": "Plymouth Energy Inventory\nMorning Ethanol and Denaturant Tank Gauges and Inventory\nInventory\nIn Gallons\nDate\t45658\tAvailable\nDay Tanks\n6101\tUNDENATURED\t184962\t171074\n6102\tUNDENATURED\t184962\t109487.36\nStorage Tanks\n6105\tUNDENATURED\t619217\t287404.32\n6106\tUNDENATURED\t619217\t116330.32\nRail Storage\t0\nLeMars\t0\nTotal Ethanol\t684296\nDenaturant",
+    "sheet_rail_cars": "Rail Cars Summary\tDenatured - LOADED\tUndenatured - LOADED\tRail Cars on Site\nDate\tFilled/Sold\tGross Gallons\tNet Gallons\tDate\tFilled/Sold\tGross Gallons\tNet Gallons\tDate\tFilled/Sold\tGross Gallons\tNet Gallons\tFilled/Sold\tNet Gallons\tAvailable Inv\nBeginning Inventory\t62\t1800855\t1795507\tBeginning Inventory\t0\t0\t0\tBeginning Inventory\t0\t0\t0\t0\t0\t0\n45627\t0\t0\t0\t45627\t0\t0\t0\t45627\t0\t0\t0\t0\t0\t770379\n45628\t9\t264385\t261648\t45628\t9\t264385\t261648\t45628\t0\t0\t0\t9\t261648\t688475\n45629\t8\t234584\t232065\t45629\t8\t234584\t232065\t45629\t0\t0\t0\t17\t493713\t608777\n45630\t8\t232881\t229813\t45630\t8\t232881\t229813\t45630\t0\t0\t0\t25\t723526\t528274\n45631\t9\t263271\t259632\t45631\t9\t263271\t259632\t45631\t0\t0\t0\t34\t983158\t463009\n45632\t9\t262200\t259429\t45632\t9\t262200\t259429\t45632\t0\t0\t0\t43\t1242587\t392979\n45633\t4\t117363\t116093\t45633\t4\t117363\t116093\t45633\t0\t0\t0\t47\t1358680\t454495\n45634\t0\t0\t0\t45634\t0\t0\t0\t45634\t0\t0\t0\t47\t1358680\t606651\n45635\t1\t29070\t28766\t45635\t1\t29070\t28766\t45635\t0\t0\t0\t48\t1387446\t747398\n45636\t8\t236198\t233019\t45636\t8\t236198\t233019\t45636\t0\t0\t0\t56\t1620465\t687642\n45637\t9\t262589\t259230\t45637\t9\t262589\t259230\t45637\t0\t0\t0\t65\t1879695\t614981\n45638\t9\t265622\t261952\t45638\t9\t265622\t261952\t45638\t0\t0\t0\t74\t2141647\t540967\n45639\t8\t235330\t232701\t45639\t8\t235330\t232701\t45639\t0\t0\t0\t82\t2374348\t469910\n45640\t0\t0\t0\t45640\t0\t0\t0\t45640\t0\t0\t0\t82\t2374348\t618311\n45641\t0\t0\t0\t45641\t0\t0\t0\t45641\t0\t0\t0\t82\t2374348\t776020\n45642\t1\t29347\t29033\t45642\t1\t29347\t29033\t45642\t0\t0\t0\t83\t2403381\t905495\n45643\t8\t233213\t230420\t45643\t8\t233213\t230420\t45643\t0\t0\t0\t91\t2633801\t800169\n45644\t8\t232590\t230060\t45644\t8\t232590\t230060\t45644\t0\t0\t0\t99\t2863861\t725188\n45645\t9\t263945\t261123\t45645\t9\t263945\t261123\t45645\t0\t0\t0\t108\t3124984\t651449\n45646\t8\t233924\t231611\t45646\t8\t233924\t231611\t45646\t0\t0\t0\t116\t3356595\t596926\n45647\t4\t116622\t115472\t45647\t4\t116622\t115472\t45647\t0\t0\t0\t120\t3472067\t612244",
+    "sheet_corn_inventory": "Plymouth Energy, LLC\nCorn Inventory\n2024\nBushels Ground\nDate\tBeginning Inventory\tCorn Received\tEnogen Received\tRegular Corn\tEnogen\tEnding Inventory\tPE Pre-Pay\tPlymouth Energy\nBalance\tPEG\nBalance\tBin Measurement\tGround Pile\tCorn Inventory Variance\nAdjustment\nBeginning\t1137482.57\t0\t0\t1137482.57\n45627\t1137482.57\t4231\t0\t52897\t0\t1088816.57\t0\t-52897\t1141713.57\t1085710.34\t-3106.23\n45628\t1088816.57\t70449\t0\t65153\t0\t1094112.57\t230732\t112682\t981430.57\t1091953.6\t-2158.97\n45629\t1094112.57\t61667\t0\t52251\t0\t1103528.57\t0\t60431\t1043097.57\t1107769.79\t4241.22\n45630\t1103528.57\t86887\t0\t50307\t0\t1140108.57\t0\t10124\t1129984.57\t1141084.19\t975.6232\n45631\t1140108.57\t80213\t0\t66825\t0\t1153496.57\t0\t-56701\t1210197.57\t1148127.07\t-5369.5\n45632\t1153496.57\t106018\t0\t58780\t0\t1200734.57\t183818\t68337\t1132397.57\t1200515.73\t-218.8393\n45633\t1200734.57\t13535\t0\t63921\t0\t1150348.57\t0\t4416\t1145932.57\t1151289.8\t941.2343\n45634\t1150348.57\t5019\t0\t49251\t0\t1106116.57\t250098\t205263\t900853.57\t1112090.13\t5973.56\n45635\t1106116.57\t59189\t0\t60827\t0\t1104478.57\t0\t144436\t960042.57\t1104387.84\t-90.7267\n45636\t1104478.57\t94520\t0\t59867\t0\t1139131.57\t0\t84569\t1054562.57\t1140305.44\t1173.87\n45637\t1139131.57\t62404\t0\t59749\t0\t1141786.57\t207413\t232233\t909553.57\t1144777.95\t2991.38\n45638\t1141786.57\t67277\t0\t68758\t0\t1140305.57\t0\t163475\t976830.57\t1136403.26\t-3902.31\n45639\t1140305.57\t81814\t0\t56352\t0\t1165767.57\t203080\t310203\t855564.57\t1161712.25\t-4055.32\n45640\t1165767.57\t16412\t0\t50611\t0\t1131568.57\t0\t259592\t871976.57\t1126184.73\t-5383.84\n45641\t1131568.57\t4609\t0\t54012\t0\t1082165.57\t0\t205580\t876585.57\t1080334.37\t-1831.2\n45642\t1082165.57\t62811\t0\t57040\t0\t1087936.57\t0\t148540\t939396.57\t1085976.45\t-1960.12",
+    "sheet_corn_rolling_balance": "Plymouth Energy, LLC\nCorn Rolling Balance\n2024\nDate 6AM\tBeginning Balance\tPurchased\tGround\tEnding Balance\nBeginning\t0\n45627\t0\t0\t52897\t-52897\n45628\t-52897\t230732\t65153\t112682\n45629\t112682\t0\t52251\t60431\n45630\t60431\t0\t50307\t10124\n45631\t10124\t0\t66825\t-56701\n45632\t-56701\t183818\t58780\t68337\n45633\t68337\t0\t63921\t4416\n45634\t4416\t250098\t49251\t205263\n45635\t205263\t0\t60827\t144436\n45636\t144436\t0\t59867\t84569\n45637\t84569\t207413\t59749\t232233\n45638\t232233\t0\t68758\t163475\n45639\t163475\t203080\t56352\t310203\n45640\t310203\t0\t50611\t259592\n45641\t259592\t0\t54012\t205580\n45642\t205580\t0\t57040\t148540\n45643\t148540\t0\t43421\t105119",
+    "sheet_corn_contract_balance": "Date\tVendor\tBushels\tCorn Cost\tCorn Cost/Bushel\n45628\tPlymouth Energy Grains\t230732\t945786.4\t4.0991\n45632\tPlymouth Energy Grains\t183818\t749174.42\t4.0756\n45634\tPlymouth Energy Grains\t250098\t1026875.7\t4.1059\n45637\tPlymouth Energy Grains\t207413\t842290.34\t4.0609\n45639\tPlymouth Energy Grains\t203080\t838584.08\t4.1293\n45645\tPlymouth Energy Grains\t178823\t738056.12\t4.1273\n45647\tPlymouth Energy Grains\t228566\t926980.56\t4.0556\n45650\tPlymouth Energy Grains\t144777\t592890.43\t4.0952\n45655\tPlymouth Energy Grains\t148196\t609327.11\t4.1116\n1775503\t7269965.16\t4.0946",
+    "sheet_merrill_truck": "Truck Cars Summary\tDenatured\tUndenatured\nDate\tFilled/Sold\tGross Gallons\tNet Gallons\tDate\tFilled/Sold\tGross Gallons\tNet Gallons\tDate\tFilled/Sold\tGross Gallons\tNet Gallons\nBeginning Inventory\t0\t0\t0\tBeginning Inventory\t0\t0\t0\tBeginning Inventory\t0\t0\t0\n45627\t0\t0\t0\t45627\t0\t0\t0\t45627\t0\t0\t0\n45628\t0\t0\t0\t45628\t0\t0\t0\t45628\t0\t0\t0\n45629\t0\t0\t0\t45629\t0\t0\t0\t45629\t0\t0\t0\n45630\t0\t0\t0\t45630\t0\t0\t0\t45630\t0\t0\t0\n45631\t0\t0\t0\t45631\t0\t0\t0\t45631\t0\t0\t0\n45632\t0\t0\t0\t45632\t0\t0\t0\t45632\t0\t0\t0\n45633\t0\t0\t0\t45633\t0\t0\t0\t45633\t0\t0\t0\n45634\t0\t0\t0\t45634\t0\t0\t0\t45634\t0\t0\t0\n45635\t0\t0\t0\t45635\t0\t0\t0\t45635\t0\t0\t0\n45636\t0\t0\t0\t45636\t0\t0\t0\t45636\t0\t0\t0\n45637\t0\t0\t0\t45637\t0\t0\t0\t45637\t0\t0\t0\n45638\t0\t0\t0\t45638\t0\t0\t0\t45638\t0\t0\t0\n45639\t0\t0\t0\t45639\t0\t0\t0\t45639\t0\t0\t0\n45640\t0\t0\t0\t45640\t0\t0\t0\t45640\t0\t0\t0\n45641\t0\t0\t0\t45641\t0\t0\t0\t45641\t0\t0\t0\n45642\t0\t0\t0\t45642\t0\t0\t0\t45642\t0\t0\t0\n45643\t0\t0\t0\t45643\t0\t0\t0\t45643\t0\t0\t0\n45644\t0\t0\t0\t45644\t0\t0\t0\t45644\t0\t0\t0\n45645\t0\t0\t0\t45645\t0\t0\t0\t45645\t0\t0\t0\n45646\t0\t0\t0\t45646\t0\t0\t0\t45646\t0\t0\t0\n45647\t0\t0\t0\t45647\t0\t0\t0\t45647\t0\t0\t0",
+    "sheet_lemars_loadout": "Beginning Inventory\tInbound\tOutbound\tEnding Inventory\nDate\tPE\tLVE\tPE Inventory Transfer\tTruck Sales to LVE\tLVE 3rd Party Gallons\tPE\tLVE\tPE\tLVE\tTotal\tTrucks Denat %\tDenaturant in Tank\tEthanol in Tank\tTank Denat %\tRail Car Denat %\n42705\t48882\t0\t0\t0\t0\t0\t0\t48882\t0\n42706\t48882\t0\t0\t0\t0\t0\t0\t48882\t0\n42707\t48882\t0\t0\t0\t0\t0\t0\t48882\t0\n42708\t48882\t0\t0\t0\t0\t0\t0\t48882\t0\n42709\t48882\t0\t0\t0\t0\t0\t0\t48882\t0\n42710\t48882\t0\t0\t0\t0\t0\t0\t48882\t0\n42711\t48882\t0\t0\t0\t0\t0\t0\t48882\t0\n42712\t48882\t0\t0\t0\t0\t0\t0\t48882\t0\n42713\t48882\t0\t0\t0\t0\t0\t0\t48882\t0\n42714\t48882\t0\t0\t0\t0\t0\t0\t48882\t0\n42715\t48882\t0\t67927\t0\t0\t0\t0\t116809\t0\n42716\t116809\t0\t58449\t0\t0\t0\t0\t175258\t0\n42717\t175258\t0\t73757\t0\t0\t0\t0\t249015\t0\n42718\t249015\t0\t0\t0\t0\t0\t0\t249015\t0\n42719\t249015\t0\t0\t0\t0\t0\t0\t249015\t0\n42720\t249015\t0\t0\t0\t0\t0\t0\t249015\t0\n42721\t249015\t0\t0\t0\t0\t0\t0\t249015\t0\n42722\t249015\t0\t0\t0\t0\t0\t0\t249015\t0\n42723\t249015\t0\t0\t0\t0\t0\t0\t249015\t0\n42724\t249015\t0\t82288\t0\t0\t87482\t0\t243821\t0\n42725\t243821\t0\t0\t0\t0\t0\t0\t243821\t0\n42726\t243821\t0\t0\t0\t0\t0\t0\t243821\t0\n42727\t243821\t0\t0\t0\t0\t0\t0\t243821\t0",
+    "sheet_boiler_gas_flow": "Boiler Gas Flow\nBoiler #1\tBoiler #2\tBTU/Gallon\n45627\t1574008\t1556827\t19262.88\n45628\t1910131\t1836292\t20259.15\n45629\t1477165\t1521389\t20192.96\n45630\t1355445\t1334097\t18682.56\n45631\t1996298\t2061394\t20288.36\n45632\t1837921\t1812639\t19809.75\n45633\t1719845\t1705090\t18790.55\n45634\t1537628\t1546114\t20204.3\n45635\t1674170\t1613489\t19041.23\n45636\t1547719\t1635859\t18674.31\n45637\t1724616\t1717158\t18608.51\n45638\t2010913\t1917166\t20231.77\n45639\t1509490\t1574887\t19060.78\n45640\t1445307\t1431119\t19204.85\n45641\t1616755\t1622722\t20085.3\n45642\t1535077\t1614961\t19666.6\n45643\t1179967\t1181863\t18829.11\n45644\t1422373\t1480532\t19131.16\n45645\t1767738\t1842981\t19371.43\n45646\t1732697\t1682451\t20131.98\n45647\t1328948\t1256273\t19160.29",
+    "sheet_d3_rin_tracking": "BEGINNING BALANCE\tUndenatured D3 Production\tSHIPMENTS\tENDING BALANCE\n45658\t0\t0\t0\t0\n45689\t0\t0\t0\t0\n45717\t0\t0\t0\t0\n45748\t0\t33463.41\t0\t33463.41\n45778\t33463.41\t40792.67\t0\t74256.08\n45809\t74256.08\t37112.79\t0\t111368.87\n45839\t111368.87\t29582.12\t0\t140950.99\n45870\t140950.99\t41634.08\t0\t182585.07\n45901\t182585.07\t39235.48\t0\t221820.55\n45931\t221820.55\t38653.54\t28994\t231480.09\n45962\t231480.09\t40023.6\t0\t271503.69\n45992\t271503.69\t0\t271503.69",
+    "sheet_yield_report": "Plymouth Energy, LLC.\tPlymouth Energy, LLC.\nEthanol Conversion Rate\tCorn Oil Conversion Rate\n2018\t2018\nJanuary\tFebruary\tMarch\t1st Quarter\tJanuary\tFebruary\tMarch\t1st Quarter\nEthanol Produced\t4741800\t4610922\t5225165\t14577887\tCorn Oil Produced\t1438414\t1347950\t1556422\t4342786\nCorn Ground\t1673877\t1556730\t1797091\t5027698\tCorn Ground\t1673877\t1556730\t1797091\t5027698\nYield\t2.8328\t2.9619\t2.9076\t2.8995\tYield\t0.8593\t0.8659\t0.8661\t0.8638\nApril\tMay\tJune\t2nd Quarter\tApril\tMay\tJune\t2nd Quarter\nEthanol Produced\t4589049\t5216454\t4745881\t14551384\tCorn Oil Produced\t1410027\t1730551\t1529205\t4669783\nCorn Ground\t1564190\t1730275\t1599084\t4893549\tCorn Ground\t1564190\t1730275\t1599084\t4893549\nYield\t2.9338\t3.0148\t2.9679\t2.9736\tYield\t0.9014\t1.0002\t0.9563\t0.9543\nJuly\tAugust\tSeptember\t3rd Quarter\tJuly\tAugust\tSeptember\t3rd Quarter\nEthanol Produced\t3782880\t5324051\t5017325\t14124256\tCorn Oil Produced\t1228255\t1709045\t1680788\t4618088\nCorn Ground\t1277247\t1822897\t1685516\t4785659\tCorn Ground\t1277247\t1822897\t1685516\t4785659\nYield\t2.9617\t2.9207\t2.9767\t2.9514\tYield\t0.9616\t0.9375\t0.9972\t0.965\nOctober\tNovember\tDecember\t4th Quarter\tOctober\tNovember\tDecember\t4th Quarter\nEthanol Produced\t4942964\t5118107\t5387866\t10061015\tCorn Oil Produced\t1664239\t1644392\t1710990\t3308631\nCorn Ground\t1633902\t1738941\t1827833\t3372843\tCorn Ground\t1633902\t1738941\t1827833\t3372843\nYield\t3.0253\t2.9432\t2.9477\t2.9829\tYield\t1.0186\t0.9456\t0.9361\t0.981\nYTD\tYTD"
+  }
+}

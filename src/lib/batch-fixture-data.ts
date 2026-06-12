@@ -30,7 +30,14 @@ export type BatchRecord = {
   ferm: string;
   status: "active" | "completed" | "deviation";
   started: string;
-  dropEtOH: number;
+  /** Bushels ground and charged to this fermenter fill */
+  bushelsCharged: number;
+  /** Plant standard gal denatured ethanol / bu */
+  targetGalPerBu: number;
+  /** Projected gal/bu from lab + in-process signals (fermenter close estimate) */
+  projectedGalPerBu: number;
+  /** Beer volume at drop to beer well (null while still fermenting) */
+  beerGalAtDrop: number | null;
   brixDrop: number;
   fermenterAgeH: number;
   phases: BatchPhase[];
@@ -89,14 +96,17 @@ export const MOCK_BATCHES: BatchRecord[] = [
     ferm: "Line 12",
     status: "active",
     started: "2026-06-02 06:10",
-    dropEtOH: 12.4,
+    bushelsCharged: 92400,
+    targetGalPerBu: 2.85,
+    projectedGalPerBu: 2.72,
+    beerGalAtDrop: null,
     brixDrop: 4.8,
     fermenterAgeH: 38,
     phases: [
       { id: "prep", label: "Prep & pre-CIP", short: "Prep", durationH: 2, status: "done" },
       { id: "fill", label: "Fill", short: "Fill", durationH: 4, status: "done" },
       { id: "prop", label: "Seed / prep", short: "Prep", durationH: 3, status: "done" },
-      { id: "ferm", label: "Primary process", short: "Run", durationH: 28, status: "active" },
+      { id: "ferm", label: "Fermentation", short: "Ferm", durationH: 28, status: "active" },
       { id: "cascade", label: "Thermal conditioning", short: "Cond", durationH: 6, status: "pending" },
       { id: "drop", label: "Close / release", short: "Close", durationH: 2, status: "pending" },
       { id: "flush", label: "Line flush", short: "Flush", durationH: 1, status: "pending" },
@@ -109,9 +119,9 @@ export const MOCK_BATCHES: BatchRecord[] = [
       { ts: "18:30", type: "signal", summary: "DO dipped below band", field: "DO-7701" },
     ],
     kpis: [
-      { label: "Yield @ close (proj.)", value: "12.6%", field: "24hr Output" },
+      { label: "Yield proj. (gal/bu)", value: "2.72", field: "24hr Output" },
       { label: "pH now", value: "4.9", field: "18hr pH" },
-      { label: "Process age", value: "38h", field: "Process age" },
+      { label: "Bushels charged", value: "92,400 bu", field: "Recipe" },
     ],
   },
   {
@@ -119,27 +129,30 @@ export const MOCK_BATCHES: BatchRecord[] = [
     ferm: "Line 11",
     status: "completed",
     started: "2026-05-28 05:55",
-    dropEtOH: 13.1,
+    bushelsCharged: 91800,
+    targetGalPerBu: 2.85,
+    projectedGalPerBu: 2.91,
+    beerGalAtDrop: 267_100,
     brixDrop: 5.1,
     fermenterAgeH: 52,
     phases: [
       { id: "prep", label: "Prep & pre-CIP", short: "Prep", durationH: 2, status: "done" },
       { id: "fill", label: "Fill", short: "Fill", durationH: 4, status: "done" },
       { id: "prop", label: "Seed / prep", short: "Prep", durationH: 3, status: "done" },
-      { id: "ferm", label: "Primary process", short: "Run", durationH: 30, status: "done" },
+      { id: "ferm", label: "Fermentation", short: "Ferm", durationH: 30, status: "done" },
       { id: "cascade", label: "Thermal conditioning", short: "Cond", durationH: 5, status: "done" },
       { id: "drop", label: "Close / release", short: "Close", durationH: 2, status: "done" },
       { id: "flush", label: "Line flush", short: "Flush", durationH: 1, status: "done" },
       { id: "cip", label: "Post-batch CIP", short: "CIP", durationH: 3, status: "done" },
     ],
     events: [
-      { ts: "Close", type: "phase", summary: "Batch close — yield 13.1%", field: "Close complete" },
-      { ts: "+0.5%", type: "signal", summary: "Above target vs prior week avg", field: "24hr Output" },
+      { ts: "Close", type: "phase", summary: "Batch close — 2.91 gal/bu", field: "Close complete" },
+      { ts: "+0.06", type: "signal", summary: "+0.06 gal/bu vs prior week avg", field: "24hr Output" },
     ],
     kpis: [
-      { label: "Yield @ close", value: "13.1%", field: "24hr Output" },
-      { label: "Quality @ close", value: "5.1", field: "40hr Quality" },
-      { label: "Total time", value: "52h", field: "Close date" },
+      { label: "Yield @ close", value: "2.91 gal/bu", field: "24hr Output" },
+      { label: "Beer to well", value: "267,100 gal", field: "Close complete" },
+      { label: "Ethanol equiv.", value: "267,138 gal", field: "24hr Output" },
     ],
   },
   {
@@ -147,14 +160,17 @@ export const MOCK_BATCHES: BatchRecord[] = [
     ferm: "Line 09",
     status: "deviation",
     started: "2026-05-22 07:20",
-    dropEtOH: 11.2,
+    bushelsCharged: 93100,
+    targetGalPerBu: 2.85,
+    projectedGalPerBu: 2.68,
+    beerGalAtDrop: 249_500,
     brixDrop: 4.2,
     fermenterAgeH: 56,
     phases: [
       { id: "prep", label: "Prep & pre-CIP", short: "Prep", durationH: 2, status: "done" },
       { id: "fill", label: "Fill", short: "Fill", durationH: 5, status: "done" },
       { id: "prop", label: "Seed / prep", short: "Prep", durationH: 4, status: "done" },
-      { id: "ferm", label: "Primary process", short: "Run", durationH: 32, status: "done" },
+      { id: "ferm", label: "Fermentation", short: "Ferm", durationH: 32, status: "done" },
       { id: "cascade", label: "Thermal conditioning", short: "Cond", durationH: 7, status: "done" },
       { id: "drop", label: "Close / release", short: "Close", durationH: 2, status: "done" },
       { id: "flush", label: "Line flush", short: "Flush", durationH: 2, status: "done" },
@@ -165,8 +181,8 @@ export const MOCK_BATCHES: BatchRecord[] = [
       { ts: "Close", type: "alert", summary: "Yield below target — flagged deviation", field: "24hr Output" },
     ],
     kpis: [
-      { label: "Yield @ close", value: "11.2%", field: "24hr Output" },
-      { label: "Contaminant peak", value: "High", field: "55hr Contaminants" },
+      { label: "Yield @ close", value: "2.68 gal/bu", field: "24hr Output" },
+      { label: "Gap vs std", value: "−0.17 gal/bu", field: "24hr Output" },
       { label: "Status", value: "Deviation", field: "Batch #" },
     ],
   },

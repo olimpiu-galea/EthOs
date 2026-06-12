@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "generate:timeline": "node scripts/generate-dcs-timeline.mjs"
+    "generate:timeline": "node scripts/generate-dcs-timeline.mjs",
+    "import:potential-vs-temp": "node scripts/import-potential-vs-temp-alerts.mjs",
+    "import:ferm-fields": "node scripts/import-ferm-field-dictionary.mjs"
   },
   "dependencies": {
     "next": "^15.1.0",

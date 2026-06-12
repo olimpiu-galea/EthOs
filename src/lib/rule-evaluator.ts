@@ -1,12 +1,16 @@
 import type {
   ConditionMatchMode,
   DcsTagWithKey,
+  Playbook,
   PlaybookCondition,
+  PlaybookConditionGroup,
   Rule,
   RuleNode,
   ValuePoint,
 } from "./types";
+import { usesConditionGroups } from "./playbook-utils";
 import { numericValue, tagKey } from "./dcs-parser";
+import { canonicalSignalLabel } from "./ferm-signals";
 
 export type TagBufferMap = Record<string, ValuePoint[]>;
 
@@ -41,9 +45,10 @@ export function findTag(
   rule: Rule,
 ): DcsTagWithKey | undefined {
   if (rule.displayLabel) {
-    return tags.find(
+    const exact = tags.find(
       (t) => t.id === rule.signalId && t.displayLabel === rule.displayLabel,
     );
+    if (exact) return exact;
   }
   return tags.find((t) => t.id === rule.signalId);
 }
@@ -163,20 +168,119 @@ export function rulePreview(rule: Rule): string {
     rule.aggregation && rule.aggregation !== "instant"
       ? ` ${rule.aggregation}`
       : "";
-  const label = rule.displayLabel ?? rule.signalId;
+  const label = canonicalSignalLabel(rule);
   return `${label} ${rule.operator} ${rule.threshold}${agg}${dur}`;
+}
+
+export function conditionsPreviewLines(
+  conditions: PlaybookCondition[],
+): string[] {
+  return conditions
+    .filter((c) => c.rule.signalId)
+    .map((c) => rulePreview(c.rule));
 }
 
 export function conditionsPreview(
   conditions: PlaybookCondition[],
   matchMode: ConditionMatchMode,
 ): string {
-  const parts = conditions
-    .filter((c) => c.rule.signalId)
-    .map((c) => rulePreview(c.rule));
+  const parts = conditionsPreviewLines(conditions);
   if (parts.length === 0) return "";
   const join = matchMode === "all" ? " AND " : " OR ";
   return parts.join(join);
+}
+
+function groupPreview(group: PlaybookConditionGroup): string {
+  const inner = conditionsPreview(
+    group.conditions,
+    group.matchMode ?? "all",
+  );
+  if (!inner) return "";
+  const valid = group.conditions.filter((c) => c.rule.signalId);
+  if (valid.length <= 1) return inner;
+  return `(${inner})`;
+}
+
+export function conditionsPreviewForPlaybook(
+  playbook: Pick<
+    Playbook,
+    "conditions" | "matchMode" | "conditionGroups" | "groupMatchMode"
+  >,
+): string {
+  if (usesConditionGroups(playbook)) {
+    const between = playbook.groupMatchMode ?? playbook.matchMode ?? "any";
+    const parts = playbook.conditionGroups!
+      .map(groupPreview)
+      .filter(Boolean);
+    if (parts.length === 0) return "";
+    const join = between === "all" ? " AND " : " OR ";
+    return parts.join(join);
+  }
+  return conditionsPreview(playbook.conditions, playbook.matchMode);
+}
+
+export function conditionsPreviewLinesForPlaybook(
+  playbook: Pick<
+    Playbook,
+    "conditions" | "matchMode" | "conditionGroups" | "groupMatchMode"
+  >,
+): string[] {
+  if (!usesConditionGroups(playbook)) {
+    return conditionsPreviewLines(playbook.conditions);
+  }
+
+  const between = playbook.groupMatchMode ?? playbook.matchMode ?? "any";
+  const betweenLabel = between === "all" ? "AND" : "OR";
+  const lines: string[] = [];
+
+  playbook.conditionGroups!.forEach((group, groupIndex) => {
+    if (groupIndex > 0) lines.push(betweenLabel);
+    if (group.label?.trim()) {
+      lines.push(group.label.trim());
+    }
+    const innerLines = conditionsPreviewLines(group.conditions);
+    const innerJoin =
+      (group.matchMode ?? "all") === "all" ? "AND" : "OR";
+    innerLines.forEach((line, condIndex) => {
+      if (condIndex > 0) lines.push(innerJoin);
+      lines.push(line);
+    });
+  });
+
+  return lines;
+}
+
+export function evaluatePlaybookConditions(
+  playbook: Pick<
+    Playbook,
+    "conditions" | "matchMode" | "conditionGroups" | "groupMatchMode"
+  >,
+  tags: DcsTagWithKey[],
+  buffers: TagBufferMap,
+  now: number,
+): boolean {
+  if (usesConditionGroups(playbook)) {
+    const between = playbook.groupMatchMode ?? playbook.matchMode ?? "any";
+    const results = playbook.conditionGroups!.map((group) =>
+      evaluateConditions(
+        group.conditions,
+        group.matchMode ?? "all",
+        tags,
+        buffers,
+        now,
+      ),
+    );
+    return between === "all"
+      ? results.every(Boolean)
+      : results.some(Boolean);
+  }
+  return evaluateConditions(
+    playbook.conditions,
+    playbook.matchMode,
+    tags,
+    buffers,
+    now,
+  );
 }
 
 export function flattenRuleNode(node: RuleNode | undefined): Rule[] {
@@ -217,7 +321,7 @@ export function ruleNodePreview(node: RuleNode): string {
       r.aggregation && r.aggregation !== "instant"
         ? ` ${r.aggregation}`
         : "";
-    const label = r.displayLabel ?? r.signalId;
+    const label = canonicalSignalLabel(r);
     return `${label} ${r.operator} ${r.threshold}${agg}${dur}`;
   }
 

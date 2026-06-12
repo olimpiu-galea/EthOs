@@ -1,0 +1,13 @@
+id,value,name,desc,category,fieldType,frequency,displayLabel,unit
+MKT-CORN/_.Spot,4.82,Corn Spot,CME corn spot price,Commodity,analog,5min,Corn Spot Price,$/bu
+MKT-ETOH/_.Spot,2.14,EtOH Spot,Ethanol rack spot price,Commodity,analog,5min,Ethanol Spot Price,$/gal
+MKT-DDGS/_.Spot,178,DDGS Spot,DDGS co-product price,Commodity,analog,5min,DDGS Spot Price,$/ton
+MKT-MARGIN/_.PerGal,0.18,Margin Per Gal,Net margin per gallon after costs,Financial,analog,5min,Margin Per Gallon,$/gal
+MKT-SURPLUS/_.Gal,84200,Surplus Gallons,Unsold surplus after contract fulfillment,Inventory,analog,5min,Surplus Gallons,gal
+MKT-CONTRACT/_.Coverage,94.2,Contract Coverage,Percent of production under contract,Financial,analog,5min,Contract Coverage,%
+MKT-MARKET/_.Signal,1,Market Signal,AI market signal: 1=hold 0=sell spot,Financial,digital,5min,Market Sell Signal,
+MKT-HEDGE/_.Rec,1,Hedge Rec,Hedging recommendation active,Financial,digital,5min,Hedge Recommendation,
+MKT-ENERGY/_.Cost,0.42,Energy Cost,Energy cost per gallon produced,Financial,analog,5min,Energy Cost Per Gal,$/gal
+MKT-INVENTORY/_.Days,12.4,Inventory Days,Days of surplus inventory at current rate,Inventory,analog,5min,Inventory Days Supply,days
+MKT-BASIS/_.Corn,-0.08,Corn Basis,Local corn basis vs futures,Commodity,analog,5min,Corn Basis,$/bu
+MKT-RACK/_.Premium,0.06,Rack Premium,Local rack premium over Chicago,Commodity,analog,5min,Rack Premium,$/gal

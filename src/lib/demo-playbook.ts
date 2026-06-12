@@ -1,73 +1,56 @@
-import type { Playbook } from "./types";
-import { createEmptyCondition } from "./playbook-utils";
-import { activateTagsForPlaybookConditions } from "./tag-activation";
+"use client";
 
-/** ~1 alert per DCS refresh (~60s) when connected — for testing Agenda live */
-export function createLiveDemoPlaybook(): Omit<Playbook, "id"> {
-  const cond = createEmptyCondition();
-  cond.rule = {
-    signalId: "AG-2201/_.Run#Value",
-    displayLabel: "AG-2201 Run",
-    operator: ">",
-    threshold: 0,
-    aggregation: "instant",
-  };
+import type { AlertAgendaItem, Playbook } from "./types";
 
-  return {
-    name: "Demo — live alert each refresh",
-    description:
-      "Always true while AG-2201 is running. Fires on each signal refresh (~60s). Use to test Agenda live updates.",
-    status: "active",
-    conditions: [cond],
-    matchMode: "all",
-    alertCooldownMs: 50_000,
-    alert: {
-      type: "predefined",
-      predefinedId: "info",
-      title: "Info",
-      message: "Demo live alert — signal refresh",
-      severity: "info",
-    },
-  };
-}
-
-export const DEMO_PLAYBOOK_NAME = "Demo — live alert each refresh";
-
-export function findDemoPlaybook(playbooks: Playbook[]): Playbook | undefined {
-  return playbooks.find((p) => p.name === DEMO_PLAYBOOK_NAME);
-}
+/** Legacy demo playbook names — used only to purge persisted leftovers */
+const DEMO_PLAYBOOK_NAMES = new Set([
+  "Demo — operations alert (fermenter)",
+  "Demo — live alert each refresh",
+  "Demo — maintenance alert (utilities)",
+  "Demo — financial alert (margin desk)",
+  "Demo — financial alert (commodity)",
+  "Demo — procurement alert (corn basis)",
+  "Demo — QA lab alert (Brix)",
+  "Demo — lab quality alert",
+]);
 
 export function isDemoPlaybook(playbook: Pick<Playbook, "name">): boolean {
-  return playbook.name === DEMO_PLAYBOOK_NAME;
+  return DEMO_PLAYBOOK_NAMES.has(playbook.name);
 }
 
-/** Ensures the live demo playbook exists and stays active. */
-export async function ensureLiveDemoPlaybook(): Promise<Playbook> {
+export function isDemoAlertItem(
+  item: Pick<AlertAgendaItem, "playbookName">,
+): boolean {
+  return isDemoPlaybook({ name: item.playbookName });
+}
+
+/** Remove legacy demo playbooks and their agenda alerts from persisted stores */
+export async function purgeDemoPlaybooks(): Promise<void> {
   const { usePlaybookStore } = await import("@/stores/playbook-store");
-  const { runPlaybookBackfill } = await import("@/lib/run-playbook-backfill");
-  const store = usePlaybookStore.getState();
-  let demo = findDemoPlaybook(store.playbooks);
+  const { useAlertHistoryStore } = await import("@/stores/alert-history-store");
 
-  if (!demo) {
-    const data = createLiveDemoPlaybook();
-    const id = store.addPlaybook(data);
-    demo = { ...data, id };
-    await runPlaybookBackfill(demo);
-    return demo;
-  }
-
-  if (demo.status !== "active") {
-    store.updatePlaybook(demo.id, { status: "active" });
-    demo = { ...demo, status: "active" };
-  }
-
-  const { useDcsStore } = await import("@/stores/dcs-store");
-  const { useTagActivationStore } = await import("@/stores/tag-activation-store");
-  activateTagsForPlaybookConditions(
-    demo.conditions,
-    useDcsStore.getState().tags,
-    useTagActivationStore.getState().setTagActive,
+  const playbooks = usePlaybookStore.getState().playbooks;
+  const demoIds = new Set(
+    playbooks.filter(isDemoPlaybook).map((p) => p.id),
+  );
+  const items = useAlertHistoryStore.getState().items;
+  const hasDemoAlerts = items.some(
+    (i) => demoIds.has(i.playbookId) || isDemoAlertItem(i),
   );
 
-  return demo;
+  if (!demoIds.size && !hasDemoAlerts) return;
+
+  if (demoIds.size) {
+    usePlaybookStore.setState({
+      playbooks: playbooks.filter((p) => !isDemoPlaybook(p)),
+    });
+  }
+
+  if (hasDemoAlerts) {
+    useAlertHistoryStore.setState((s) => ({
+      items: s.items.filter(
+        (i) => !demoIds.has(i.playbookId) && !isDemoAlertItem(i),
+      ),
+    }));
+  }
 }

@@ -1,22 +1,81 @@
-import type { LegacyPlaybook, Playbook, PlaybookCondition } from "./types";
+import type { LegacyPlaybook, Playbook, PlaybookAlert, PlaybookCondition } from "./types";
+import { PREDEFINED_ALERTS } from "./types";
 import { flattenRuleNode } from "./rule-evaluator";
+import {
+  DEFAULT_ACTION_ITEMS,
+  DEFAULT_GUIDANCE,
+} from "./default-playbook-response";
+import { inferTeamIdFromPlaybook } from "./teams";
+import { useSettingsStore } from "@/stores/settings-store";
 
 function newConditionId(): string {
   return crypto.randomUUID();
 }
 
+/** Legacy playbooks may have type "custom" — map to predefined by severity */
+export function normalizePlaybookAlert(
+  alert: PlaybookAlert & { type?: string },
+): PlaybookAlert {
+  const predefinedId =
+    alert.type === "predefined" && alert.predefinedId
+      ? alert.predefinedId
+      : alert.severity === "critical"
+        ? "critical"
+        : alert.severity === "info"
+          ? "info"
+          : "warning";
+  const preset = PREDEFINED_ALERTS.find((p) => p.id === predefinedId);
+  return {
+    type: "predefined",
+    predefinedId,
+    title: preset?.title ?? alert.title,
+    message: alert.message,
+    severity: preset?.severity ?? alert.severity ?? "warning",
+  };
+}
+
+function resolveTeamId(raw: LegacyPlaybook): string | undefined {
+  const teams = useSettingsStore.getState().teams;
+  return raw.teamId ?? inferTeamIdFromPlaybook(raw, teams);
+}
+
+function basePlaybookFields(raw: LegacyPlaybook) {
+  return {
+    id: raw.id,
+    name: raw.name,
+    description: raw.description,
+    status: raw.status,
+    alertCooldownMs: raw.alertCooldownMs,
+    alert: normalizePlaybookAlert(raw.alert),
+    teamId: resolveTeamId(raw),
+    routedRoles: raw.routedRoles,
+    actionItems: raw.actionItems?.length
+      ? raw.actionItems
+      : DEFAULT_ACTION_ITEMS,
+    guidance: raw.guidance?.length ? raw.guidance : DEFAULT_GUIDANCE,
+    isPremium: raw.isPremium,
+    premiumPrice: raw.premiumPrice,
+    builtinId: raw.builtinId,
+    lastTriggeredAt: raw.lastTriggeredAt,
+  };
+}
+
 export function migratePlaybook(raw: LegacyPlaybook): Playbook {
+  if (raw.conditionGroups?.length) {
+    return {
+      ...basePlaybookFields(raw),
+      conditions: raw.conditions ?? [],
+      matchMode: raw.matchMode ?? "any",
+      conditionGroups: raw.conditionGroups,
+      groupMatchMode: raw.groupMatchMode ?? raw.matchMode ?? "any",
+    };
+  }
+
   if (raw.conditions?.length) {
     return {
-      id: raw.id,
-      name: raw.name,
-      description: raw.description,
-      status: raw.status,
+      ...basePlaybookFields(raw),
       conditions: raw.conditions,
       matchMode: raw.matchMode ?? "all",
-      alertCooldownMs: raw.alertCooldownMs,
-      alert: raw.alert,
-      lastTriggeredAt: raw.lastTriggeredAt,
     };
   }
 
@@ -31,13 +90,8 @@ export function migratePlaybook(raw: LegacyPlaybook): Playbook {
   }));
 
   return {
-    id: raw.id,
-    name: raw.name,
-    description: raw.description,
-    status: raw.status,
+    ...basePlaybookFields(raw),
     conditions,
     matchMode: "all",
-    alert: raw.alert,
-    lastTriggeredAt: raw.lastTriggeredAt,
   };
 }

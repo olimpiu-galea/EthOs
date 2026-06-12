@@ -13,9 +13,32 @@ export type TimelineDay = {
   startIso?: string;
 };
 
-function dayStartMs(dateKey: string): number {
+export function dayStartMs(dateKey: string): number {
   const [y, m, d] = dateKey.split("-").map(Number);
   return new Date(y, m - 1, d, 0, 0, 0, 0).getTime();
+}
+
+/** Fixture day to read when today's key is missing from the timeline JSON */
+export function resolveSourceTimelineDay(timeline: DcsTimeline): string {
+  const today = localDateKey();
+  if (timeline.days[today]) return today;
+  const keys = Object.keys(timeline.days).sort();
+  return keys[keys.length - 1] ?? today;
+}
+
+export function timestampOnDate(dateKey: string, minuteIndex: number): number {
+  return dayStartMs(dateKey) + minuteIndex * 60_000;
+}
+
+export function currentMinuteIndexForDate(
+  targetDateKey: string,
+  now = Date.now(),
+  minutesPerDay = 24 * 60,
+): number {
+  const start = dayStartMs(targetDateKey);
+  const elapsed = now - start;
+  const idx = Math.floor(elapsed / 60_000);
+  return Math.max(0, Math.min(minutesPerDay - 1, idx));
 }
 
 export type DcsTimeline = {
@@ -83,6 +106,26 @@ export function buildBuffersUpTo(
   for (let m = 0; m <= upToMinuteIndex; m++) {
     const ts = minuteToMs(day, m);
     const snapshot = tagsAtMinute(timeline, dateKey, m);
+    buffers = appendMinuteToBuffers(buffers, snapshot, ts);
+  }
+
+  return buffers;
+}
+
+/** Replay fixture minutes on a display calendar day */
+export function buildBuffersUpToForDisplay(
+  timeline: DcsTimeline,
+  sourceDateKey: string,
+  displayDateKey: string,
+  upToMinuteIndex: number,
+): TagBufferMap {
+  const day = timeline.days[sourceDateKey];
+  if (!day) return {};
+
+  let buffers: TagBufferMap = {};
+  for (let m = 0; m <= upToMinuteIndex; m++) {
+    const ts = timestampOnDate(displayDateKey, m);
+    const snapshot = tagsAtMinute(timeline, sourceDateKey, m);
     buffers = appendMinuteToBuffers(buffers, snapshot, ts);
   }
 

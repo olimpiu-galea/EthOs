@@ -1,15 +1,14 @@
 import type { Playbook } from "./types";
-import { loadTimeline, resolveAgendaDateKey } from "./timeline-loader";
+import { loadTimeline } from "./timeline-loader";
 import { useAlertHistoryStore } from "@/stores/alert-history-store";
 
-/** Recalculate agenda alerts for one playbook (today / latest demo day) */
+/** Recalculate time-based agenda alerts for one playbook */
 export async function runPlaybookBackfill(playbook: Playbook): Promise<void> {
   const timeline = await loadTimeline();
   if (!timeline) return;
 
-  const dateKey = resolveAgendaDateKey(timeline);
   useAlertHistoryStore
     .getState()
-    .replacePlaybookDayAlerts(playbook, timeline, dateKey);
+    .replacePlaybookDayAlerts(playbook, timeline);
   useAlertHistoryStore.getState().refreshStatuses();
 }

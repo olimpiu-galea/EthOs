@@ -1,0 +1,3798 @@
+[
+  {
+    "id": "acetic-critical-001",
+    "interval": {
+      "start": "2026-07-30T17:58:00",
+      "end": "2026-07-30T18:58:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm A Infection Risk Detection",
+    "description": "TK-31304 | At 12h, acetic 0.022 (>= 0.021) and potential 15.069 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/30/2026 05:58 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.022",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.069",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6654",
+    "ethanolAtDrop": 15.29
+  },
+  {
+    "id": "acetic-critical-002",
+    "interval": {
+      "start": "2026-06-18T14:22:00",
+      "end": "2026-06-18T15:22:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm C Infection Risk Detection",
+    "description": "TK-31204 | At 50h, acetic 0.037 (>= 0.037) and potential 15.278 (< 15.6).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "06/18/2026 02:22 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.037",
+          "status": "critical",
+          "unit": ">= 0.037"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.278",
+          "status": "critical",
+          "unit": "< 15.6"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6607",
+    "ethanolAtDrop": 15.273
+  },
+  {
+    "id": "acetic-critical-003",
+    "interval": {
+      "start": "2026-04-21T23:55:00",
+      "end": "2026-04-22T00:55:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 18h, acetic 0.021 (>= 0.020) and potential 15.612 (< 15.8).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "04/21/2026 11:55 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.021",
+          "status": "critical",
+          "unit": ">= 0.020"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.612",
+          "status": "critical",
+          "unit": "< 15.8"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6532",
+    "ethanolAtDrop": 15.264
+  },
+  {
+    "id": "acetic-critical-004",
+    "interval": {
+      "start": "2026-04-24T18:37:00",
+      "end": "2026-04-24T19:37:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 18h, acetic 0.020 (>= 0.020) and potential 15.621 (< 15.8).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "04/24/2026 06:37 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.020",
+          "status": "critical",
+          "unit": ">= 0.020"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.621",
+          "status": "critical",
+          "unit": "< 15.8"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6536",
+    "ethanolAtDrop": 15.264
+  },
+  {
+    "id": "acetic-critical-005",
+    "interval": {
+      "start": "2026-06-06T22:17:00",
+      "end": "2026-06-06T23:17:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm B Infection Risk Detection",
+    "description": "TK-31104 | At 6h, acetic 0.028 (>= 0.026) and cell count 40.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "06/06/2026 10:17 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.028",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "40.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6594",
+    "ethanolAtDrop": 15.261
+  },
+  {
+    "id": "acetic-critical-006",
+    "interval": {
+      "start": "2026-06-26T22:12:00",
+      "end": "2026-06-26T23:12:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm C Infection Risk Detection",
+    "description": "TK-31204 | At 12h, acetic 0.022 (>= 0.021) and potential 15.102 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "06/26/2026 10:12 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.022",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.102",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6619",
+    "ethanolAtDrop": 15.198
+  },
+  {
+    "id": "acetic-critical-007",
+    "interval": {
+      "start": "2026-04-24T01:57:00",
+      "end": "2026-04-24T02:57:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm C Infection Risk Detection",
+    "description": "TK-31204 | At 18h, acetic 0.026 (>= 0.020) and potential 15.469 (< 15.8).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "04/24/2026 01:57 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.026",
+          "status": "critical",
+          "unit": ">= 0.020"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.469",
+          "status": "critical",
+          "unit": "< 15.8"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6535",
+    "ethanolAtDrop": 15.187
+  },
+  {
+    "id": "acetic-critical-008",
+    "interval": {
+      "start": "2026-09-15T05:33:00",
+      "end": "2026-09-15T06:33:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm C Infection Risk Detection",
+    "description": "TK-31204 | At 50h, acetic 0.037 (>= 0.037) and potential 15.548 (< 15.6).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "09/15/2026 05:33 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.037",
+          "status": "critical",
+          "unit": ">= 0.037"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.548",
+          "status": "critical",
+          "unit": "< 15.6"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6716",
+    "ethanolAtDrop": 15.157
+  },
+  {
+    "id": "acetic-critical-009",
+    "interval": {
+      "start": "2026-01-24T07:32:00",
+      "end": "2026-01-24T08:32:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm B Infection Risk Detection",
+    "description": "TK-31104 | At 18h, acetic 0.023 (>= 0.020) and potential 15.526 (< 15.8).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "01/24/2026 07:32 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.023",
+          "status": "critical",
+          "unit": ">= 0.020"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.526",
+          "status": "critical",
+          "unit": "< 15.8"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6418",
+    "ethanolAtDrop": 15.145
+  },
+  {
+    "id": "acetic-critical-010",
+    "interval": {
+      "start": "2026-04-23T09:16:00",
+      "end": "2026-04-23T10:16:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm B Infection Risk Detection",
+    "description": "TK-31104 | At 18h, acetic 0.027 (>= 0.020) and potential 15.550 (< 15.8).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "04/23/2026 09:16 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.027",
+          "status": "critical",
+          "unit": ">= 0.020"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.550",
+          "status": "critical",
+          "unit": "< 15.8"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6534",
+    "ethanolAtDrop": 15.139
+  },
+  {
+    "id": "acetic-critical-011",
+    "interval": {
+      "start": "2026-05-02T13:57:00",
+      "end": "2026-05-02T14:57:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm C Infection Risk Detection",
+    "description": "TK-31204 | At 18h, acetic 0.020 (>= 0.020) and potential 15.590 (< 15.8).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "05/02/2026 01:57 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.020",
+          "status": "critical",
+          "unit": ">= 0.020"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.590",
+          "status": "critical",
+          "unit": "< 15.8"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6547",
+    "ethanolAtDrop": 15.124
+  },
+  {
+    "id": "acetic-critical-012",
+    "interval": {
+      "start": "2026-08-20T16:07:00",
+      "end": "2026-08-20T17:07:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm A Infection Risk Detection",
+    "description": "TK-31304 | At 18h, acetic 0.020 (>= 0.020) and potential 15.379 (< 15.8).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "08/20/2026 04:07 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.020",
+          "status": "critical",
+          "unit": ">= 0.020"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.379",
+          "status": "critical",
+          "unit": "< 15.8"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6682",
+    "ethanolAtDrop": 15.11
+  },
+  {
+    "id": "acetic-critical-013",
+    "interval": {
+      "start": "2026-07-29T17:30:00",
+      "end": "2026-07-29T18:30:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 6h, acetic 0.030 (>= 0.026) and cell count 18.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/29/2026 05:30 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.030",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "18.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6653",
+    "ethanolAtDrop": 15.084
+  },
+  {
+    "id": "acetic-critical-014",
+    "interval": {
+      "start": "2026-07-01T09:25:00",
+      "end": "2026-07-01T10:25:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm A Infection Risk Detection",
+    "description": "TK-31304 | At 12h, acetic 0.022 (>= 0.021) and potential 15.179 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/01/2026 09:25 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.022",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.179",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6625",
+    "ethanolAtDrop": 15.064
+  },
+  {
+    "id": "acetic-critical-015",
+    "interval": {
+      "start": "2026-11-03T12:50:00",
+      "end": "2026-11-03T13:50:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 18h, acetic 0.020 (>= 0.020) and potential 14.951 (< 15.8).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "11/03/2026 12:50 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.020",
+          "status": "critical",
+          "unit": ">= 0.020"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "14.951",
+          "status": "critical",
+          "unit": "< 15.8"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6781",
+    "ethanolAtDrop": 15.062
+  },
+  {
+    "id": "acetic-critical-016",
+    "interval": {
+      "start": "2026-08-21T03:11:00",
+      "end": "2026-08-21T04:11:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm B Infection Risk Detection",
+    "description": "TK-31104 | At 12h, acetic 0.024 (>= 0.021) and potential 15.348 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "08/21/2026 03:11 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.024",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.348",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6683",
+    "ethanolAtDrop": 15.023
+  },
+  {
+    "id": "acetic-critical-017",
+    "interval": {
+      "start": "2026-09-25T22:26:00",
+      "end": "2026-09-25T23:26:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm B Infection Risk Detection",
+    "description": "TK-31104 | At 24h, acetic 0.022 (>= 0.022) and potential 15.303 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "09/25/2026 10:26 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.022",
+          "status": "critical",
+          "unit": ">= 0.022"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.303",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6731",
+    "ethanolAtDrop": 15.013
+  },
+  {
+    "id": "acetic-critical-018",
+    "interval": {
+      "start": "2026-06-30T10:05:00",
+      "end": "2026-06-30T11:05:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 6h, acetic 0.026 (>= 0.026) and cell count 30.000 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "06/30/2026 10:05 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.026",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "30.000",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6624",
+    "ethanolAtDrop": 15.009
+  },
+  {
+    "id": "acetic-critical-019",
+    "interval": {
+      "start": "2026-08-15T04:04:00",
+      "end": "2026-08-15T05:04:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 40h, acetic 0.034 (>= 0.034) and potential 15.078 (< 15.6).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "08/15/2026 04:04 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.034",
+          "status": "critical",
+          "unit": ">= 0.034"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.078",
+          "status": "critical",
+          "unit": "< 15.6"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6673",
+    "ethanolAtDrop": 15.005
+  },
+  {
+    "id": "acetic-critical-020",
+    "interval": {
+      "start": "2026-08-20T05:03:00",
+      "end": "2026-08-20T06:03:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 24h, acetic 0.024 (>= 0.022) and potential 15.032 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "08/20/2026 05:03 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.024",
+          "status": "critical",
+          "unit": ">= 0.022"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.032",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6681",
+    "ethanolAtDrop": 14.988
+  },
+  {
+    "id": "acetic-critical-021",
+    "interval": {
+      "start": "2026-06-28T22:20:00",
+      "end": "2026-06-28T23:20:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm A Infection Risk Detection",
+    "description": "TK-31304 | At 24h, acetic 0.022 (>= 0.022) and potential 15.130 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "06/28/2026 10:20 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.022",
+          "status": "critical",
+          "unit": ">= 0.022"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.130",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6621",
+    "ethanolAtDrop": 14.96
+  },
+  {
+    "id": "acetic-critical-022",
+    "interval": {
+      "start": "2026-09-22T21:16:00",
+      "end": "2026-09-22T22:16:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm A Infection Risk Detection",
+    "description": "TK-31304 | At 40h, acetic 0.034 (>= 0.034) and potential 15.067 (< 15.6).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "09/22/2026 09:16 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.034",
+          "status": "critical",
+          "unit": ">= 0.034"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.067",
+          "status": "critical",
+          "unit": "< 15.6"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6726",
+    "ethanolAtDrop": 14.953
+  },
+  {
+    "id": "acetic-critical-023",
+    "interval": {
+      "start": "2026-07-05T17:42:00",
+      "end": "2026-07-05T18:42:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm C Infection Risk Detection",
+    "description": "TK-31204 | At 12h, acetic 0.024 (>= 0.021) and potential 14.996 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/05/2026 05:42 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.024",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "14.996",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6631",
+    "ethanolAtDrop": 14.937
+  },
+  {
+    "id": "acetic-critical-024",
+    "interval": {
+      "start": "2026-07-10T10:39:00",
+      "end": "2026-07-10T11:39:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm B Infection Risk Detection",
+    "description": "TK-31104 | At 6h, acetic 0.031 (>= 0.026) and cell count 27.800 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/10/2026 10:39 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.031",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "27.800",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6638",
+    "ethanolAtDrop": 14.899
+  },
+  {
+    "id": "acetic-critical-025",
+    "interval": {
+      "start": "2026-07-31T08:37:00",
+      "end": "2026-07-31T09:37:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm B Infection Risk Detection",
+    "description": "TK-31104 | At 6h, acetic 0.026 (>= 0.026) and cell count 40.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/31/2026 08:37 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.026",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "40.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6655",
+    "ethanolAtDrop": 14.867
+  },
+  {
+    "id": "acetic-critical-026",
+    "interval": {
+      "start": "2026-07-11T20:05:00",
+      "end": "2026-07-11T21:05:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 6h, acetic 0.034 (>= 0.026) and cell count 30.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/11/2026 08:05 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.034",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "30.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6640",
+    "ethanolAtDrop": 14.861
+  },
+  {
+    "id": "acetic-critical-027",
+    "interval": {
+      "start": "2026-06-17T20:39:00",
+      "end": "2026-06-17T21:39:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm B Infection Risk Detection",
+    "description": "TK-31104 | At 50h, acetic 0.040 (>= 0.037) and potential 15.489 (< 15.6).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "06/17/2026 08:39 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.040",
+          "status": "critical",
+          "unit": ">= 0.037"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.489",
+          "status": "critical",
+          "unit": "< 15.6"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6606",
+    "ethanolAtDrop": 14.852
+  },
+  {
+    "id": "acetic-critical-028",
+    "interval": {
+      "start": "2026-08-22T12:48:00",
+      "end": "2026-08-22T13:48:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 12h, acetic 0.022 (>= 0.021) and potential 15.400 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "08/22/2026 12:48 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.022",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.400",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6685",
+    "ethanolAtDrop": 14.851
+  },
+  {
+    "id": "acetic-critical-029",
+    "interval": {
+      "start": "2026-07-19T05:56:00",
+      "end": "2026-07-19T06:56:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm A Infection Risk Detection",
+    "description": "TK-31304 | At 6h, acetic 0.033 (>= 0.026) and cell count 20.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/19/2026 05:56 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.033",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "20.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6642",
+    "ethanolAtDrop": 14.845
+  },
+  {
+    "id": "acetic-critical-030",
+    "interval": {
+      "start": "2026-08-01T08:30:00",
+      "end": "2026-08-01T09:30:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm C Infection Risk Detection",
+    "description": "TK-31204 | At 12h, acetic 0.023 (>= 0.021) and potential 14.931 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "08/01/2026 08:30 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.023",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "14.931",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6656",
+    "ethanolAtDrop": 14.843
+  },
+  {
+    "id": "acetic-critical-031",
+    "interval": {
+      "start": "2026-05-03T06:59:00",
+      "end": "2026-05-03T07:59:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 18h, acetic 0.021 (>= 0.020) and potential 15.570 (< 15.8).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "05/03/2026 06:59 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.021",
+          "status": "critical",
+          "unit": ">= 0.020"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.570",
+          "status": "critical",
+          "unit": "< 15.8"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6548",
+    "ethanolAtDrop": 14.839
+  },
+  {
+    "id": "acetic-critical-032",
+    "interval": {
+      "start": "2026-08-18T00:39:00",
+      "end": "2026-08-18T01:39:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm B Infection Risk Detection",
+    "description": "TK-31104 | At 6h, acetic 0.027 (>= 0.026) and cell count 37.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "08/18/2026 12:39 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.027",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "37.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6679",
+    "ethanolAtDrop": 14.832
+  },
+  {
+    "id": "acetic-critical-033",
+    "interval": {
+      "start": "2026-05-05T21:58:00",
+      "end": "2026-05-05T22:58:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 12h, acetic 0.024 (>= 0.021) and potential 15.378 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "05/05/2026 09:58 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.024",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.378",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6552",
+    "ethanolAtDrop": 14.82
+  },
+  {
+    "id": "acetic-critical-034",
+    "interval": {
+      "start": "2026-07-09T17:58:00",
+      "end": "2026-07-09T18:58:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm A Infection Risk Detection",
+    "description": "TK-31304 | At 6h, acetic 0.037 (>= 0.026) and cell count 21.000 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/09/2026 05:58 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.037",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "21.000",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6637",
+    "ethanolAtDrop": 14.816
+  },
+  {
+    "id": "acetic-critical-035",
+    "interval": {
+      "start": "2026-07-07T15:56:00",
+      "end": "2026-07-07T16:56:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm B Infection Risk Detection",
+    "description": "TK-31104 | At 6h, acetic 0.036 (>= 0.026) and cell count 18.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/07/2026 03:56 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.036",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "18.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6634",
+    "ethanolAtDrop": 14.811
+  },
+  {
+    "id": "acetic-critical-036",
+    "interval": {
+      "start": "2026-07-06T04:59:00",
+      "end": "2026-07-06T05:59:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 6h, acetic 0.030 (>= 0.026) and cell count 15.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/06/2026 04:59 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.030",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "15.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6632",
+    "ethanolAtDrop": 14.797
+  },
+  {
+    "id": "acetic-critical-037",
+    "interval": {
+      "start": "2026-12-18T16:53:00",
+      "end": "2026-12-18T17:53:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm A Infection Risk Detection",
+    "description": "TK-31304 | At 24h, acetic 0.024 (>= 0.022) and potential 15.092 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "12/18/2026 04:53 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.024",
+          "status": "critical",
+          "unit": ">= 0.022"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.092",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6842",
+    "ethanolAtDrop": 14.78
+  },
+  {
+    "id": "acetic-critical-038",
+    "interval": {
+      "start": "2026-04-22T04:35:00",
+      "end": "2026-04-22T05:35:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm A Infection Risk Detection",
+    "description": "TK-31304 | At 6h, acetic 0.026 (>= 0.026) and cell count 39.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "04/22/2026 04:35 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.026",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "39.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6533",
+    "ethanolAtDrop": 14.761
+  },
+  {
+    "id": "acetic-critical-039",
+    "interval": {
+      "start": "2026-09-23T01:43:00",
+      "end": "2026-09-23T02:43:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm B Infection Risk Detection",
+    "description": "TK-31104 | At 24h, acetic 0.022 (>= 0.022) and potential 15.118 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "09/23/2026 01:43 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.022",
+          "status": "critical",
+          "unit": ">= 0.022"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.118",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6727",
+    "ethanolAtDrop": 14.757
+  },
+  {
+    "id": "acetic-critical-040",
+    "interval": {
+      "start": "2026-04-18T20:36:00",
+      "end": "2026-04-18T21:36:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 12h, acetic 0.027 (>= 0.021) and potential 15.185 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "04/18/2026 08:36 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.027",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.185",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6528",
+    "ethanolAtDrop": 14.753
+  },
+  {
+    "id": "acetic-critical-041",
+    "interval": {
+      "start": "2026-07-27T10:46:00",
+      "end": "2026-07-27T11:46:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm A Infection Risk Detection",
+    "description": "TK-31304 | At 6h, acetic 0.028 (>= 0.026) and cell count 32.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/27/2026 10:46 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.028",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "32.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6650",
+    "ethanolAtDrop": 14.736
+  },
+  {
+    "id": "acetic-critical-042",
+    "interval": {
+      "start": "2026-01-23T00:16:00",
+      "end": "2026-01-23T01:16:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm A Infection Risk Detection",
+    "description": "TK-31304 | At 6h, acetic 0.035 (>= 0.026) and cell count 19.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "01/23/2026 12:16 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.035",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "19.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6417",
+    "ethanolAtDrop": 14.727
+  },
+  {
+    "id": "acetic-critical-043",
+    "interval": {
+      "start": "2026-07-11T03:19:00",
+      "end": "2026-07-11T04:19:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm C Infection Risk Detection",
+    "description": "TK-31204 | At 6h, acetic 0.030 (>= 0.026) and cell count 17.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/11/2026 03:19 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.030",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "17.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6639",
+    "ethanolAtDrop": 14.724
+  },
+  {
+    "id": "acetic-critical-044",
+    "interval": {
+      "start": "2026-09-17T02:15:00",
+      "end": "2026-09-17T03:15:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm C Infection Risk Detection",
+    "description": "TK-31204 | At 6h, acetic 0.031 (>= 0.026) and cell count 18.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "09/17/2026 02:15 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.031",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "18.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6720",
+    "ethanolAtDrop": 14.705
+  },
+  {
+    "id": "acetic-critical-045",
+    "interval": {
+      "start": "2026-09-21T00:22:00",
+      "end": "2026-09-21T01:22:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 12h, acetic 0.022 (>= 0.021) and potential 15.068 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "09/21/2026 12:22 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.022",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.068",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6725",
+    "ethanolAtDrop": 14.702
+  },
+  {
+    "id": "acetic-critical-046",
+    "interval": {
+      "start": "2026-07-01T22:12:00",
+      "end": "2026-07-01T23:12:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm B Infection Risk Detection",
+    "description": "TK-31104 | At 6h, acetic 0.027 (>= 0.026) and cell count 36.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/01/2026 10:12 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.027",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "36.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6626",
+    "ethanolAtDrop": 14.689
+  },
+  {
+    "id": "acetic-critical-047",
+    "interval": {
+      "start": "2026-07-25T07:30:00",
+      "end": "2026-07-25T08:30:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm B Infection Risk Detection",
+    "description": "TK-31104 | At 6h, acetic 0.031 (>= 0.026) and cell count 28.000 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/25/2026 07:30 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.031",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "28.000",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6647",
+    "ethanolAtDrop": 14.688
+  },
+  {
+    "id": "acetic-critical-048",
+    "interval": {
+      "start": "2026-02-24T01:32:00",
+      "end": "2026-02-24T02:32:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm B Infection Risk Detection",
+    "description": "TK-31104 | At 6h, acetic 0.033 (>= 0.026) and cell count 24.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "02/24/2026 01:32 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.033",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "24.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6458",
+    "ethanolAtDrop": 14.678
+  },
+  {
+    "id": "acetic-critical-049",
+    "interval": {
+      "start": "2026-06-03T18:23:00",
+      "end": "2026-06-03T19:23:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm A Infection Risk Detection",
+    "description": "TK-31304 | At 18h, acetic 0.020 (>= 0.020) and potential 15.487 (< 15.8).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "06/03/2026 06:23 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.020",
+          "status": "critical",
+          "unit": ">= 0.020"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.487",
+          "status": "critical",
+          "unit": "< 15.8"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6589",
+    "ethanolAtDrop": 14.661
+  },
+  {
+    "id": "acetic-critical-050",
+    "interval": {
+      "start": "2026-09-18T04:18:00",
+      "end": "2026-09-18T05:18:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 12h, acetic 0.022 (>= 0.021) and potential 14.918 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "09/18/2026 04:18 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.022",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "14.918",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6721",
+    "ethanolAtDrop": 14.653
+  },
+  {
+    "id": "acetic-critical-051",
+    "interval": {
+      "start": "2026-07-05T00:23:00",
+      "end": "2026-07-05T01:23:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm B Infection Risk Detection",
+    "description": "TK-31104 | At 12h, acetic 0.022 (>= 0.021) and potential 14.889 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/05/2026 12:23 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.022",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "14.889",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6630",
+    "ethanolAtDrop": 14.635
+  },
+  {
+    "id": "acetic-critical-052",
+    "interval": {
+      "start": "2026-08-17T13:17:00",
+      "end": "2026-08-17T14:17:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm A Infection Risk Detection",
+    "description": "TK-31304 | At 12h, acetic 0.022 (>= 0.021) and potential 15.411 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "08/17/2026 01:17 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.022",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.411",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6678",
+    "ethanolAtDrop": 14.628
+  },
+  {
+    "id": "acetic-critical-053",
+    "interval": {
+      "start": "2026-11-03T23:31:00",
+      "end": "2026-11-04T00:31:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm A Infection Risk Detection",
+    "description": "TK-31304 | At 12h, acetic 0.025 (>= 0.021) and potential 14.400 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "11/03/2026 11:31 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.025",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "14.400",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6782",
+    "ethanolAtDrop": 14.623
+  },
+  {
+    "id": "acetic-critical-054",
+    "interval": {
+      "start": "2026-07-02T15:00:00",
+      "end": "2026-07-02T16:00:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm C Infection Risk Detection",
+    "description": "TK-31204 | At 6h, acetic 0.026 (>= 0.026) and cell count 37.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/02/2026 03:00 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.026",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "37.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6627",
+    "ethanolAtDrop": 14.548
+  },
+  {
+    "id": "acetic-critical-055",
+    "interval": {
+      "start": "2026-07-28T04:50:00",
+      "end": "2026-07-28T05:50:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm B Infection Risk Detection",
+    "description": "TK-31104 | At 6h, acetic 0.028 (>= 0.026) and cell count 41.000 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/28/2026 04:50 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.028",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "41.000",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6651",
+    "ethanolAtDrop": 14.546
+  },
+  {
+    "id": "acetic-critical-056",
+    "interval": {
+      "start": "2026-05-14T05:51:00",
+      "end": "2026-05-14T06:51:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm A Infection Risk Detection",
+    "description": "TK-31304 | At 30h, acetic 0.029 (>= 0.028) and potential 14.886 (< 15.6).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "05/14/2026 05:51 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.029",
+          "status": "critical",
+          "unit": ">= 0.028"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "14.886",
+          "status": "critical",
+          "unit": "< 15.6"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6561",
+    "ethanolAtDrop": 14.524
+  },
+  {
+    "id": "acetic-critical-057",
+    "interval": {
+      "start": "2026-08-18T23:55:00",
+      "end": "2026-08-19T00:55:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm C Infection Risk Detection",
+    "description": "TK-31204 | At 12h, acetic 0.022 (>= 0.021) and potential 15.267 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "08/18/2026 11:55 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.022",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.267",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6680",
+    "ethanolAtDrop": 14.428
+  },
+  {
+    "id": "acetic-critical-058",
+    "interval": {
+      "start": "2026-07-26T17:32:00",
+      "end": "2026-07-26T18:32:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 6h, acetic 0.029 (>= 0.026) and cell count 32.000 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/26/2026 05:32 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.029",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "32.000",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6649",
+    "ethanolAtDrop": 14.373
+  },
+  {
+    "id": "acetic-critical-059",
+    "interval": {
+      "start": "2026-09-14T14:58:00",
+      "end": "2026-09-14T15:58:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 18h, acetic 0.021 (>= 0.020) and potential 14.562 (< 15.8).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "09/14/2026 02:58 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.021",
+          "status": "critical",
+          "unit": ">= 0.020"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "14.562",
+          "status": "critical",
+          "unit": "< 15.8"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6717",
+    "ethanolAtDrop": 14.348
+  },
+  {
+    "id": "acetic-critical-060",
+    "interval": {
+      "start": "2026-07-03T13:51:00",
+      "end": "2026-07-03T14:51:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 12h, acetic 0.025 (>= 0.021) and potential 15.288 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/03/2026 01:51 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.025",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.288",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6628",
+    "ethanolAtDrop": 14.168
+  },
+  {
+    "id": "acetic-critical-061",
+    "interval": {
+      "start": "2026-07-06T22:17:00",
+      "end": "2026-07-06T23:17:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm A Infection Risk Detection",
+    "description": "TK-31304 | At 6h, acetic 0.036 (>= 0.026) and cell count 27.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/06/2026 10:17 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.036",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "27.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6633",
+    "ethanolAtDrop": 14.08
+  },
+  {
+    "id": "acetic-critical-062",
+    "interval": {
+      "start": "2026-07-08T08:37:00",
+      "end": "2026-07-08T09:37:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm C Infection Risk Detection",
+    "description": "TK-31204 | At 6h, acetic 0.035 (>= 0.026) and cell count 32.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/08/2026 08:37 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.035",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "32.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6635",
+    "ethanolAtDrop": 14.06
+  },
+  {
+    "id": "acetic-critical-063",
+    "interval": {
+      "start": "2026-08-16T20:05:00",
+      "end": "2026-08-16T21:05:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 12h, acetic 0.023 (>= 0.021) and potential 15.043 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "08/16/2026 08:05 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.023",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.043",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6677",
+    "ethanolAtDrop": 13.999
+  },
+  {
+    "id": "acetic-critical-064",
+    "interval": {
+      "start": "2026-07-09T01:18:00",
+      "end": "2026-07-09T02:18:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 6h, acetic 0.036 (>= 0.026) and cell count 29.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/09/2026 01:18 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.036",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "29.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6636",
+    "ethanolAtDrop": 13.953
+  },
+  {
+    "id": "acetic-critical-065",
+    "interval": {
+      "start": "2026-07-04T07:06:00",
+      "end": "2026-07-04T08:06:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm A Infection Risk Detection",
+    "description": "TK-31304 | At 12h, acetic 0.022 (>= 0.021) and potential 15.081 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/04/2026 07:06 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.022",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.081",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6629",
+    "ethanolAtDrop": 13.946
+  },
+  {
+    "id": "acetic-critical-066",
+    "interval": {
+      "start": "2026-10-31T08:40:00",
+      "end": "2026-10-31T09:40:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm D Infection Risk Detection",
+    "description": "TK-31404 | At 6h, acetic 0.029 (>= 0.026) and cell count 32.000 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "10/31/2026 08:40 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.029",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "32.000",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6777",
+    "ethanolAtDrop": 13.944
+  },
+  {
+    "id": "acetic-critical-067",
+    "interval": {
+      "start": "2026-07-26T00:29:00",
+      "end": "2026-07-26T01:29:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm C Infection Risk Detection",
+    "description": "TK-31204 | At 6h, acetic 0.034 (>= 0.026) and cell count 31.000 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/26/2026 12:29 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.034",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "31.000",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6648",
+    "ethanolAtDrop": 13.895
+  },
+  {
+    "id": "acetic-critical-068",
+    "interval": {
+      "start": "2026-08-10T00:19:00",
+      "end": "2026-08-10T01:19:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm B Infection Risk Detection",
+    "description": "TK-31104 | At 30h, acetic 0.028 (>= 0.028) and potential 15.444 (< 15.6).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "08/10/2026 12:19 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.028",
+          "status": "critical",
+          "unit": ">= 0.028"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.444",
+          "status": "critical",
+          "unit": "< 15.6"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6667",
+    "ethanolAtDrop": 13.895
+  },
+  {
+    "id": "acetic-critical-069",
+    "interval": {
+      "start": "2026-07-29T05:10:00",
+      "end": "2026-07-29T06:10:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm C Infection Risk Detection",
+    "description": "TK-31204 | At 12h, acetic 0.025 (>= 0.021) and potential 14.718 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/29/2026 05:10 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.025",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "14.718",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6652",
+    "ethanolAtDrop": 13.831
+  },
+  {
+    "id": "acetic-critical-070",
+    "interval": {
+      "start": "2026-08-15T04:52:00",
+      "end": "2026-08-15T05:52:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm A Infection Risk Detection",
+    "description": "TK-31304 | At 24h, acetic 0.023 (>= 0.022) and potential 15.235 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "08/15/2026 04:52 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.023",
+          "status": "critical",
+          "unit": ">= 0.022"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.235",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6674",
+    "ethanolAtDrop": 13.671
+  },
+  {
+    "id": "acetic-critical-071",
+    "interval": {
+      "start": "2026-08-15T21:51:00",
+      "end": "2026-08-15T22:51:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm B Infection Risk Detection",
+    "description": "TK-31104 | At 24h, acetic 0.023 (>= 0.022) and potential 15.242 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "08/15/2026 09:51 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.023",
+          "status": "critical",
+          "unit": ">= 0.022"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.242",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6675",
+    "ethanolAtDrop": 13.257
+  },
+  {
+    "id": "acetic-critical-072",
+    "interval": {
+      "start": "2026-08-16T03:00:00",
+      "end": "2026-08-16T04:00:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm C Infection Risk Detection",
+    "description": "TK-31204 | At 12h, acetic 0.021 (>= 0.021) and potential 15.227 (< 15.5).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "08/16/2026 03:00 AM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.021",
+          "status": "critical",
+          "unit": ">= 0.021"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Potential",
+          "value": "15.227",
+          "status": "critical",
+          "unit": "< 15.5"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6676",
+    "ethanolAtDrop": 13.247
+  },
+  {
+    "id": "acetic-critical-073",
+    "interval": {
+      "start": "2026-07-12T13:14:00",
+      "end": "2026-07-12T14:14:00"
+    },
+    "severity": "critical",
+    "tags": [],
+    "title": "Ferm A Infection Risk Detection",
+    "description": "TK-31304 | At 6h, acetic 0.032 (>= 0.026) and cell count 20.500 (< 45).",
+    "actionSuggestion": null,
+    "context": {
+      "type": "critical",
+      "observedRange": "07/12/2026 01:14 PM",
+      "summary": {
+        "controlMargin": {
+          "label": "Acid Acetic",
+          "value": "0.032",
+          "status": "critical",
+          "unit": ">= 0.026"
+        },
+        "trend": null,
+        "timeToLikelyInstability": {
+          "label": "Cell Count",
+          "value": "20.500",
+          "status": "critical",
+          "unit": "< 45"
+        }
+      },
+      "details": null,
+      "recoverabilityNote": null,
+      "immediateActions": [
+        {
+          "stepNumber": 1,
+          "title": "Escalate  to Supervisor",
+          "guidance": null
+        }
+      ],
+      "consequences": null,
+      "comments": null,
+      "actions": [
+        {
+          "kind": "raise_to_supervisor"
+        },
+        {
+          "kind": "cancel"
+        }
+      ]
+    },
+    "batchId": "6641",
+    "ethanolAtDrop": 0
+  }
+]

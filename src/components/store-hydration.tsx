@@ -3,29 +3,87 @@
 import { useEffect, useState } from "react";
 import { usePlaybookStore } from "@/stores/playbook-store";
 import { useAlertHistoryStore } from "@/stores/alert-history-store";
-import { ensureLiveDemoPlaybook } from "@/lib/demo-playbook";
+import { useAuthStore } from "@/stores/auth-store";
+import { useSettingsStore } from "@/stores/settings-store";
+import { useReportsStore } from "@/stores/reports-store";
+import { usePurchasedPlaybooksStore } from "@/stores/purchased-playbooks-store";
+import { useInventoryItemsStore } from "@/stores/inventory-items-store";
+import { useAuditStore } from "@/stores/audit-store";
+import { usePlaybookFeedbackStore } from "@/stores/playbook-feedback-store";
+import { ensureDefaultPlaybooks } from "@/lib/default-playbooks";
+import { purgeDemoPlaybooks } from "@/lib/demo-playbook";
+import { autoConnectIntegrationsForRole } from "@/lib/auto-connect-integrations";
+
+const STORES = [
+  usePlaybookStore,
+  useAlertHistoryStore,
+  useAuthStore,
+  useSettingsStore,
+  useReportsStore,
+  usePurchasedPlaybooksStore,
+  useInventoryItemsStore,
+  useAuditStore,
+  usePlaybookFeedbackStore,
+] as const;
+
+function waitForHydration(
+  store: (typeof STORES)[number],
+): Promise<void> {
+  if (store.persist.hasHydrated()) {
+    return Promise.resolve();
+  }
+  return new Promise((resolve) => {
+    const unsub = store.persist.onFinishHydration(() => {
+      unsub();
+      resolve();
+    });
+    void store.persist.rehydrate();
+  });
+}
+
+function allStoresHydrated(): boolean {
+  return STORES.every((s) => s.persist.hasHydrated());
+}
 
 export function StoreHydration({ children }: { children: React.ReactNode }) {
-  const [ready, setReady] = useState(false);
+  const [ready, setReady] = useState(
+    () => typeof window !== "undefined" && allStoresHydrated(),
+  );
 
   useEffect(() => {
-    let done = 0;
-    const check = () => {
-      done += 1;
-      if (done >= 2) {
-        void ensureLiveDemoPlaybook().finally(() => setReady(true));
+    let cancelled = false;
+
+    async function boot() {
+      if (allStoresHydrated()) {
+        if (!cancelled) setReady(true);
+        const userEarly = useAuthStore.getState().user;
+        if (userEarly) await autoConnectIntegrationsForRole(userEarly.role);
+        await purgeDemoPlaybooks();
+        await ensureDefaultPlaybooks();
+        return;
       }
-    };
+      try {
+        await Promise.all(STORES.map(waitForHydration));
+      } catch {
+        /* still show app */
+      }
+      if (cancelled) return;
+      setReady(true);
+      const user = useAuthStore.getState().user;
+      if (user) await autoConnectIntegrationsForRole(user.role);
+      await purgeDemoPlaybooks();
+      await ensureDefaultPlaybooks();
+    }
 
-    const unsubP = usePlaybookStore.persist.onFinishHydration(check);
-    const unsubA = useAlertHistoryStore.persist.onFinishHydration(check);
+    void boot();
 
-    void usePlaybookStore.persist.rehydrate();
-    void useAlertHistoryStore.persist.rehydrate();
+    const fallback = setTimeout(() => {
+      if (!cancelled) setReady(true);
+    }, 3000);
 
     return () => {
-      unsubP();
-      unsubA();
+      cancelled = true;
+      clearTimeout(fallback);
     };
   }, []);
 

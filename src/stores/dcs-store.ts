@@ -7,9 +7,10 @@ import type { TagBufferMap } from "@/lib/rule-evaluator";
 import { trimBuffer, frequencyToMs } from "@/lib/rule-evaluator";
 import type { DcsTimeline } from "@/lib/dcs-timeline";
 import {
-  buildBuffersUpTo,
-  currentMinuteIndex,
+  buildBuffersUpToForDisplay,
+  currentMinuteIndexForDate,
   localDateKey,
+  resolveSourceTimelineDay,
   syncTagsToMinute,
 } from "@/lib/dcs-timeline";
 import { schedulePlaybookHistorySync } from "@/lib/sync-playbook-history";
@@ -78,17 +79,23 @@ function appendBuffers(
 function applyTimelineMinute(
   tags: DcsTagWithKey[],
   timeline: DcsTimeline,
-  dateKey: string,
+  displayDateKey: string,
   now: number,
 ): { tags: DcsTagWithKey[]; buffers: TagBufferMap; lastSync: number } {
-  const day = timeline.days[dateKey];
+  const sourceKey = resolveSourceTimelineDay(timeline);
+  const day = timeline.days[sourceKey];
   if (!day) {
     return { tags, buffers: appendBuffers(tags, {}, now), lastSync: now };
   }
 
-  const minuteIdx = currentMinuteIndex(day, now);
-  const synced = syncTagsToMinute(tags, timeline, dateKey, minuteIdx);
-  const buffers = buildBuffersUpTo(timeline, dateKey, minuteIdx);
+  const minuteIdx = currentMinuteIndexForDate(displayDateKey, now, day.minutes);
+  const synced = syncTagsToMinute(tags, timeline, sourceKey, minuteIdx);
+  const buffers = buildBuffersUpToForDisplay(
+    timeline,
+    sourceKey,
+    displayDateKey,
+    minuteIdx,
+  );
   const lastSync = now;
 
   return { tags: synced, buffers, lastSync };
@@ -156,6 +163,7 @@ export const useDcsStore = create<DcsState>((set, get) => ({
           set({ historySyncing: false });
         });
       }
+
     } catch (e) {
       set({
         loading: false,
@@ -187,7 +195,8 @@ export const useDcsStore = create<DcsState>((set, get) => ({
 
     const now = Date.now();
 
-    if (timeline?.days[timelineDateKey]) {
+    const sourceKey = timeline ? resolveSourceTimelineDay(timeline) : null;
+    if (timeline && sourceKey && timeline.days[sourceKey]) {
       const applied = applyTimelineMinute(
         tags,
         timeline,

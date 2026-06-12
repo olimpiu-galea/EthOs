@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { AppShell } from "@/components/app-shell";
+import { ShellLayout } from "@/components/shell-layout";
 import { StoreHydration } from "@/components/store-hydration";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <StoreHydration>
-          <AppShell>{children}</AppShell>
+          <ShellLayout>{children}</ShellLayout>
         </StoreHydration>
         <Toaster />
       </body>

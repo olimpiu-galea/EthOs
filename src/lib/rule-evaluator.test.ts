@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   evaluateConditions,
+  evaluatePlaybookConditions,
   evaluateRule,
   evaluateRuleNode,
   durationToMs,
@@ -220,6 +221,66 @@ describe("evaluateConditions", () => {
         now,
       ),
     ).toBe(true);
+  });
+});
+
+describe("evaluatePlaybookConditions", () => {
+  it("fires when any AND group matches", () => {
+    const buffers = {
+      [key]: buf([{ value: 95, minutesAgo: 1 }]),
+    };
+    const fired = evaluatePlaybookConditions(
+      {
+        conditions: [],
+        matchMode: "any",
+        groupMatchMode: "any",
+        conditionGroups: [
+          {
+            id: "g1",
+            matchMode: "all",
+            conditions: [
+              {
+                id: "1",
+                rule: {
+                  signalId: tag.id,
+                  displayLabel: tag.displayLabel,
+                  operator: ">",
+                  threshold: 100,
+                },
+              },
+              {
+                id: "2",
+                rule: {
+                  signalId: tag.id,
+                  displayLabel: tag.displayLabel,
+                  operator: "<",
+                  threshold: 90,
+                },
+              },
+            ],
+          },
+          {
+            id: "g2",
+            matchMode: "all",
+            conditions: [
+              {
+                id: "3",
+                rule: {
+                  signalId: tag.id,
+                  displayLabel: tag.displayLabel,
+                  operator: ">",
+                  threshold: 90,
+                },
+              },
+            ],
+          },
+        ],
+      },
+      tags,
+      buffers,
+      now,
+    );
+    expect(fired).toBe(true);
   });
 });
 

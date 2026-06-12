@@ -1,0 +1,10 @@
+id,value,name,desc,category,fieldType,frequency,displayLabel,unit
+INV-CORN/_.Bu,12500,Corn On Hand,Corn bushels in main storage,Inventory,analog,5min,Corn On Hand,bu
+INV-YEAST/_.Kg,420,Yeast Stock,Active dry yeast inventory,Inventory,analog,5min,Yeast Stock,kg
+INV-ALPHA/_.Gal,88,Alpha Amylase,Alpha enzyme gallons on hand,Inventory,analog,5min,Alpha Amylase,gal
+INV-GLUCO/_.Gal,64,Gluco Amylase,Gluco enzyme gallons on hand,Inventory,analog,5min,Gluco Amylase,gal
+INV-DAP/_.Bags,24,DAP Bags,Diammonium phosphate bags,Inventory,analog,5min,DAP Bags,bags
+INV-CIP/_.Gal,310,CIP Chemical,Caustic CIP solution,Inventory,analog,5min,CIP Chemical,gal
+INV-ANTIBIOTIC/_.Bags,8,Antibiotics,Antibiotic additive bags,Inventory,analog,5min,Antibiotics,bags
+INV-BACKSET/_.Gal,42000,Backset Pool,Recycled backset gallons,Inventory,analog,5min,Backset Pool,gal
+INV-LOW/_.Signal,0,Low Stock Alert,Any SKU below reorder threshold,Inventory,digital,5min,Low Stock Alert,

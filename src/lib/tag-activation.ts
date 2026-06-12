@@ -1,4 +1,5 @@
 import { tagKey } from "@/lib/dcs-parser";
+import { playbookConditionsFlat } from "@/lib/playbook-utils";
 import type { DcsTagWithKey, Playbook, Rule } from "@/lib/types";
 
 export function tagMatchesRule(
@@ -17,7 +18,7 @@ export function isTagLockedInPlaybooks(
   playbooks: Playbook[],
 ): boolean {
   for (const pb of playbooks) {
-    for (const c of pb.conditions ?? []) {
+    for (const c of playbookConditionsFlat(pb)) {
       if (c.rule.signalId && tagMatchesRule(tag, c.rule)) return true;
     }
   }

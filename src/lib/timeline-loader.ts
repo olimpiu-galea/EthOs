@@ -18,10 +18,7 @@ export async function loadTimeline(): Promise<DcsTimeline | null> {
   }
 }
 
-/** Today if present in timeline, otherwise the latest available demo day */
-export function resolveAgendaDateKey(timeline: DcsTimeline): string {
-  const today = localDateKey();
-  if (timeline.days[today]) return today;
-  const keys = Object.keys(timeline.days).sort();
-  return keys[keys.length - 1] ?? today;
+/** Agenda always uses the real calendar day; fixture data is remapped at read time */
+export function resolveAgendaDateKey(_timeline?: DcsTimeline): string {
+  return localDateKey();
 }

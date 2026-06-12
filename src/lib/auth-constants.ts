@@ -1,0 +1,214 @@
+import type { IndustryDomain, UserRole } from "./types";
+
+export const DEFAULT_COMPANY = {
+  id: "lakeview",
+  name: "Lakeview Ethanol",
+  slug: "lakeview",
+} as const;
+
+export const HEALTHCARE_COMPANY = {
+  id: "medcompany",
+  name: "medcompany",
+  slug: "medcompany",
+} as const;
+
+export type DemoAccount = {
+  id: string;
+  email: string;
+  password: string;
+  name: string;
+  role: UserRole;
+  companyId: string;
+  title: string;
+};
+
+export const DEMO_ACCOUNTS: DemoAccount[] = [
+  {
+    id: "platform-admin",
+    email: "admin@signalrelay.io",
+    password: "demo",
+    name: "Alex Morgan",
+    role: "platform_admin",
+    companyId: "lakeview",
+    title: "Platform Admin",
+  },
+  {
+    id: "company-admin",
+    email: "admin@lakeview.com",
+    password: "demo",
+    name: "Emily Crawford",
+    role: "company_admin",
+    companyId: "lakeview",
+    title: "Company Admin · Lakeview",
+  },
+  {
+    id: "supervisor",
+    email: "supervisor@lakeview.com",
+    password: "demo",
+    name: "Brian Henderson",
+    role: "supervisor",
+    companyId: "lakeview",
+    title: "Supervisor",
+  },
+  {
+    id: "financial",
+    email: "financial@lakeview.com",
+    password: "demo",
+    name: "Lauren Brooks",
+    role: "financial",
+    companyId: "lakeview",
+    title: "Financial Analyst",
+  },
+  {
+    id: "operational",
+    email: "operations@lakeview.com",
+    password: "demo",
+    name: "James Reed",
+    role: "operational",
+    companyId: "lakeview",
+    title: "Operations Specialist",
+  },
+  {
+    id: "maintenance",
+    email: "maintenance@lakeview.com",
+    password: "demo",
+    name: "Jake Sullivan",
+    role: "maintenance",
+    companyId: "lakeview",
+    title: "Maintenance Lead",
+  },
+  {
+    id: "qa-lab",
+    email: "qa@lakeview.com",
+    password: "demo",
+    name: "Rachel Simmons",
+    role: "qa_lab",
+    companyId: "lakeview",
+    title: "QA / Lab",
+  },
+  {
+    id: "procurement",
+    email: "procurement@lakeview.com",
+    password: "demo",
+    name: "Tom Bradley",
+    role: "procurement",
+    companyId: "lakeview",
+    title: "Procurement",
+  },
+  {
+    id: "healthcare-supervisor",
+    email: "supervisor@medcompany.com",
+    password: "demo",
+    name: "Dr. Karen Walsh",
+    role: "supervisor",
+    companyId: "medcompany",
+    title: "Supervisor · medcompany",
+  },
+];
+
+/** Demo roles that need Phrase 2 (commodity, margin desk, procurement feeds) */
+const PHASE2_DEMO_ROLES: UserRole[] = ["financial", "procurement"];
+
+export function demoAccountsForPhase(phase2Enabled: boolean): DemoAccount[] {
+  if (phase2Enabled) return DEMO_ACCOUNTS;
+  return DEMO_ACCOUNTS.filter(
+    (a) =>
+      a.companyId === DEFAULT_COMPANY.id &&
+      !PHASE2_DEMO_ROLES.includes(a.role),
+  );
+}
+
+export const ROLE_LABELS: Record<UserRole, string> = {
+  platform_admin: "Platform Admin",
+  company_admin: "Company Admin",
+  supervisor: "Supervisor",
+  financial: "Financial",
+  operational: "Operational",
+  maintenance: "Maintenance",
+  qa_lab: "QA / Lab",
+  procurement: "Procurement",
+};
+
+export function canManageSettings(role: UserRole): boolean {
+  return role === "platform_admin" || role === "company_admin";
+}
+
+export function isPlatformAdmin(role: UserRole): boolean {
+  return role === "platform_admin";
+}
+
+export function isCompanyAdmin(role: UserRole): boolean {
+  return role === "company_admin";
+}
+
+export function canManageIntegrations(role: UserRole): boolean {
+  return (
+    role === "supervisor" ||
+    role === "company_admin" ||
+    role === "platform_admin"
+  );
+}
+
+export function canCreatePlaybooks(role: UserRole): boolean {
+  return (
+    role === "platform_admin" ||
+    role === "company_admin" ||
+    role === "supervisor" ||
+    role === "operational"
+  );
+}
+
+export function canSeeAllAgendaTeams(role: UserRole): boolean {
+  return (
+    role === "platform_admin" ||
+    role === "company_admin" ||
+    role === "supervisor"
+  );
+}
+
+/** @deprecated use canSeeAllAgendaTeams */
+export const canSeeAllAgendaCategories = canSeeAllAgendaTeams;
+
+export const INDUSTRY_DOMAINS: {
+  id: IndustryDomain;
+  label: string;
+  description: string;
+  ready: boolean;
+}[] = [
+  {
+    id: "ethanol",
+    label: "Ethanol",
+    description: "Fermentation, distillation & commodity margins",
+    ready: true,
+  },
+  {
+    id: "healthcare",
+    label: "Healthcare",
+    description: "Patient flow, equipment & compliance",
+    ready: true,
+  },
+  {
+    id: "steel",
+    label: "Steel",
+    description: "Furnace, casting & quality",
+    ready: false,
+  },
+  {
+    id: "food_beverage",
+    label: "Food & Beverage",
+    description: "Production line, cold chain & QA",
+    ready: false,
+  },
+  {
+    id: "water",
+    label: "Water Treatment",
+    description: "Intake, treatment & distribution",
+    ready: false,
+  },
+  {
+    id: "pharma",
+    label: "Pharma",
+    description: "Batch records, clean room & validation",
+    ready: false,
+  },
+];

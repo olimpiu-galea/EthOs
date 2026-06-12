@@ -1,4 +1,4 @@
-import { ReportsHub2030 } from "@/components/reports/reports-hub-2030";
+import { ReportsHubFunctional } from "@/components/reports/reports-hub-functional";
 
 export const metadata = {
   title: "Reports | SignalRelay",
@@ -6,5 +6,5 @@ export const metadata = {
 };
 
 export default function ReportsPage() {
-  return <ReportsHub2030 />;
+  return <ReportsHubFunctional />;
 }
