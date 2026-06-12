@@ -8,7 +8,6 @@ import {
   Brain,
   CalendarDays,
   FileBarChart,
-  Layers,
   LogIn,
   Radio,
   Shield,

@@ -26,9 +26,7 @@ const STORES = [
   usePlaybookFeedbackStore,
 ] as const;
 
-function waitForHydration(
-  store: (typeof STORES)[number],
-): Promise<void> {
+function waitForHydration(store: (typeof STORES)[number]): Promise<void> {
   if (store.persist.hasHydrated()) {
     return Promise.resolve();
   }
@@ -45,6 +43,23 @@ function allStoresHydrated(): boolean {
   return STORES.every((s) => s.persist.hasHydrated());
 }
 
+function runDeferredBootTasks() {
+  const run = () => {
+    void (async () => {
+      const user = useAuthStore.getState().user;
+      if (user) await autoConnectIntegrationsForRole(user.role);
+      await purgeDemoPlaybooks();
+      await ensureDefaultPlaybooks();
+    })();
+  };
+
+  if (typeof requestIdleCallback !== "undefined") {
+    requestIdleCallback(run);
+  } else {
+    setTimeout(run, 0);
+  }
+}
+
 export function StoreHydration({ children }: { children: React.ReactNode }) {
   const [ready, setReady] = useState(
     () => typeof window !== "undefined" && allStoresHydrated(),
@@ -54,25 +69,17 @@ export function StoreHydration({ children }: { children: React.ReactNode }) {
     let cancelled = false;
 
     async function boot() {
-      if (allStoresHydrated()) {
-        if (!cancelled) setReady(true);
-        const userEarly = useAuthStore.getState().user;
-        if (userEarly) await autoConnectIntegrationsForRole(userEarly.role);
-        await purgeDemoPlaybooks();
-        await ensureDefaultPlaybooks();
-        return;
+      if (!allStoresHydrated()) {
+        try {
+          await Promise.all(STORES.map(waitForHydration));
+        } catch {
+          /* still show app */
+        }
       }
-      try {
-        await Promise.all(STORES.map(waitForHydration));
-      } catch {
-        /* still show app */
-      }
+
       if (cancelled) return;
       setReady(true);
-      const user = useAuthStore.getState().user;
-      if (user) await autoConnectIntegrationsForRole(user.role);
-      await purgeDemoPlaybooks();
-      await ensureDefaultPlaybooks();
+      runDeferredBootTasks();
     }
 
     void boot();

@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import Link from "next/link";
 import {
@@ -30,8 +31,13 @@ import { playbookConditionsFlat } from "@/lib/playbook-utils";
 import { conditionsPreviewForPlaybook } from "@/lib/rule-evaluator";
 import { teamNameForId } from "@/lib/teams";
 import { useSettingsStore } from "@/stores/settings-store";
-import { PlaybookFormDialog } from "@/components/playbook-form-dialog";
 import { Button } from "@/components/ui/button";
+
+const PlaybookFormDialog = dynamic(
+  () =>
+    import("@/components/playbook-form-dialog").then((m) => m.PlaybookFormDialog),
+  { ssr: false },
+);
 import {
   Card,
   CardContent,

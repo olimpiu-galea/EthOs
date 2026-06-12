@@ -1,7 +1,4 @@
-import {
-  listTeamAssignableUsers,
-  listUsersForCompany,
-} from "@/lib/company-registry";
+import { listTeamAssignableUsers } from "@/lib/company-registry";
 import type { AuthUser, UserRole } from "./types";
 
 export type OpsTeam = {
@@ -208,13 +205,4 @@ export function userSeesTeamAlert(
   const team = teams.find((t) => t.id === teamId);
   if (!team || !team.enabled) return false;
   return team.memberUserIds.includes(viewer.id);
-}
-
-export function memberNamesForTeam(
-  team: OpsTeam,
-  users: AuthUser[],
-): string[] {
-  return team.memberUserIds
-    .map((id) => users.find((u) => u.id === id)?.name)
-    .filter((name): name is string => Boolean(name));
 }
