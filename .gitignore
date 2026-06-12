@@ -9,3 +9,8 @@ next-env.d.ts
 
 # Excel lock files (open workbook)
 ~$*
+
+# Codex / agent artifacts
+/outputs
+.codex-start.log
+.edge-codex-profile
