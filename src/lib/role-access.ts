@@ -1,4 +1,6 @@
 import type { IndustryDomain, UserRole } from "@/lib/types";
+import type { CompanyFeedConfig } from "@/lib/company-features";
+import { isCompanyFeedAvailable } from "@/lib/company-feed-visibility";
 import {
   operationsSuiteForDomain,
   type SuiteNavItem,
@@ -53,7 +55,10 @@ export function shouldAutoConnectIntegrations(role: UserRole): boolean {
 export function buildSuiteNav(
   domain: IndustryDomain,
   role: UserRole,
-  opts: { commodityConnected: boolean; operationsSuiteEnabled: boolean },
+  opts: {
+    operationsSuiteEnabled: boolean;
+    companyFeeds: CompanyFeedConfig;
+  },
 ): SuiteNavItem[] {
   const base = operationsSuiteForDomain(domain);
 
@@ -63,8 +68,16 @@ export function buildSuiteNav(
 
   if (domain !== "ethanol") return base;
 
+  const feedOpts = {
+    companyFeeds: opts.companyFeeds,
+    phrase2Enabled: opts.operationsSuiteEnabled,
+  };
+
   const extras: SuiteNavItem[] = [];
-  if (canSeeMarginDesk(role) && opts.commodityConnected) {
+  if (
+    canSeeMarginDesk(role) &&
+    isCompanyFeedAvailable("commodity", feedOpts)
+  ) {
     extras.push({
       href: "/margin",
       label: "Margin Desk",
@@ -72,7 +85,10 @@ export function buildSuiteNav(
       ready: true,
     });
   }
-  if (canSeeInventory(role)) {
+  if (
+    canSeeInventory(role) &&
+    isCompanyFeedAvailable("inventory", feedOpts)
+  ) {
     extras.push({
       href: "/inventory",
       label: "Inventory",

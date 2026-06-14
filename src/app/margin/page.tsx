@@ -17,30 +17,36 @@ import { useAuthStore } from "@/stores/auth-store";
 import { useCommodityStore } from "@/stores/commodity-store";
 import { useSettingsStore } from "@/stores/settings-store";
 import { canSeeIntegrations, canSeeMarginDesk } from "@/lib/role-access";
+import { isCompanyFeedAvailable } from "@/lib/company-feed-visibility";
 
 export default function MarginPage() {
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const domain = useSettingsStore((s) => s.domain);
   const phase2Enabled = useSettingsStore((s) => s.operationsSuiteEnabled);
+  const companyFeeds = useSettingsStore((s) => s.companyFeeds);
   const connected = useCommodityStore((s) => s.connected);
+  const commodityFeedEnabled = isCompanyFeedAvailable("commodity", {
+    companyFeeds,
+    phrase2Enabled: phase2Enabled,
+  });
 
   useEffect(() => {
     if (domain !== "ethanol") {
       router.replace("/");
       return;
     }
-    if (!phase2Enabled) {
+    if (!phase2Enabled || !commodityFeedEnabled) {
       router.replace("/playbooks");
       return;
     }
     if (user && !canSeeMarginDesk(user.role)) {
       router.replace("/inventory");
     }
-  }, [domain, phase2Enabled, user, router]);
+  }, [domain, phase2Enabled, commodityFeedEnabled, user, router]);
 
   if (domain !== "ethanol") return null;
-  if (!phase2Enabled) return null;
+  if (!phase2Enabled || !commodityFeedEnabled) return null;
   if (user && !canSeeMarginDesk(user.role)) return null;
 
   if (!connected) {

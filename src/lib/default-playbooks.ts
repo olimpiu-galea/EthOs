@@ -8,6 +8,10 @@ import {
   ACETIC_PLAYBOOK_NAME,
 } from "./acetic-rules";
 import {
+  DAILY_DEMO_BUILTIN_ID,
+  DAILY_DEMO_PLAYBOOK_NAME,
+} from "./daily-demo-alarm-rules";
+import {
   buildPotentialVsTempConditionGroups,
   POTENTIAL_VS_TEMP_BUILTIN_ID,
   POTENTIAL_VS_TEMP_PLAYBOOK_NAME,
@@ -20,6 +24,10 @@ import {
   POTENTIAL_VS_TEMP_ACTION_ITEMS,
   POTENTIAL_VS_TEMP_GUIDANCE,
 } from "./default-playbook-response-potential-temp";
+import {
+  DAILY_DEMO_ACTION_ITEMS,
+  DAILY_DEMO_GUIDANCE,
+} from "./default-playbook-response-daily-demo";
 
 export function createPotentialVsTempPlaybook(): Omit<Playbook, "id"> {
   return {
@@ -37,6 +45,30 @@ export function createPotentialVsTempPlaybook(): Omit<Playbook, "id"> {
     alert: criticalPlaybookAlert(
       "Measured temperature exceeded the control limit for this checkpoint",
     ),
+  };
+}
+
+export function createDailyDemoPlaybook(): Omit<Playbook, "id"> {
+  return {
+    name: DAILY_DEMO_PLAYBOOK_NAME,
+    description:
+      "Sample operations alert for demos — one pre-computed instance each day on the Agenda so teams can practice the full alert workflow.",
+    status: "active",
+    builtinId: DAILY_DEMO_BUILTIN_ID,
+    conditions: [],
+    matchMode: "all",
+    conditionGroups: [],
+    groupMatchMode: "all",
+    actionItems: DAILY_DEMO_ACTION_ITEMS.map((a) => ({ ...a })),
+    guidance: DAILY_DEMO_GUIDANCE.map((g) => ({ ...g })),
+    alert: {
+      type: "predefined",
+      predefinedId: "warning",
+      title: "Warning",
+      message:
+        "Ferm B — cooling response is slower than expected. Review the batch and confirm corrective action.",
+      severity: "warning",
+    },
   };
 }
 
@@ -123,6 +155,7 @@ export async function ensureDefaultPlaybooks(): Promise<void> {
     : {};
 
   const builtins = [
+    { ...createDailyDemoPlaybook(), ...teamMeta },
     { ...createPotentialVsTempPlaybook(), ...teamMeta },
     { ...createAceticPlaybook(), ...teamMeta },
   ];
@@ -143,4 +176,23 @@ export async function ensureDefaultPlaybooks(): Promise<void> {
     "@/lib/lab-gated-mock-playbooks-gate"
   );
   await applyLabGatedMockPlaybooksGate();
+
+  const dailyDemo = usePlaybookStore
+    .getState()
+    .playbooks.find((p) => p.builtinId === DAILY_DEMO_BUILTIN_ID);
+  if (dailyDemo) {
+    if (dailyDemo.status !== "active") {
+      store.updatePlaybook(dailyDemo.id, { status: "active" });
+    }
+    const { syncMockPlaybookAlerts } = await import("@/lib/mock-playbook-alerts");
+    await syncMockPlaybookAlerts(
+      usePlaybookStore.getState().playbooks.find((p) => p.id === dailyDemo.id) ??
+        dailyDemo,
+    );
+
+    const { syncDailyDemoShiftReports } = await import(
+      "@/lib/daily-demo-shift-reports"
+    );
+    await syncDailyDemoShiftReports();
+  }
 }

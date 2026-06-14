@@ -1,13 +1,17 @@
 import { getActiveBatch } from "@/lib/batch-context";
 import type { AlertAgendaItem } from "@/lib/types";
 
-export const SHIFT_HANDOVER_HOURS = 8;
+export const SHIFT_HANDOVER_HOURS = 12;
 
 export const SHIFT_BAND_OPTIONS = [
-  "Day A — 06:00–14:00",
-  "Day B — 14:00–22:00",
-  "Night — 22:00–06:00",
+  "Day — 06:00–18:00",
+  "Night — 18:00–06:00",
 ] as const;
+
+export type ShiftBandId = "day" | "night";
+
+/** Handover is filed at each 12h shift change */
+export const SHIFT_CHANGE_HOURS = [6, 18] as const;
 
 /** Fields auto-filled from alert selection — not editable in handover modal */
 export const SHIFT_READONLY_FIELDS = new Set([
@@ -25,17 +29,70 @@ export const SHIFT_HANDOVER_CHECKLIST = [
   { id: "interlocks", label: "No active safety interlocks bypassed" },
 ] as const;
 
-function shiftNameForTime(now: number): string {
-  const hour = new Date(now).getHours();
-  if (hour >= 6 && hour < 14) return SHIFT_BAND_OPTIONS[0];
-  if (hour >= 14 && hour < 22) return SHIFT_BAND_OPTIONS[1];
-  return SHIFT_BAND_OPTIONS[2];
+export function shiftBandForTime(ts: number): (typeof SHIFT_BAND_OPTIONS)[number] {
+  const hour = new Date(ts).getHours();
+  if (hour >= 6 && hour < 18) return SHIFT_BAND_OPTIONS[0];
+  return SHIFT_BAND_OPTIONS[1];
 }
 
-export function nextShiftBand(current: string): string {
+export function shiftBandIdForTime(ts: number): ShiftBandId {
+  const hour = new Date(ts).getHours();
+  if (hour >= 6 && hour < 18) return "day";
+  return "night";
+}
+
+export function shiftBandLabel(id: ShiftBandId): (typeof SHIFT_BAND_OPTIONS)[number] {
+  return id === "day" ? SHIFT_BAND_OPTIONS[0] : SHIFT_BAND_OPTIONS[1];
+}
+
+export function nextShiftBand(
+  current: string,
+): (typeof SHIFT_BAND_OPTIONS)[number] {
   const i = SHIFT_BAND_OPTIONS.indexOf(current as (typeof SHIFT_BAND_OPTIONS)[number]);
   if (i < 0) return SHIFT_BAND_OPTIONS[0];
   return SHIFT_BAND_OPTIONS[(i + 1) % SHIFT_BAND_OPTIONS.length];
+}
+
+/** Start of the 12h shift window that contains `now` */
+export function currentShiftStartMs(now = Date.now()): number {
+  const d = new Date(now);
+  const hour = d.getHours();
+  if (hour >= 6 && hour < 18) {
+    d.setHours(6, 0, 0, 0);
+  } else if (hour >= 18) {
+    d.setHours(18, 0, 0, 0);
+  } else {
+    d.setDate(d.getDate() - 1);
+    d.setHours(18, 0, 0, 0);
+  }
+  return d.getTime();
+}
+
+export function previousShiftStartMs(now = Date.now()): number {
+  return currentShiftStartMs(now) - SHIFT_HANDOVER_HOURS * 60 * 60 * 1000;
+}
+
+export function shiftReportTitle(createdAt: number): string {
+  const band = shiftBandForTime(createdAt);
+  const shortBand = band.startsWith("Day") ? "Day" : "Night";
+  const date = new Date(createdAt).toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+  return `SHO — ${shortBand} · ${date}`;
+}
+
+/** Outgoing band when filing a handover (handles 06:00 / 18:00 changeover) */
+export function outgoingShiftForHandover(now = Date.now()): (typeof SHIFT_BAND_OPTIONS)[number] {
+  const d = new Date(now);
+  const h = d.getHours();
+  const m = d.getMinutes();
+  const nearChange = (h === 6 || h === 18) && m < 45;
+  if (nearChange) {
+    return nextShiftBand(shiftBandForTime(currentShiftStartMs(now)));
+  }
+  return shiftBandForTime(now);
 }
 
 export function formatAlertHandoverLine(a: AlertAgendaItem): string {
@@ -119,7 +176,7 @@ export function buildShiftHandoverFields(
   } = {},
 ): Record<string, string> {
   const now = opts.now ?? Date.now();
-  const outgoingShift = shiftNameForTime(now);
+  const outgoingShift = outgoingShiftForHandover(now);
   const open = selectedAlerts.filter(
     (a) => a.lifecycle !== "resolved" && a.lifecycle !== "false_alarm",
   );

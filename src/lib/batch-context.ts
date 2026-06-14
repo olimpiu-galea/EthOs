@@ -5,6 +5,10 @@ export function getActiveBatch(): BatchRecord | undefined {
   return MOCK_BATCHES.find((b) => b.status === "active");
 }
 
+export function countActiveBatches(): number {
+  return MOCK_BATCHES.filter((b) => b.status === "active").length;
+}
+
 export function buildBatchContext(batch?: BatchRecord): BatchContext | undefined {
   const b = batch ?? getActiveBatch();
   if (!b) return undefined;

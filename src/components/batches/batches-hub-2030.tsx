@@ -30,6 +30,21 @@ function batchTotalHours(batch: BatchRecord): number {
   return batch.phases.reduce((s, p) => s + p.durationH, 0);
 }
 
+type BatchListTab = "active" | "completed";
+
+const BATCH_TABS: { id: BatchListTab; label: string }[] = [
+  { id: "active", label: "Active batches" },
+  { id: "completed", label: "Completed" },
+];
+
+function isActiveBatch(batch: BatchRecord): boolean {
+  return batch.status === "active";
+}
+
+function isCompletedBatch(batch: BatchRecord): boolean {
+  return batch.status === "completed" || batch.status === "deviation";
+}
+
 function PhaseTimeline({ batch }: { batch: BatchRecord }) {
   const total = batch.phases.reduce((s, p) => s + p.durationH, 0);
 
@@ -158,16 +173,41 @@ export function BatchesHub2030() {
   );
   const [compareId, setCompareId] = useState(MOCK_BATCHES[1].id);
   const [phaseFilter, setPhaseFilter] = useState<BatchPhaseId | "all">("all");
+  const [listTab, setListTab] = useState<BatchListTab>("active");
 
   useEffect(() => {
     if (batchFromUrl && MOCK_BATCHES.some((b) => b.id === batchFromUrl)) {
       setSelectedId(batchFromUrl);
+      const batch = MOCK_BATCHES.find((b) => b.id === batchFromUrl);
+      if (batch) {
+        setListTab(isActiveBatch(batch) ? "active" : "completed");
+      }
     }
   }, [batchFromUrl]);
 
+  const activeBatches = useMemo(
+    () => MOCK_BATCHES.filter(isActiveBatch),
+    [],
+  );
+  const completedBatches = useMemo(
+    () => MOCK_BATCHES.filter(isCompletedBatch),
+    [],
+  );
+  const visibleBatches = listTab === "active" ? activeBatches : completedBatches;
+
+  useEffect(() => {
+    if (visibleBatches.length === 0) return;
+    if (!visibleBatches.some((b) => b.id === selectedId)) {
+      setSelectedId(visibleBatches[0].id);
+    }
+  }, [visibleBatches, selectedId]);
+
   const selected = useMemo(
-    () => MOCK_BATCHES.find((b) => b.id === selectedId) ?? MOCK_BATCHES[0],
-    [selectedId],
+    () =>
+      visibleBatches.find((b) => b.id === selectedId) ??
+      visibleBatches[0] ??
+      MOCK_BATCHES[0],
+    [selectedId, visibleBatches],
   );
   const compare = useMemo(
     () => MOCK_BATCHES.find((b) => b.id === compareId) ?? MOCK_BATCHES[1],
@@ -218,6 +258,41 @@ export function BatchesHub2030() {
         </Badge>
       </header>
 
+      <div className="relative z-10 px-6 pb-3 border-b border-emerald-500/10 bg-card/20">
+        <div className="flex flex-wrap gap-2">
+          {BATCH_TABS.map((tab) => {
+            const count =
+              tab.id === "active" ? activeBatches.length : completedBatches.length;
+            const active = listTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setListTab(tab.id)}
+                className={cn(
+                  "inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm border transition-colors",
+                  active
+                    ? "border-emerald-400/50 bg-emerald-500/15 text-emerald-200 font-medium"
+                    : "border-transparent text-muted-foreground hover:text-foreground hover:border-border/60",
+                )}
+              >
+                {tab.label}
+                <span
+                  className={cn(
+                    "text-[10px] font-mono rounded px-1.5 py-0.5 tabular-nums",
+                    active
+                      ? "bg-emerald-500/20 text-emerald-300"
+                      : "bg-muted/40 text-muted-foreground",
+                  )}
+                >
+                  {count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <div className="relative flex-1 overflow-auto p-6 space-y-6">
         <div className="grid gap-4 lg:grid-cols-12">
           {/* Batch picker */}
@@ -225,7 +300,12 @@ export function BatchesHub2030() {
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Select batch
             </p>
-            {MOCK_BATCHES.map((b) => (
+            {visibleBatches.length === 0 ? (
+              <div className="rounded-xl border border-dashed border-border/60 px-4 py-8 text-center text-sm text-muted-foreground">
+                No {listTab === "active" ? "active" : "completed"} batches.
+              </div>
+            ) : (
+              visibleBatches.map((b) => (
               <button
                 key={b.id}
                 type="button"
@@ -262,7 +342,8 @@ export function BatchesHub2030() {
                   {b.projectedGalPerBu.toFixed(2)} gal/bu
                 </p>
               </button>
-            ))}
+              ))
+            )}
           </div>
 
           {/* Main detail */}

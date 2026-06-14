@@ -350,6 +350,10 @@ export type ReportDocument = {
   content?: string;
   /** @deprecated use linkedAlerts */
   linkedAlertIds?: string[];
+  /** Pre-generated demo document (shift handover, etc.) */
+  isDemoReport?: boolean;
+  /** Stable key for upserting demo reports, e.g. daily-demo-shift-2026-06-08 */
+  demoReportKey?: string;
 };
 
 export type ReportTemplateConfig = {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRightLeft, LogIn } from "lucide-react";
@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuthStore } from "@/stores/auth-store";
-import { demoAccountsForPhase } from "@/lib/auth-constants";
+import { demoAccountsForPhase, DEFAULT_COMPANY, DEMO_PASSWORD } from "@/lib/auth-constants";
 import { OperationsSuiteToggle } from "@/components/operations-suite-toggle";
 import { useSettingsStore } from "@/stores/settings-store";
 import { workspaceHomePath } from "@/lib/role-access";
@@ -18,12 +18,14 @@ import { cn } from "@/lib/utils";
 export default function LoginPage() {
   const router = useRouter();
   const login = useAuthStore((s) => s.login);
-  const loginAsDemo = useAuthStore((s) => s.loginAsDemo);
   const phase2Enabled = useSettingsStore((s) => s.operationsSuiteEnabled);
-  const demoAccounts = demoAccountsForPhase(phase2Enabled);
+  const demoAccounts = demoAccountsForPhase(phase2Enabled).filter(
+    (a) => a.companyId === DEFAULT_COMPANY.id,
+  );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -39,14 +41,10 @@ export default function LoginPage() {
     );
   }
 
-  function quickDemo(accountId: string) {
-    loginAsDemo(accountId);
-    const { user: u, onboardingComplete } = useAuthStore.getState();
-    router.push(
-      !onboardingComplete
-        ? "/onboarding"
-        : workspaceHomePath(u?.role ?? "operational"),
-    );
+  function fillDemoEmail(accountEmail: string) {
+    setEmail(accountEmail);
+    setError("");
+    passwordRef.current?.focus();
   }
 
   return (
@@ -84,16 +82,19 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@lakeview.com"
+                  autoComplete="username"
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <Input
+                  ref={passwordRef}
                   id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="demo"
+                  placeholder={DEMO_PASSWORD}
+                  autoComplete="current-password"
                 />
               </div>
               {error && (
@@ -115,7 +116,7 @@ export default function LoginPage() {
 
         <div className="space-y-3">
           <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground text-center">
-            Quick demo accounts · password: demo
+            Quick demo accounts · password: {DEMO_PASSWORD}
           </p>
           {!phase2Enabled && (
             <p className="text-[15px] text-muted-foreground text-center leading-relaxed">
@@ -128,17 +129,18 @@ export default function LoginPage() {
               <button
                 key={a.id}
                 type="button"
-                onClick={() => quickDemo(a.id)}
+                onClick={() => fillDemoEmail(a.email)}
                 className={cn(
                   "flex items-center justify-between rounded-lg border px-4 py-3 text-left",
                   "hover:border-primary/50 hover:bg-primary/5 transition-colors",
+                  email === a.email && "border-primary/50 bg-primary/5",
                 )}
               >
                 <div>
                   <p className="font-medium text-sm">{a.title}</p>
                   <p className="text-xs text-muted-foreground">{a.email}</p>
                 </div>
-                <span className="text-xs text-primary">Enter →</span>
+                <span className="text-xs text-primary">Use email</span>
               </button>
             ))}
           </div>

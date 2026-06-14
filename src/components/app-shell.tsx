@@ -51,6 +51,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const operationsSuiteEnabled = useSettingsStore(
     (s) => s.operationsSuiteEnabled,
   );
+  const companyFeeds = useSettingsStore((s) => s.companyFeeds);
   const dcsConnected = useDcsStore((s) => s.connected);
   const labConnected = useLabStore((s) => s.connected);
   const commodityConnected = useCommodityStore((s) => s.connected);
@@ -72,8 +73,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     (item) => item.href !== "/integrations" || canSeeIntegrations(role),
   );
   const suiteNav = buildSuiteNav(domain, role, {
-    commodityConnected,
     operationsSuiteEnabled,
+    companyFeeds,
   });
   const connectedCount = [
     dcsConnected,

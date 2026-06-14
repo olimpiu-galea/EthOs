@@ -1,5 +1,6 @@
 import type { ReportTemplateId } from "./types";
 import { getDorTemplateSections } from "./dor-template";
+import { shiftReportTitle } from "./shift-handover";
 
 export type ReportFieldType = "text" | "textarea" | "date";
 
@@ -41,7 +42,7 @@ export const REPORT_TEMPLATES: Record<ReportTemplateId, ReportTemplateDef> = {
     name: "Shift Handover",
     abbr: "SHO",
     description: "Outgoing → incoming operator handover pack",
-    cadence: "Per shift change",
+    cadence: "Every 12 hours · shift change",
     sections: [
       {
         title: "Shift overview",
@@ -57,14 +58,14 @@ export const REPORT_TEMPLATES: Record<ReportTemplateId, ReportTemplateDef> = {
           {
             id: "outgoingShift",
             label: "Outgoing shift",
-            placeholder: "e.g. Day A — 06:00–14:00",
+            placeholder: "e.g. Day — 06:00–18:00",
             type: "text",
             required: true,
           },
           {
             id: "incomingShift",
             label: "Incoming shift",
-            placeholder: "e.g. Day B — 14:00–22:00",
+            placeholder: "e.g. Night — 18:00–06:00",
             type: "text",
             required: true,
           },
@@ -417,6 +418,9 @@ export function emptyFieldsForTemplate(id: ReportTemplateId): Record<string, str
 }
 
 export function defaultReportTitle(id: ReportTemplateId): string {
+  if (id === "shift") {
+    return shiftReportTitle(Date.now());
+  }
   const tpl = REPORT_TEMPLATES[id];
   const date = new Date().toLocaleDateString(undefined, {
     year: "numeric",

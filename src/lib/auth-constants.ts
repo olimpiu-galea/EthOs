@@ -22,20 +22,13 @@ export type DemoAccount = {
   title: string;
 };
 
+export const DEMO_PASSWORD = "Password1!";
+
 export const DEMO_ACCOUNTS: DemoAccount[] = [
-  {
-    id: "platform-admin",
-    email: "admin@signalrelay.io",
-    password: "demo",
-    name: "Alex Morgan",
-    role: "platform_admin",
-    companyId: "lakeview",
-    title: "Platform Admin",
-  },
   {
     id: "company-admin",
     email: "admin@lakeview.com",
-    password: "demo",
+    password: DEMO_PASSWORD,
     name: "Emily Crawford",
     role: "company_admin",
     companyId: "lakeview",
@@ -44,7 +37,7 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
   {
     id: "supervisor",
     email: "supervisor@lakeview.com",
-    password: "demo",
+    password: DEMO_PASSWORD,
     name: "Brian Henderson",
     role: "supervisor",
     companyId: "lakeview",
@@ -53,7 +46,7 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
   {
     id: "financial",
     email: "financial@lakeview.com",
-    password: "demo",
+    password: DEMO_PASSWORD,
     name: "Lauren Brooks",
     role: "financial",
     companyId: "lakeview",
@@ -62,34 +55,16 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
   {
     id: "operational",
     email: "operations@lakeview.com",
-    password: "demo",
+    password: DEMO_PASSWORD,
     name: "James Reed",
     role: "operational",
     companyId: "lakeview",
     title: "Operations Specialist",
   },
   {
-    id: "maintenance",
-    email: "maintenance@lakeview.com",
-    password: "demo",
-    name: "Jake Sullivan",
-    role: "maintenance",
-    companyId: "lakeview",
-    title: "Maintenance Lead",
-  },
-  {
-    id: "qa-lab",
-    email: "qa@lakeview.com",
-    password: "demo",
-    name: "Rachel Simmons",
-    role: "qa_lab",
-    companyId: "lakeview",
-    title: "QA / Lab",
-  },
-  {
     id: "procurement",
     email: "procurement@lakeview.com",
-    password: "demo",
+    password: DEMO_PASSWORD,
     name: "Tom Bradley",
     role: "procurement",
     companyId: "lakeview",
@@ -98,7 +73,7 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
   {
     id: "healthcare-supervisor",
     email: "supervisor@medcompany.com",
-    password: "demo",
+    password: DEMO_PASSWORD,
     name: "Dr. Karen Walsh",
     role: "supervisor",
     companyId: "medcompany",

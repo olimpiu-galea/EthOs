@@ -68,17 +68,17 @@ import { useAuthStore } from "@/stores/auth-store";
 import {
   filterAgendaAsUser,
   filterAgendaForViewer,
-  nextTriggerEstimate,
   type AgendaLensId,
 } from "@/lib/agenda-filter";
+import { upcomingPlaybookTriggers } from "@/lib/upcoming-playbook-triggers";
 
 import { agendaLensesForTeams, teamNameForId } from "@/lib/teams";
 import { canSeeAllAgendaTeams } from "@/lib/auth-constants";
 import { useSettingsStore } from "@/stores/settings-store";
 
 import { filterAlertsByActivePlaybooks } from "@/lib/agenda-playbook-filter";
-import { playbookCooldownMs } from "@/lib/types";
 import { ShiftHandoverModal } from "@/components/agenda/shift-handover-modal";
+import { ActiveBatchesStatCard } from "@/components/batches/active-batches-stat-card";
 
 
 
@@ -305,27 +305,10 @@ export default function AgendaPage() {
 
 
 
-  const nextTriggers = useMemo(() => {
-
-    return playbooks
-
-      .filter((p) => p.status === "active")
-
-      .map((p) => ({
-
-        name: p.name,
-
-        at: nextTriggerEstimate(p.lastTriggeredAt, playbookCooldownMs(p)),
-
-      }))
-
-      .filter((x) => x.at && x.at.getTime() > now)
-
-      .sort((a, b) => (a.at!.getTime() - b.at!.getTime()))
-
-      .slice(0, 3);
-
-  }, [playbooks, now]);
+  const nextTriggers = useMemo(
+    () => upcomingPlaybookTriggers(playbooks, items, now, 3),
+    [playbooks, items, now],
+  );
 
 
 
@@ -489,6 +472,31 @@ export default function AgendaPage() {
 
 
 
+      <div className="grid gap-3 sm:grid-cols-3">
+        <Card className="border-primary/25 bg-primary/5">
+          <CardContent className="pt-5 pb-4">
+            <p className="text-2xl font-bold tabular-nums">{active}</p>
+            <p className="text-sm text-muted-foreground">Active alerts</p>
+          </CardContent>
+        </Card>
+        <ActiveBatchesStatCard />
+        <Card>
+          <CardContent className="pt-5 pb-4">
+            <p className="text-sm font-medium truncate">
+              {lastSync
+                ? new Date(lastSync).toLocaleTimeString(undefined, {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : "—"}
+            </p>
+            <p className="text-sm text-muted-foreground">Last signal check</p>
+          </CardContent>
+        </Card>
+      </div>
+
+
+
       <Card className="border-primary/30 bg-primary/5">
 
         <CardHeader className="pb-3">
@@ -547,11 +555,11 @@ export default function AgendaPage() {
 
               {nextTriggers.map((t) => (
 
-                <li key={t.name}>
+                <li key={t.playbookId}>
 
                   <strong className="text-foreground">{t.name}</strong> — est.{" "}
 
-                  {t.at!.toLocaleTimeString()}
+                  {t.at.toLocaleTimeString()}
 
                 </li>
 

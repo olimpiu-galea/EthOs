@@ -36,6 +36,7 @@ export type MappedPotentialTempAlert = {
   ethanolAtDrop: number | null;
   batchContext: BatchContext;
   actionItems?: PlaybookActionItem[];
+  durationMs?: number;
 };
 
 function parseFermenter(title: string): string {

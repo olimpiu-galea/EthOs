@@ -5,6 +5,7 @@ import { persist } from "zustand/middleware";
 import type { AuthUser, Company, IndustryDomain, UserRole } from "@/lib/types";
 import {
   DEMO_ACCOUNTS,
+  DEMO_PASSWORD,
   DEFAULT_COMPANY,
   HEALTHCARE_COMPANY,
 } from "@/lib/auth-constants";
@@ -154,7 +155,7 @@ export const useAuthStore = create<AuthState>()(
       },
 
       loginAsDemo: (accountId) => {
-        const user = demoToUser(accountId, "demo");
+        const user = demoToUser(accountId, DEMO_PASSWORD);
         if (!user) return false;
         set({ user, onboardingComplete: onboardingCompleteForSession() });
         syncSettingsForCompany(user.companyId, get().companies);

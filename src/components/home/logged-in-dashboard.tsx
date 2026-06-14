@@ -18,6 +18,7 @@ import { filterAlertsByActivePlaybooks } from "@/lib/agenda-playbook-filter";
 import { agendaTodayKey } from "@/lib/agenda-time";
 import { localDateKey } from "@/lib/dcs-timeline";
 import { formatReportDate } from "@/lib/report-document";
+import { currentShiftStartMs } from "@/lib/shift-handover";
 import { REPORT_TEMPLATES } from "@/lib/report-templates";
 import { useAlertHistoryStore, filterItemsForDate } from "@/stores/alert-history-store";
 import { usePlaybookStore } from "@/stores/playbook-store";
@@ -34,9 +35,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { ActiveBatchesStatCard } from "@/components/batches/active-batches-stat-card";
+import { NextTriggerStatCard } from "@/components/home/next-trigger-stat-card";
 
-const MAX_ACTIVE_ALARMS = 5;
-const MAX_LATEST_REPORTS = 5;
+const MAX_ACTIVE_ALARMS = 3;
+const MAX_LATEST_REPORTS = 3;
 
 const SEVERITY_BADGE = {
   critical: "danger" as const,
@@ -138,18 +141,11 @@ export function LoggedInDashboard({ user }: { user: AuthUser }) {
     [documents],
   );
 
-  const yesterdayShiftHandover = useMemo(() => {
-    const start = new Date();
-    start.setHours(0, 0, 0, 0);
-    start.setDate(start.getDate() - 1);
-    const end = new Date(start);
-    end.setDate(end.getDate() + 1);
+  const previousShiftHandover = useMemo(() => {
+    const shiftStart = currentShiftStartMs();
     return documents
       .filter(
-        (d) =>
-          d.templateId === "shift" &&
-          d.createdAt >= start.getTime() &&
-          d.createdAt < end.getTime(),
+        (d) => d.templateId === "shift" && d.createdAt < shiftStart,
       )
       .sort((a, b) => b.createdAt - a.createdAt)[0];
   }, [documents]);
@@ -176,18 +172,8 @@ export function LoggedInDashboard({ user }: { user: AuthUser }) {
       </header>
 
       <div className="grid gap-3 sm:grid-cols-3">
-        <Card className="border-primary/25 bg-primary/5">
-          <CardContent className="pt-5 pb-4">
-            <p className="text-2xl font-bold tabular-nums">{activeAlarms.length}</p>
-            <p className="text-sm text-muted-foreground">Active alerts today</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-5 pb-4">
-            <p className="text-2xl font-bold tabular-nums">{documents.length}</p>
-            <p className="text-sm text-muted-foreground">Reports on file</p>
-          </CardContent>
-        </Card>
+        <NextTriggerStatCard />
+        <ActiveBatchesStatCard />
         <Card>
           <CardContent className="pt-5 pb-4">
             <p className="text-sm font-medium truncate">
@@ -203,22 +189,22 @@ export function LoggedInDashboard({ user }: { user: AuthUser }) {
         </Card>
       </div>
 
-      {yesterdayShiftHandover && (
+      {previousShiftHandover && (
         <Card className="border-primary/30 bg-gradient-to-r from-primary/10 via-transparent to-transparent">
           <CardContent className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="space-y-1 min-w-0">
               <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                 Previous shift handover
               </p>
-              <p className="font-medium truncate">{yesterdayShiftHandover.title}</p>
+              <p className="font-medium truncate">{previousShiftHandover.title}</p>
               <p className="text-sm text-muted-foreground">
-                {yesterdayShiftHandover.fields.outgoingShift?.trim() ||
-                  "Yesterday"}{" "}
-                · {formatReportDate(yesterdayShiftHandover.createdAt)}
+                {previousShiftHandover.fields.outgoingShift?.trim() ||
+                  "Prior shift"}{" "}
+                · {formatReportDate(previousShiftHandover.createdAt)}
               </p>
             </div>
             <Button asChild variant="outline" className="shrink-0 gap-2">
-              <Link href={`/reports?id=${yesterdayShiftHandover.id}`}>
+              <Link href={`/reports?id=${previousShiftHandover.id}`}>
                 <FileBarChart className="h-4 w-4" />
                 Read handover
               </Link>
@@ -318,7 +304,11 @@ export function LoggedInDashboard({ user }: { user: AuthUser }) {
                         {tpl.abbr}
                       </Badge>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">{tpl.name}</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {doc.templateId === "shift" && doc.fields.outgoingShift?.trim()
+                        ? doc.fields.outgoingShift.trim()
+                        : tpl.name}
+                    </p>
                     <div className="flex flex-wrap items-center gap-2 mt-2 text-[11px] text-muted-foreground">
                       <span>{formatReportDate(doc.createdAt)}</span>
                       <span>·</span>

@@ -17,9 +17,18 @@ import {
   POTENTIAL_VS_TEMP_ACTION_ITEMS,
   POTENTIAL_VS_TEMP_GUIDANCE,
 } from "./default-playbook-response-potential-temp";
+import {
+  DAILY_DEMO_ACTION_ITEMS,
+  DAILY_DEMO_GUIDANCE,
+} from "./default-playbook-response-daily-demo";
 import { isLabSheetReady } from "./lab-sheet-availability";
 import { ACETIC_BUILTIN_ID } from "./acetic-rules";
 import { POTENTIAL_VS_TEMP_BUILTIN_ID } from "./potential-vs-temp-rules";
+import {
+  DAILY_DEMO_BUILTIN_ID,
+  DAILY_DEMO_PLAYBOOK_NAME,
+} from "./daily-demo-alarm-rules";
+import { mapDailyDemoAlertsForYear } from "./daily-demo-alerts-adapter";
 import { mapAceticAlerts } from "./acetic-alerts-adapter";
 import {
   mapPotentialTempAlerts,
@@ -42,6 +51,10 @@ const MOCK_DEFAULTS: Record<
     actionItems: ACETIC_ACTION_ITEMS,
     guidance: ACETIC_GUIDANCE,
   },
+  [DAILY_DEMO_BUILTIN_ID]: {
+    actionItems: DAILY_DEMO_ACTION_ITEMS,
+    guidance: DAILY_DEMO_GUIDANCE,
+  },
 };
 
 const MOCK_DATASETS: Record<string, MappedMockAlert[]> = {
@@ -56,13 +69,23 @@ const MOCK_DATASETS: Record<string, MappedMockAlert[]> = {
 export function isMockPlaybook(
   playbook: Pick<Playbook, "builtinId">,
 ): boolean {
+  if (playbook.builtinId === DAILY_DEMO_BUILTIN_ID) return true;
   return (
     playbook.builtinId != null && playbook.builtinId in MOCK_DATASETS
   );
 }
 
+export function isLabRequiredMockPlaybook(
+  playbook: Pick<Playbook, "builtinId">,
+): boolean {
+  return isMockPlaybook(playbook) && playbook.builtinId !== DAILY_DEMO_BUILTIN_ID;
+}
+
 function mockRecordsForPlaybook(playbook: Playbook): MappedMockAlert[] {
   if (!playbook.builtinId) return [];
+  if (playbook.builtinId === DAILY_DEMO_BUILTIN_ID) {
+    return mapDailyDemoAlertsForYear();
+  }
   return MOCK_DATASETS[playbook.builtinId] ?? [];
 }
 
@@ -75,6 +98,7 @@ function recordToAgendaItem(
     ? MOCK_DEFAULTS[playbook.builtinId]
     : undefined;
   const triggeredAt = record.triggeredAt;
+  const durationMs = record.durationMs ?? ALERT_DURATION_MS;
   const base = enrichAlertFromPlaybook(
     {
       playbookId: playbook.id,
@@ -83,7 +107,7 @@ function recordToAgendaItem(
       alertMessage: record.alertMessage,
       severity: playbook.alert.severity,
       triggeredAt,
-      durationMs: ALERT_DURATION_MS,
+      durationMs,
       lifecycle: "new",
       conditionsSummary: record.conditionsSummary,
       actionItems: playbookActionItemsForAlert(
@@ -106,7 +130,7 @@ function recordToAgendaItem(
       triggeredAt,
       now,
       false,
-      ALERT_DURATION_MS,
+      durationMs,
       "new",
     ),
   };
@@ -121,7 +145,12 @@ export async function syncMockPlaybookAlerts(playbook: Playbook): Promise<void> 
     (i) => i.playbookId !== playbook.id || !i.isMockAlert,
   );
 
-  if (!isMockPlaybook(playbook) || !isLabSheetReady()) {
+  if (!isMockPlaybook(playbook)) {
+    useAlertHistoryStore.setState({ items: otherItems });
+    return;
+  }
+
+  if (isLabRequiredMockPlaybook(playbook) && !isLabSheetReady()) {
     useAlertHistoryStore.setState({ items: otherItems });
     return;
   }
