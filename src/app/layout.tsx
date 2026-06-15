@@ -7,9 +7,11 @@ import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
+import { PRODUCT_DESCRIPTION, PRODUCT_NAME } from "@/lib/brand";
+
 export const metadata: Metadata = {
-  title: "SignalRelay",
-  description: "Turn live signals into playbooks, alerts, and guided action",
+  title: PRODUCT_NAME,
+  description: PRODUCT_DESCRIPTION,
 };
 
 export default function RootLayout({

@@ -473,7 +473,7 @@ export default function AgendaPage() {
 
 
       <div className="grid gap-3 sm:grid-cols-3">
-        <Card className="border-primary/25 bg-primary/5">
+        <Card className="border-border shadow-sm">
           <CardContent className="pt-5 pb-4">
             <p className="text-2xl font-bold tabular-nums">{active}</p>
             <p className="text-sm text-muted-foreground">Active alerts</p>
@@ -758,10 +758,8 @@ export default function AgendaPage() {
                             "text-left rounded-lg border px-3 py-2 text-xs max-w-full transition-all hover:border-primary/50",
 
                             item.status === "active"
-
-                              ? "border-amber-500/40 bg-amber-500/10"
-
-                              : "border-emerald-500/30 bg-emerald-500/5",
+                              ? "border-critical/35 bg-critical-muted ethos-critical-surface"
+                              : "border-success/35 bg-success-muted ethos-success-surface",
 
                             highlightId === item.id && "ring-2 ring-primary",
 

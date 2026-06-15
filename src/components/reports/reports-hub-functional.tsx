@@ -29,6 +29,8 @@ import type { ReportTemplateId } from "@/lib/types";
 import { ROLE_LABELS } from "@/lib/auth-constants";
 import { REPORT_TEMPLATES } from "@/lib/report-templates";
 import { formatReportDate, normalizeReportDocument } from "@/lib/report-document";
+import { agendaTodayKey, dateKeyFromTimestamp } from "@/lib/agenda-time";
+import { AgendaDatePicker } from "@/components/agenda/agenda-date-picker";
 import { CreateReportModal } from "@/components/reports/create-report-modal";
 import { UploadTemplateModal } from "@/components/reports/upload-template-modal";
 import { ReportDocumentView } from "@/components/reports/report-document-view";
@@ -47,6 +49,8 @@ export function ReportsHubFunctional() {
   const [uploadTemplateOpen, setUploadTemplateOpen] = useState(false);
   const [selectedDocId, setSelectedDocId] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  const todayKey = agendaTodayKey();
+  const [dayFilter, setDayFilter] = useState(todayKey);
 
   useEffect(() => {
     if (useReportsStore.persist.hasHydrated()) {
@@ -56,8 +60,13 @@ export function ReportsHubFunctional() {
 
   useEffect(() => {
     const id = searchParams.get("id");
-    if (id) setSelectedDocId(id);
-  }, [searchParams]);
+    if (!id) return;
+    setSelectedDocId(id);
+    const doc = documents.find((d) => d.id === id);
+    if (doc) {
+      setDayFilter(dateKeyFromTimestamp(doc.createdAt));
+    }
+  }, [searchParams, documents]);
 
   const enabledTemplateIds = reportTemplates
     .filter((t) => t.enabled)
@@ -76,18 +85,30 @@ export function ReportsHubFunctional() {
 
   const filteredDocs = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q) return normalizedDocs;
-    return normalizedDocs.filter((d) => {
-      const tpl = REPORT_TEMPLATES[d.templateId];
-      return (
-        d.title.toLowerCase().includes(q) ||
-        d.author.toLowerCase().includes(q) ||
-        d.createdBy.toLowerCase().includes(q) ||
-        tpl.name.toLowerCase().includes(q) ||
-        tpl.abbr.toLowerCase().includes(q)
-      );
-    });
-  }, [normalizedDocs, search]);
+    return normalizedDocs
+      .filter((d) => dateKeyFromTimestamp(d.createdAt) === dayFilter)
+      .filter((d) => {
+        if (!q) return true;
+        const tpl = REPORT_TEMPLATES[d.templateId];
+        return (
+          d.title.toLowerCase().includes(q) ||
+          d.author.toLowerCase().includes(q) ||
+          d.createdBy.toLowerCase().includes(q) ||
+          tpl.name.toLowerCase().includes(q) ||
+          tpl.abbr.toLowerCase().includes(q)
+        );
+      })
+      .sort((a, b) => b.createdAt - a.createdAt);
+  }, [normalizedDocs, search, dayFilter]);
+
+  useEffect(() => {
+    if (
+      selectedDocId &&
+      !filteredDocs.some((d) => d.id === selectedDocId)
+    ) {
+      setSelectedDocId(null);
+    }
+  }, [filteredDocs, selectedDocId]);
 
   const selectedDoc = normalizedDocs.find((d) => d.id === selectedDocId) ?? null;
 
@@ -170,9 +191,16 @@ export function ReportsHubFunctional() {
                 <CardDescription>
                   {filteredDocs.length} document
                   {filteredDocs.length !== 1 ? "s" : ""}
+                  {dayFilter === todayKey ? " · today" : ` · ${dayFilter}`}
                 </CardDescription>
               </div>
             </div>
+            <AgendaDatePicker
+              value={dayFilter}
+              todayKey={todayKey}
+              onChange={setDayFilter}
+              className="mt-3"
+            />
             <div className="relative mt-3">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
@@ -193,10 +221,12 @@ export function ReportsHubFunctional() {
                 <FileText className="h-10 w-10 mx-auto text-muted-foreground/30" />
                 <p className="text-sm text-muted-foreground">
                   {search
-                    ? "No reports match your search."
-                    : "No reports yet. Create your first document."}
+                    ? "No reports match your search on this day."
+                    : dayFilter === todayKey
+                      ? "No reports filed today."
+                      : `No reports on ${dayFilter}.`}
                 </p>
-                {!search && (
+                {!search && dayFilter === todayKey && (
                   <Button
                     variant="outline"
                     size="sm"

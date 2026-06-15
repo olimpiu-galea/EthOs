@@ -4,26 +4,43 @@
 
 @layer base {
   :root {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 96%;
-    --card: 222 40% 9%;
-    --card-foreground: 210 40% 96%;
-    --popover: 222 40% 12%;
-    --popover-foreground: 210 40% 96%;
-    --primary: 174 72% 40%;
-    --primary-foreground: 222 47% 6%;
-    --secondary: 217 25% 16%;
-    --secondary-foreground: 210 40% 96%;
-    --muted: 217 25% 14%;
-    --muted-foreground: 215 16% 58%;
-    --accent: 174 40% 18%;
-    --accent-foreground: 174 80% 75%;
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217 25% 18%;
-    --input: 217 25% 18%;
-    --ring: 174 72% 40%;
-    --radius: 0.625rem;
+    /* EthOs light workspace */
+    --background: 220 20% 97%;
+    --foreground: 222 25% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 25% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 25% 12%;
+    /* Brand / primary actions — near-black like reference */
+    --primary: 222 25% 12%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 222 25% 12%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+    --accent: 220 14% 94%;
+    --accent-foreground: 222 25% 12%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 90%;
+    --input: 220 13% 90%;
+    --ring: 222 25% 12%;
+    --radius: 0.75rem;
+
+    /* App chrome */
+    --sidebar: 0 0% 0%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-muted: 0 0% 62%;
+    --sidebar-accent: 0 0% 16%;
+    --sidebar-border: 0 0% 18%;
+
+    /* Alert semantics — EthOs orange / green */
+    --critical: 25 95% 53%;
+    --critical-foreground: 20 90% 28%;
+    --critical-muted: 33 100% 96%;
+    --success: 142 71% 36%;
+    --success-foreground: 142 76% 22%;
+    --success-muted: 142 76% 96%;
   }
 }
 
@@ -33,5 +50,22 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
+  }
+}
+
+@layer utilities {
+  .ethos-critical-surface {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--critical-muted)) 0%,
+      hsl(var(--card)) 72%
+    );
+  }
+  .ethos-success-surface {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--success-muted)) 0%,
+      hsl(var(--card)) 72%
+    );
   }
 }

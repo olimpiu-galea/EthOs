@@ -3,23 +3,23 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowRightLeft, LogIn } from "lucide-react";
+import { LogIn } from "lucide-react";
+import { EthOsWordmark } from "@/components/brand/ethos-wordmark";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuthStore } from "@/stores/auth-store";
-import { demoAccountsForPhase, DEFAULT_COMPANY, DEMO_PASSWORD } from "@/lib/auth-constants";
+import { DEMO_ACCOUNTS, DEFAULT_COMPANY, DEMO_PASSWORD } from "@/lib/auth-constants";
 import { OperationsSuiteToggle } from "@/components/operations-suite-toggle";
-import { useSettingsStore } from "@/stores/settings-store";
 import { workspaceHomePath } from "@/lib/role-access";
 import { cn } from "@/lib/utils";
+import { PRODUCT_SCOPE } from "@/lib/brand";
 
 export default function LoginPage() {
   const router = useRouter();
   const login = useAuthStore((s) => s.login);
-  const phase2Enabled = useSettingsStore((s) => s.operationsSuiteEnabled);
-  const demoAccounts = demoAccountsForPhase(phase2Enabled).filter(
+  const demoAccounts = DEMO_ACCOUNTS.filter(
     (a) => a.companyId === DEFAULT_COMPANY.id,
   );
   const [email, setEmail] = useState("");
@@ -51,11 +51,8 @@ export default function LoginPage() {
     <div className="min-h-screen flex flex-col bg-background">
       <header className="border-b border-border/60 bg-background/80 backdrop-blur-md px-6 py-3">
         <div className="max-w-lg mx-auto flex items-center justify-between gap-4">
-          <Link href="/" className="inline-flex items-center gap-2 shrink-0">
-            <ArrowRightLeft className="h-7 w-7 text-primary" />
-            <span className="font-semibold tracking-tight">
-              Signal<span className="text-primary">Relay</span>
-            </span>
+          <Link href="/" className="shrink-0">
+            <EthOsWordmark showScope />
           </Link>
           <OperationsSuiteToggle variant="inline" />
         </div>
@@ -64,7 +61,7 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center p-6">
       <div className="w-full max-w-lg space-y-8">
         <div className="text-center space-y-2">
-          <p className="text-muted-foreground">Sign in to your operations workspace</p>
+          <p className="text-muted-foreground">{PRODUCT_SCOPE}</p>
         </div>
 
         <Card>
@@ -118,12 +115,6 @@ export default function LoginPage() {
           <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground text-center">
             Quick demo accounts · password: {DEMO_PASSWORD}
           </p>
-          {!phase2Enabled && (
-            <p className="text-[15px] text-muted-foreground text-center leading-relaxed">
-              Phase 1 roles only — turn on Phrase 2 for financial &amp;
-              procurement demos.
-            </p>
-          )}
           <div className="grid gap-2">
             {demoAccounts.map((a) => (
               <button

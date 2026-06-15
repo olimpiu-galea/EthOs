@@ -144,9 +144,7 @@ export function AlertDetailModal({
     : 0;
   const timeline = alert ? auditEvents(alert.id) : [];
   const actor = user?.name ?? "User";
-  const teamName = alert
-    ? teamNameForId(alert.teamId, teams)
-    : "";
+  const teamName = alert ? teamNameForId(alert.teamId, teams) : "";
 
   if (!alert) return null;
 
@@ -156,17 +154,17 @@ export function AlertDetailModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className={cn(
-          "max-w-4xl border-border/80 bg-card/95 p-0 gap-0 overflow-hidden backdrop-blur-xl shadow-2xl",
+          "max-w-6xl w-[min(96vw,72rem)] max-h-[92vh] border-border/80 bg-card/95 p-0 gap-0 overflow-hidden backdrop-blur-xl shadow-2xl",
           theme.glow,
         )}
       >
         <div
           className={cn(
-            "relative px-6 pt-6 pb-5 border-b border-border/60 bg-gradient-to-br",
+            "relative px-6 pt-5 pb-4 border-b border-border/60 bg-gradient-to-br shrink-0",
             theme.ring,
           )}
         >
-          <DialogHeader className="relative space-y-3 text-left">
+          <DialogHeader className="relative space-y-2.5 text-left">
             <div className="flex flex-wrap items-center gap-2">
               <Badge variant={theme.badge} className="gap-1">
                 <AlertTriangle className="h-3 w-3" />
@@ -190,10 +188,10 @@ export function AlertDetailModal({
                 </Badge>
               )}
             </div>
-            <DialogTitle className="text-2xl font-bold tracking-tight pr-8">
+            <DialogTitle className="text-2xl font-bold tracking-tight pr-10 leading-tight">
               {alert.playbookName}
             </DialogTitle>
-            <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+            <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
               <span className="inline-flex items-center gap-1.5">
                 <Clock className="h-4 w-4 text-primary" />
                 {formatTime(alert.triggeredAt)} · slot until {formatTime(endsAt)} ·{" "}
@@ -206,8 +204,8 @@ export function AlertDetailModal({
           </DialogHeader>
         </div>
 
-        <div className="grid lg:grid-cols-5 gap-0 max-h-[min(72vh,680px)] overflow-y-auto">
-          <div className="lg:col-span-2 p-6 space-y-5 border-b lg:border-b-0 lg:border-r border-border/60">
+        <div className="grid lg:grid-cols-5 gap-0 overflow-y-auto max-h-[calc(92vh-9rem)]">
+          <div className="lg:col-span-2 p-5 space-y-4 border-b lg:border-b-0 lg:border-r border-border/60">
             <div className="space-y-2">
               <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
                 <Sparkles className="h-3.5 w-3.5 text-primary" />
@@ -217,12 +215,12 @@ export function AlertDetailModal({
             </div>
 
             {alert.batchContext && (
-              <div className="rounded-xl border border-cyan-500/30 bg-cyan-500/5 p-4 space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+              <div className="rounded-xl border border-primary/25 bg-primary/5 p-4 space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-wider text-primary flex items-center gap-2">
                   <Layers className="h-3.5 w-3.5" />
                   Batch context
                 </p>
-                <div className="grid grid-cols-2 gap-2 text-sm">
+                <div className="grid grid-cols-2 gap-3 text-sm">
                   <div>
                     <p className="text-muted-foreground text-xs">Batch</p>
                     <p className="font-medium">{alert.batchContext.batchId}</p>
@@ -307,7 +305,7 @@ export function AlertDetailModal({
                 <div
                   className={cn(
                     "h-full rounded-full transition-all",
-                    allDone ? "bg-emerald-500" : "bg-primary",
+                    allDone ? "bg-success" : "bg-primary",
                   )}
                   style={{ width: `${progress}%` }}
                 />
@@ -366,10 +364,9 @@ export function AlertDetailModal({
                 </Button>
               </div>
             </div>
-
           </div>
 
-          <div className="lg:col-span-3 p-6 space-y-6">
+          <div className="lg:col-span-3 p-5 space-y-5">
             <div className="space-y-3">
               <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
                 <ClipboardCheck className="h-3.5 w-3.5 text-primary" />
@@ -389,9 +386,9 @@ export function AlertDetailModal({
                         type="button"
                         onClick={() => toggleActionItem(alert.id, item.id)}
                         className={cn(
-                          "w-full text-left rounded-xl border p-4 transition-all",
+                          "w-full text-left rounded-xl border p-3.5 transition-all",
                           done
-                            ? "border-emerald-500/35 bg-emerald-500/5"
+                            ? "border-success/35 bg-success/5"
                             : "border-border/80 hover:border-primary/40",
                         )}
                       >
@@ -400,17 +397,24 @@ export function AlertDetailModal({
                             className={cn(
                               "flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 text-xs",
                               done
-                                ? "border-emerald-500 bg-emerald-500 text-background"
+                                ? "border-success bg-success text-success-foreground"
                                 : "border-muted-foreground/40",
                             )}
                           >
                             {done ? <Check className="h-3.5 w-3.5" /> : index + 1}
                           </span>
                           <div>
-                            <p className={cn("font-medium", done && "line-through text-muted-foreground")}>
+                            <p
+                              className={cn(
+                                "font-medium",
+                                done && "line-through text-muted-foreground",
+                              )}
+                            >
                               {item.title}
                             </p>
-                            <p className="text-sm text-muted-foreground mt-1">{item.detail}</p>
+                            <p className="text-sm text-muted-foreground mt-1">
+                              {item.detail}
+                            </p>
                           </div>
                         </div>
                       </button>
@@ -433,7 +437,9 @@ export function AlertDetailModal({
                     </span>
                     <div>
                       <p className="font-medium text-sm">{step.title}</p>
-                      <p className="text-sm text-muted-foreground mt-0.5">{step.body}</p>
+                      <p className="text-sm text-muted-foreground mt-0.5">
+                        {step.body}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -446,7 +452,7 @@ export function AlertDetailModal({
                   <Shield className="h-3.5 w-3.5 text-primary" />
                   Audit trail
                 </p>
-                <div className="rounded-xl border bg-muted/20 p-4 space-y-2 max-h-40 overflow-y-auto">
+                <div className="rounded-xl border bg-muted/20 p-4 space-y-2 max-h-36 overflow-y-auto">
                   {timeline.map((e) => (
                     <div key={e.id} className="text-xs flex gap-2">
                       <span className="text-muted-foreground shrink-0">
@@ -473,7 +479,7 @@ export function AlertDetailModal({
                   {comments.map((comment) => (
                     <li
                       key={comment.id}
-                      className="rounded-xl border border-border/80 bg-muted/20 p-4 space-y-2"
+                      className="rounded-xl border border-border/80 bg-muted/20 p-3 space-y-1"
                     >
                       <p className="text-sm leading-relaxed">{comment.body}</p>
                       <p className="text-xs text-muted-foreground">
@@ -485,10 +491,7 @@ export function AlertDetailModal({
               )}
 
               <div className="rounded-xl border border-border/80 p-4 space-y-3">
-                <label
-                  htmlFor="alert-comment"
-                  className="text-sm font-medium"
-                >
+                <label htmlFor="alert-comment" className="text-sm font-medium">
                   Leave a comment
                 </label>
                 <textarea
@@ -496,8 +499,8 @@ export function AlertDetailModal({
                   value={commentDraft}
                   onChange={(e) => setCommentDraft(e.target.value)}
                   placeholder="Add context for the next shift or supervisor…"
-                  rows={3}
-                  className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-y min-h-[80px]"
+                  rows={2}
+                  className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-y min-h-[72px]"
                 />
                 <Button
                   size="sm"

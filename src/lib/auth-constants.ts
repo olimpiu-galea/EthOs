@@ -44,15 +44,6 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
     title: "Supervisor",
   },
   {
-    id: "financial",
-    email: "financial@lakeview.com",
-    password: DEMO_PASSWORD,
-    name: "Lauren Brooks",
-    role: "financial",
-    companyId: "lakeview",
-    title: "Financial Analyst",
-  },
-  {
     id: "operational",
     email: "operations@lakeview.com",
     password: DEMO_PASSWORD,
@@ -60,15 +51,6 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
     role: "operational",
     companyId: "lakeview",
     title: "Operations Specialist",
-  },
-  {
-    id: "procurement",
-    email: "procurement@lakeview.com",
-    password: DEMO_PASSWORD,
-    name: "Tom Bradley",
-    role: "procurement",
-    companyId: "lakeview",
-    title: "Procurement",
   },
   {
     id: "healthcare-supervisor",
@@ -80,18 +62,6 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
     title: "Supervisor · medcompany",
   },
 ];
-
-/** Demo roles that need Phrase 2 (commodity, margin desk, procurement feeds) */
-const PHASE2_DEMO_ROLES: UserRole[] = ["financial", "procurement"];
-
-export function demoAccountsForPhase(phase2Enabled: boolean): DemoAccount[] {
-  if (phase2Enabled) return DEMO_ACCOUNTS;
-  return DEMO_ACCOUNTS.filter(
-    (a) =>
-      a.companyId === DEFAULT_COMPANY.id &&
-      !PHASE2_DEMO_ROLES.includes(a.role),
-  );
-}
 
 export const ROLE_LABELS: Record<UserRole, string> = {
   platform_admin: "Platform Admin",

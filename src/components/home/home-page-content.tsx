@@ -27,6 +27,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { PRODUCT_NAME, PRODUCT_SCOPE } from "@/lib/brand";
 import { useAuthStore } from "@/stores/auth-store";
 import { LoggedInDashboard } from "@/components/home/logged-in-dashboard";
 
@@ -37,17 +38,16 @@ function GuestHome() {
 
       <div className="flex-1 p-8 max-w-5xl mx-auto w-full space-y-12 pb-16">
         <section className="space-y-6 pt-4">
-          <Badge variant="outline" className="text-primary border-primary/40">
+          <Badge variant="outline" className="border-border text-foreground">
             Lakeview Ethanol · Demo
           </Badge>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
             Turn live signals into{" "}
-            <span className="text-primary">actionable playbooks</span>
+            <span className="text-foreground">actionable playbooks</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
-            SignalRelay connects your plant data — DCS, lab sheets, and commodity
-            margins — to playbooks that fire role-specific alerts. Operators,
-            finance, and supervisors each get the agenda they need.
+            {PRODUCT_NAME} connects your plant data — DCS, lab sheets, and commodity
+            margins — to playbooks that fire role-specific alerts. {PRODUCT_SCOPE}
           </p>
           <div className="flex flex-wrap gap-3">
             <Button asChild size="lg" className="gap-2">
@@ -195,7 +195,7 @@ function AiSection() {
       <div className="flex items-center gap-2 flex-wrap">
         <h2 className="text-2xl font-semibold flex items-center gap-2">
           <Brain className="h-6 w-6 text-primary" />
-          AI & Signal team
+          AI & EthOs team
         </h2>
         <Badge className="bg-primary/20 text-primary border-primary/30">
           Demo mock
@@ -209,7 +209,7 @@ function AiSection() {
           </CardTitle>
           <CardDescription className="text-base max-w-2xl">
             Generate playbooks from a plain-English description, activate premium
-            playbooks, or ask the Signal team to build custom rules for Lakeview.
+            playbooks, or ask the EthOs team to build custom rules for Lakeview.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -230,7 +230,7 @@ function AiSection() {
             </div>
             <div className="rounded-lg border border-border/60 bg-card/80 p-4 space-y-2">
               <Activity className="h-5 w-5 text-emerald-400" />
-              <p className="font-medium text-sm">Signal team analysis</p>
+              <p className="font-medium text-sm">EthOs team analysis</p>
               <p className="text-xs text-muted-foreground">
                 Request a custom playbook built for your site
               </p>

@@ -14,9 +14,20 @@ import { cn } from "@/lib/utils";
 import {
   BATCH_FIELD_GROUPS,
   MOCK_BATCHES,
+  getLabReading,
   type BatchPhaseId,
   type BatchRecord,
 } from "@/lib/batch-fixture-data";
+import { nearestCheckpointHour } from "@/lib/ferm-field-dictionary";
+import {
+  BatchIdentityPanel,
+  DcsLivePanel,
+  LabCheckpointMatrix,
+  PlaybookWatchPanel,
+  PropAdditionsPanel,
+  QualityTrajectoryPanel,
+  YeastHealthPanel,
+} from "@/components/batches/batch-intelligence-panels";
 import { useAlertHistoryStore } from "@/stores/alert-history-store";
 
 function formatElapsed(hours: number): string {
@@ -26,9 +37,6 @@ function formatElapsed(hours: number): string {
   return `${d}d ${h}h elapsed`;
 }
 
-function batchTotalHours(batch: BatchRecord): number {
-  return batch.phases.reduce((s, p) => s + p.durationH, 0);
-}
 
 type BatchListTab = "active" | "completed";
 
@@ -59,8 +67,8 @@ function PhaseTimeline({ batch }: { batch: BatchRecord }) {
               style={{ width: `${w}%` }}
               className={cn(
                 "h-full flex items-center justify-center text-[9px] font-bold uppercase tracking-wide border-r border-background/20 last:border-0",
-                p.status === "done" && "bg-emerald-500/35 text-emerald-100",
-                p.status === "active" && "bg-primary/50 text-primary-foreground animate-pulse",
+                p.status === "done" && "bg-success-muted text-success-foreground",
+                p.status === "active" && "bg-primary text-primary-foreground",
                 p.status === "pending" && "bg-muted/40 text-muted-foreground",
               )}
               title={p.label}
@@ -76,7 +84,7 @@ function PhaseTimeline({ batch }: { batch: BatchRecord }) {
             key={p.id}
             className={cn(
               "text-[10px] px-2 py-0.5 rounded-full border",
-              p.status === "done" && "border-emerald-500/40 text-emerald-400",
+              p.status === "done" && "border-success/40 text-success",
               p.status === "active" && "border-primary/50 text-primary",
               p.status === "pending" && "border-border text-muted-foreground",
             )}
@@ -153,7 +161,7 @@ function ProcessSchematic() {
         Beer well
       </text>
       <path d="M70 105 H115 M205 105 H280 M320 105 H400" stroke="url(#batchPipe)" strokeWidth="3" strokeDasharray="6 3" />
-      <circle cx="115" cy="105" r="8" className="fill-emerald-500/30 stroke-emerald-400" strokeWidth="1" />
+      <circle cx="115" cy="105" r="8" className="fill-success/30 stroke-success" strokeWidth="1" />
       <circle cx="280" cy="105" r="8" className="fill-primary/30 stroke-primary" strokeWidth="1" />
       <text x="260" y="175" textAnchor="middle" className="fill-[8px] fill-muted-foreground">
         Beer commingles downstream · distillation · denatured tank · rack
@@ -169,9 +177,9 @@ export function BatchesHub2030() {
   const [selectedId, setSelectedId] = useState(
     batchFromUrl && MOCK_BATCHES.some((b) => b.id === batchFromUrl)
       ? batchFromUrl
-      : MOCK_BATCHES[0].id,
+      : "6418",
   );
-  const [compareId, setCompareId] = useState(MOCK_BATCHES[1].id);
+  const [compareId, setCompareId] = useState("6402");
   const [phaseFilter, setPhaseFilter] = useState<BatchPhaseId | "all">("all");
   const [listTab, setListTab] = useState<BatchListTab>("active");
 
@@ -227,38 +235,39 @@ export function BatchesHub2030() {
     return selected.events.filter((e) => e.type === "phase" || e.type === "sample" || e.type === "alert");
   }, [selected.events, phaseFilter]);
 
-  const labRows = BATCH_FIELD_GROUPS.find((g) => g.group === "Time-indexed lab");
+  const latestCheckpoint = nearestCheckpointHour(selected.fermenterAgeH);
+  const latestLab = getLabReading(selected, latestCheckpoint);
+  const compareLab = getLabReading(
+    compare,
+    nearestCheckpointHour(compare.fermenterAgeH),
+  );
+  const flaggedWatch = selected.playbookWatch.filter((w) => w.status === "flagged").length;
 
   return (
-    <div className="relative min-h-[calc(100vh-0px)] flex flex-col bg-[#060a12] overflow-hidden">
-      <div
-        className="absolute inset-0 opacity-20 pointer-events-none"
-        style={{
-          backgroundImage: `radial-gradient(circle at 20% 30%, hsl(160 60% 40% / 0.12), transparent 45%),
-            radial-gradient(circle at 80% 70%, hsl(var(--primary) / 0.08), transparent 40%)`,
-        }}
-      />
-
-      <header className="relative z-10 flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-emerald-500/20 bg-card/30 backdrop-blur-xl">
+    <div className="relative min-h-[calc(100vh-0px)] flex flex-col bg-background overflow-hidden">
+      <header className="relative z-10 flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-border bg-card shadow-sm">
         <div className="flex items-center gap-4">
-          <div className="rounded-lg bg-emerald-500/15 p-2 ring-1 ring-emerald-400/30">
-            <Layers className="h-6 w-6 text-emerald-400" />
+          <div className="rounded-xl bg-muted p-2 ring-1 ring-border">
+            <Layers className="h-6 w-6 text-foreground" />
           </div>
           <div>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-emerald-300/80 font-medium">
-              Batch intelligence · 2030
+            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium">
+              Batch intelligence
             </p>
             <h1 className="text-xl font-bold tracking-tight">
-              Fermenter batches — gal/bu & lifecycle
+              Fermenter batches — lab, DCS & yield
             </h1>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Ferm Data field dictionary · checkpoints 6h–55h · playbooks linked
+            </p>
           </div>
         </div>
-        <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-400/40">
-          Live mock
+        <Badge variant="outline">
+          {activeBatches.length} active · {BATCH_FIELD_GROUPS.length} field groups
         </Badge>
       </header>
 
-      <div className="relative z-10 px-6 pb-3 border-b border-emerald-500/10 bg-card/20">
+      <div className="relative z-10 px-6 pb-3 border-b border-border bg-card">
         <div className="flex flex-wrap gap-2">
           {BATCH_TABS.map((tab) => {
             const count =
@@ -272,8 +281,8 @@ export function BatchesHub2030() {
                 className={cn(
                   "inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm border transition-colors",
                   active
-                    ? "border-emerald-400/50 bg-emerald-500/15 text-emerald-200 font-medium"
-                    : "border-transparent text-muted-foreground hover:text-foreground hover:border-border/60",
+                    ? "border-primary bg-primary text-primary-foreground font-medium"
+                    : "border-border text-muted-foreground hover:text-foreground hover:bg-muted/50",
                 )}
               >
                 {tab.label}
@@ -281,8 +290,8 @@ export function BatchesHub2030() {
                   className={cn(
                     "text-[10px] font-mono rounded px-1.5 py-0.5 tabular-nums",
                     active
-                      ? "bg-emerald-500/20 text-emerald-300"
-                      : "bg-muted/40 text-muted-foreground",
+                      ? "bg-primary-foreground/20 text-primary-foreground"
+                      : "bg-muted text-muted-foreground",
                   )}
                 >
                   {count}
@@ -313,8 +322,8 @@ export function BatchesHub2030() {
                 className={cn(
                   "w-full text-left rounded-xl border px-4 py-3 transition-all",
                   selectedId === b.id
-                    ? "border-emerald-400/50 bg-emerald-500/10 ring-1 ring-emerald-400/30"
-                    : "border-border/60 bg-card/30 hover:border-emerald-500/30",
+                    ? "border-primary bg-muted/40 ring-1 ring-primary/20"
+                    : "border-border bg-card hover:border-primary/30 shadow-sm",
                 )}
               >
                 <div className="flex justify-between items-start">
@@ -323,24 +332,26 @@ export function BatchesHub2030() {
                     variant="outline"
                     className={cn(
                       "text-[9px]",
-                      b.status === "active" && "border-primary/50 text-primary",
-                      b.status === "completed" && "border-emerald-500/40 text-emerald-400",
-                      b.status === "deviation" && "border-amber-500/40 text-amber-400",
+                      b.status === "active" && "border-primary/50 text-foreground",
+                      b.status === "completed" && "border-success/40 text-success",
+                      b.status === "deviation" && "border-critical/40 text-critical",
                     )}
                   >
                     {b.status}
                   </Badge>
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">{b.ferm}</p>
-                <p className="text-xs text-muted-foreground mt-1 tabular-nums">
-                  Started {b.started}
+                <p className="text-xs text-muted-foreground mt-1">{b.ferm} · {b.yeastStrain}</p>
+                <p className="text-xs text-muted-foreground mt-0.5 tabular-nums">
+                  {b.fermenterAgeH}h · {b.bushelsCharged.toLocaleString()} bu
                 </p>
-                <p className="text-xs text-primary/80 mt-0.5 tabular-nums">
-                  {formatElapsed(b.fermenterAgeH)} · {batchTotalHours(b)}h total
+                <p className="text-xs text-success/90 mt-1 tabular-nums">
+                  {b.projectedGalPerBu.toFixed(2)} gal/bu proj.
                 </p>
-                <p className="text-xs text-emerald-400/90 mt-1 tabular-nums">
-                  {b.projectedGalPerBu.toFixed(2)} gal/bu
-                </p>
+                {b.playbookWatch.some((w) => w.status === "flagged") && (
+                  <Badge variant="danger" className="mt-1.5 text-[9px]">
+                    Playbook flagged
+                  </Badge>
+                )}
               </button>
               ))
             )}
@@ -348,7 +359,13 @@ export function BatchesHub2030() {
 
           {/* Main detail */}
           <div className="lg:col-span-6 space-y-4">
-            <div className="rounded-xl border border-emerald-500/25 bg-card/40 backdrop-blur-md p-5 space-y-4">
+            <BatchIdentityPanel batch={selected} />
+            <YeastHealthPanel batch={selected} />
+            <DcsLivePanel batch={selected} />
+            <LabCheckpointMatrix batch={selected} />
+            <QualityTrajectoryPanel batch={selected} />
+
+            <div className="rounded-xl border border-border bg-card shadow-sm p-5 space-y-4">
               <div className="flex flex-wrap justify-between gap-2">
                 <div>
                   <h2 className="text-2xl font-bold font-mono">{selected.id}</h2>
@@ -450,36 +467,25 @@ export function BatchesHub2030() {
               </div>
 
               {relatedAlerts.length > 0 && (
-                <div className="rounded-xl border border-amber-500/25 bg-amber-500/5 p-4">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-amber-300 mb-2 flex items-center gap-2">
+                <div className="rounded-xl border border-critical/25 bg-critical-muted p-4">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-critical-foreground mb-2 flex items-center gap-2">
                     <Bell className="h-3.5 w-3.5" />
-                    Related alerts
+                    Related alerts ({relatedAlerts.length})
                   </p>
                   <ul className="space-y-1 text-sm">
                     {relatedAlerts.map((a) => (
                       <li key={a.id} className="text-muted-foreground">
-                        {a.playbookName} · {a.lifecycle ?? "new"}
+                        <span className="font-medium text-foreground">{a.alertTitle ?? a.playbookName}</span>
+                        {" · "}
+                        {a.lifecycle ?? "new"}
+                        {a.severity === "critical" && " · critical"}
                       </li>
                     ))}
                   </ul>
                 </div>
               )}
 
-              {labRows && (
-                <div className="rounded-xl border border-border/60 bg-card/30 p-4">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
-                    Lab samples (time-indexed)
-                  </p>
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    {labRows.fields.slice(0, 6).map((field, i) => (
-                      <div key={field} className="flex justify-between border-b border-border/40 py-1">
-                        <span className="text-muted-foreground">{field}</span>
-                        <span className="font-mono">{selected.kpis[i % selected.kpis.length]?.value ?? "—"}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <PropAdditionsPanel batch={selected} />
 
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
@@ -498,7 +504,7 @@ export function BatchesHub2030() {
                 {filteredEvents.map((e, i) => (
                   <li
                     key={i}
-                    className="flex gap-3 text-sm border-l-2 border-emerald-500/30 pl-3 py-1"
+                    className="flex gap-3 text-sm border-l-2 border-success/30 pl-3 py-1"
                   >
                     <span className="font-mono text-xs text-muted-foreground shrink-0 w-12">
                       {e.ts}
@@ -506,10 +512,10 @@ export function BatchesHub2030() {
                     <span
                       className={cn(
                         "text-[9px] uppercase px-1.5 rounded shrink-0 h-fit",
-                        e.type === "alert" && "bg-amber-500/15 text-amber-300",
-                        e.type === "sample" && "bg-violet-500/15 text-violet-300",
-                        e.type === "phase" && "bg-emerald-500/15 text-emerald-300",
-                        e.type === "signal" && "bg-primary/15 text-primary",
+                        e.type === "alert" && "bg-critical-muted text-critical-foreground",
+                        e.type === "sample" && "bg-violet-100 text-violet-700",
+                        e.type === "phase" && "bg-success-muted text-success-foreground",
+                        e.type === "signal" && "bg-muted text-foreground",
                       )}
                     >
                       {e.type}
@@ -530,7 +536,9 @@ export function BatchesHub2030() {
 
           {/* Compare */}
           <div className="lg:col-span-3 space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+            <PlaybookWatchPanel batch={selected} />
+
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2 pt-2">
               <GitCompare className="h-3.5 w-3.5" />
               Compare batches
             </p>
@@ -556,28 +564,33 @@ export function BatchesHub2030() {
                 </select>
               </div>
               <MiniCompareChart
-                a={selected.projectedGalPerBu}
-                b={compare.projectedGalPerBu}
-                metric="Yield @ close (gal/bu)"
-                decimals={2}
-                suffix=" gal/bu"
+                a={latestLab?.potential ?? selected.projectedGalPerBu}
+                b={compareLab?.potential ?? compare.projectedGalPerBu}
+                metric={`Potential @ ${latestCheckpoint}h`}
+                decimals={1}
+                suffix="%"
               />
               <MiniCompareChart
-                a={selected.brixDrop}
-                b={compare.brixDrop}
-                metric="Quality @ close"
+                a={latestLab?.temp ?? 0}
+                b={compareLab?.temp ?? 0}
+                metric={`Temp @ checkpoint`}
                 decimals={1}
-                suffix=" °Bx"
+                suffix=" °F"
               />
               <p className="text-[10px] text-muted-foreground leading-snug">
-                Delta yield:{" "}
+                Yield delta:{" "}
                 <strong className="text-foreground">
                   {(selected.projectedGalPerBu - compare.projectedGalPerBu).toFixed(2)} gal/bu
                 </strong>{" "}
                 vs {compare.id}
               </p>
+              {flaggedWatch > 0 && (
+                <Badge variant="danger" className="text-[9px] w-full justify-center">
+                  {flaggedWatch} playbook flag{flaggedWatch > 1 ? "s" : ""} on {selected.id}
+                </Badge>
+              )}
               <Badge variant="outline" className="text-[9px] w-full justify-center">
-                Phase scrubber · compare active
+                Ferm Data dictionary · checkpoint compare
               </Badge>
             </div>
           </div>

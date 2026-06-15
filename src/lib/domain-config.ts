@@ -1,6 +1,6 @@
 import type { IndustryDomain } from "./types";
 import type { LucideIcon } from "lucide-react";
-import { ClipboardCheck, Layers, Stethoscope, Users } from "lucide-react";
+import { ClipboardCheck, Layers, ShieldCheck, Stethoscope, Users } from "lucide-react";
 
 export type SuiteNavItem = {
   href: string;
@@ -36,7 +36,15 @@ export function operationsSuiteForDomain(
       ];
     case "ethanol":
     default:
-      return [{ href: "/batches", label: "Batches", icon: Layers, ready: true }];
+      return [
+        { href: "/batches", label: "Batches", icon: Layers, ready: true },
+        {
+          href: "/compliance",
+          label: "Compliance",
+          icon: ShieldCheck,
+          ready: true,
+        },
+      ];
   }
 }
 

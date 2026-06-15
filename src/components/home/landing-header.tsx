@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowRightLeft, LogIn, LogOut, UserPlus } from "lucide-react";
+import { LogIn, LogOut, UserPlus } from "lucide-react";
+import { EthOsWordmark } from "@/components/brand/ethos-wordmark";
 import { Button } from "@/components/ui/button";
 import { workspaceHomePath } from "@/lib/role-access";
 import { useAuthStore } from "@/stores/auth-store";
@@ -21,11 +22,8 @@ export function LandingHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md">
       <div className="max-w-5xl mx-auto px-8 py-4 flex items-center justify-between gap-4">
-        <Link href="/" className="flex items-center gap-2 shrink-0">
-          <ArrowRightLeft className="h-7 w-7 text-primary" />
-          <span className="font-semibold tracking-tight">
-            Signal<span className="text-primary">Relay</span>
-          </span>
+        <Link href="/" className="shrink-0">
+          <EthOsWordmark showScope />
         </Link>
 
         <div className="flex items-center gap-2 sm:gap-3">

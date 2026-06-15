@@ -41,7 +41,7 @@ export function NextTriggerStatCard({ className }: NextTriggerStatCardProps) {
   );
 
   return (
-    <Card className={cn("h-full border-primary/25 bg-primary/5", className)}>
+    <Card className={cn("h-full border-border bg-card shadow-sm", className)}>
       <CardContent className="pt-5 pb-4">{content}</CardContent>
     </Card>
   );

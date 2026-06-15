@@ -4,40 +4,36 @@ export const DAILY_DEMO_ACTION_ITEMS: PlaybookActionItem[] = [
   {
     id: "review-batch",
     title: "Review batch on Ferm B",
-    detail:
-      "Open the batch workspace and confirm fermenter temperature, agitator, and cooling are responding as expected.",
+    detail: "Confirm temp, agitator, and cooling in batch workspace.",
   },
   {
     id: "compare-signals",
     title: "Compare live signals with lab data",
-    detail:
-      "Check the latest lab sheet row against DCS tags for this fermenter before changing any setpoints.",
+    detail: "Match latest lab row to DCS tags before setpoint changes.",
   },
   {
     id: "corrective-action",
     title: "Take corrective action",
-    detail:
-      "If cooling is lagging, adjust per plant SOP and watch the trend for the next 30 minutes.",
+    detail: "Adjust cooling per SOP; watch trend 30 min.",
   },
   {
     id: "log-and-close",
     title: "Log outcome and resolve",
-    detail:
-      "Record what you changed and mark the alert resolved once the batch is back in a stable range.",
+    detail: "Record changes and resolve when batch is stable.",
   },
 ];
 
 export const DAILY_DEMO_GUIDANCE: PlaybookGuidanceStep[] = [
   {
-    title: "Sample alert for demos",
-    body: "This is a fixed daily example on the Agenda — use it to walk through action items, guidance, comments, and resolve flow.",
+    title: "Demo alert",
+    body: "Fixed daily example — walk items, guidance, and resolve.",
   },
   {
-    title: "Treat it like a live alert",
-    body: "Work through each action item in order. The detail panel shows batch context and steps the same way as production playbooks.",
+    title: "Work like live",
+    body: "Complete action items in order from the detail panel.",
   },
   {
     title: "Resolve when done",
-    body: "Mark resolved after logging your review. A fresh instance appears on the next calendar day.",
+    body: "Mark resolved after logging; new instance next day.",
   },
 ];

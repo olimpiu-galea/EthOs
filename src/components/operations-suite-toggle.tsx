@@ -28,18 +28,18 @@ export function OperationsSuiteToggle({
         operationsSuiteEnabled ? "Phrase 2 active" : "Phrase 2 inactive"
       }
       className={cn(
-        "shrink-0 rounded-full border-[3px] transition-colors",
+        "shrink-0 rounded-full border-2 transition-colors",
         variant === "inline" ? "h-5 w-9" : "h-6 w-11",
-        "data-[state=checked]:bg-primary data-[state=checked]:border-primary",
-        "data-[state=checked]:shadow-[0_0_0_2px_hsl(var(--primary)/0.35)]",
-        "data-[state=unchecked]:bg-muted/50 data-[state=unchecked]:border-foreground/70",
-        "data-[state=unchecked]:shadow-[0_0_0_1px_hsl(var(--foreground)/0.25)]",
+        variant === "sidebar"
+          ? "data-[state=checked]:bg-white data-[state=checked]:border-white data-[state=unchecked]:bg-sidebar-accent data-[state=unchecked]:border-sidebar-border"
+          : "data-[state=checked]:bg-primary data-[state=checked]:border-primary data-[state=unchecked]:bg-muted data-[state=unchecked]:border-border",
       )}
       thumbClassName={cn(
-        "border border-foreground/25 bg-background shadow-md",
-        variant === "inline"
-          ? "h-3.5 w-3.5 data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0.5"
-          : "h-[18px] w-[18px] data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0.5",
+        "border shadow-md",
+        variant === "sidebar"
+          ? "border-sidebar-border bg-white data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0.5"
+          : "border-border bg-background data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0.5",
+        variant === "inline" ? "h-3.5 w-3.5" : "h-[18px] w-[18px]",
       )}
     />
   );
@@ -48,10 +48,10 @@ export function OperationsSuiteToggle({
     return (
       <div
         className={cn(
-          "flex items-center gap-2.5 rounded-lg border px-2.5 py-1.5",
+          "flex items-center gap-2.5 rounded-xl border px-2.5 py-1.5",
           operationsSuiteEnabled
-            ? "border-primary/35 bg-primary/5"
-            : "border-foreground/40 bg-muted/25",
+            ? "border-border bg-muted/50"
+            : "border-border bg-card",
           className,
         )}
         title={
@@ -74,16 +74,15 @@ export function OperationsSuiteToggle({
   return (
     <div
       className={cn(
-        "flex items-center justify-between gap-3 pt-2.5 mt-2 px-1.5 py-1.5 rounded-md",
-        operationsSuiteEnabled
-          ? "border-t border-primary/20"
-          : "border-2 border-foreground/45 bg-muted/20",
+        "flex items-center justify-between gap-3 pt-2.5 mt-2 px-2 py-2 rounded-lg border border-sidebar-border",
         className,
       )}
     >
       <div className="min-w-0">
-        <p className="text-[11px] font-medium leading-tight">Phrase 2</p>
-        <p className="text-[10px] text-muted-foreground leading-tight mt-0.5">
+        <p className="text-[11px] font-medium leading-tight text-sidebar-foreground">
+          Phrase 2
+        </p>
+        <p className="text-[10px] text-sidebar-muted leading-tight mt-0.5">
           {operationsSuiteEnabled ? "Active" : "Inactive"}
         </p>
       </div>

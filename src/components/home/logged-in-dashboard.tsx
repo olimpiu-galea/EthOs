@@ -64,10 +64,10 @@ function ActiveAlarmRow({ alert }: { alert: AlertAgendaItem }) {
         className={cn(
           "mt-0.5 h-2 w-2 rounded-full shrink-0",
           alert.severity === "critical"
-            ? "bg-rose-500"
+            ? "bg-critical"
             : alert.severity === "warning"
-              ? "bg-amber-400"
-              : "bg-primary",
+              ? "bg-critical/70"
+              : "bg-muted-foreground",
         )}
       />
       <span className="min-w-0 flex-1 space-y-1">
@@ -219,7 +219,7 @@ export function LoggedInDashboard({ user }: { user: AuthUser }) {
             <div className="flex items-start justify-between gap-3">
               <div>
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <AlertTriangle className="h-5 w-5 text-amber-400" />
+                  <AlertTriangle className="h-5 w-5 text-critical" />
                   Active alarms
                 </CardTitle>
                 <CardDescription>

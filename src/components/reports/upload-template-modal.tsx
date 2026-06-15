@@ -1,6 +1,7 @@
 "use client";
 
 import { FileUp, Sparkles, Upload } from "lucide-react";
+import { PRODUCT_NAME } from "@/lib/brand";
 import {
   Dialog,
   DialogContent,
@@ -33,7 +34,7 @@ export function UploadTemplateModal({
         <div className="space-y-4 text-sm">
           <p className="text-muted-foreground leading-relaxed">
             Upload an existing operations document — DOR, shift handover, batch
-            record, or any plant report. SignalRelay AI will read the structure,
+            record, or any plant report. {PRODUCT_NAME} AI will read the structure,
             extract sections and fields, and save a reusable template in your
             workspace so you can create new reports from it later.
           </p>

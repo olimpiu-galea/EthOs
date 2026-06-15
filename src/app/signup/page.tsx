@@ -3,7 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, ArrowRightLeft, Building2, UserPlus } from "lucide-react";
+import { ArrowLeft, Building2, UserPlus } from "lucide-react";
+import { PRODUCT_NAME } from "@/lib/brand";
+import { EthOsWordmark } from "@/components/brand/ethos-wordmark";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -63,14 +65,11 @@ export default function SignupPage() {
 
       <div className="w-full max-w-lg space-y-8">
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center gap-2">
-            <ArrowRightLeft className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-bold">
-              Signal<span className="text-primary">Relay</span>
-            </span>
+          <div className="flex justify-center">
+            <EthOsWordmark showScope />
           </div>
           <p className="text-muted-foreground">
-            Register your company — you&apos;ll be the Company Admin
+            Register your company on {PRODUCT_NAME} — you&apos;ll be the Company Admin
           </p>
         </div>
 

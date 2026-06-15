@@ -1,7 +1,8 @@
 import { ReportsHubFunctional } from "@/components/reports/reports-hub-functional";
+import { PRODUCT_NAME } from "@/lib/brand";
 
 export const metadata = {
-  title: "Reports | SignalRelay",
+  title: `Reports | ${PRODUCT_NAME}`,
   description: "Operations reporting — DOR and site packs",
 };
 

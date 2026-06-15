@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  ArrowRightLeft,
   BookOpen,
   CalendarDays,
   FileBarChart,
@@ -12,6 +11,7 @@ import {
   LogOut,
   Radio,
   Settings,
+  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useDcsStore } from "@/stores/dcs-store";
@@ -32,9 +32,12 @@ import {
 } from "@/lib/role-access";
 import { OperationsSuiteToggle } from "@/components/operations-suite-toggle";
 import { ROLE_LABELS, canManageSettings } from "@/lib/auth-constants";
+import { EthOsWordmark } from "@/components/brand/ethos-wordmark";
+import { PRODUCT_SCOPE_SHORT, PRODUCT_TAGLINE } from "@/lib/brand";
 
 const BASE_MAIN_NAV = [
   { href: "/", label: "Home", icon: Home },
+  { href: "/copilot", label: "Plant Copilot", icon: Sparkles },
   { href: "/integrations", label: "Integrations", icon: Radio },
   { href: "/playbooks", label: "Playbooks", icon: BookOpen },
   { href: "/agenda", label: "Agenda", icon: CalendarDays },
@@ -92,7 +95,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     const active = pathname === href || pathname.startsWith(href + "/");
     if (disabled) {
       return (
-        <span className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground/50 cursor-not-allowed">
+        <span className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-sidebar-muted/50 cursor-not-allowed">
           <Icon className="h-4 w-4 shrink-0" />
           {label}
         </span>
@@ -102,10 +105,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <Link
         href={href}
         className={cn(
-          "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+          "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
           active
-            ? "bg-primary/15 text-primary"
-            : "text-muted-foreground hover:bg-muted hover:text-foreground",
+            ? "bg-sidebar-accent text-white"
+            : "text-sidebar-muted hover:bg-sidebar-accent/70 hover:text-white",
         )}
       >
         <Icon className="h-4 w-4 shrink-0" />
@@ -116,32 +119,27 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen flex bg-background">
-      <aside className="w-64 border-r border-border/60 bg-card/50 flex flex-col shrink-0">
-        <div className="p-6 border-b border-border/60">
-          <div className="flex items-center gap-2">
-            <ArrowRightLeft className="h-7 w-7 text-primary" />
-            <div>
-              <p className="font-semibold tracking-tight">
-                <span>Signal</span>
-                <span className="text-primary">Relay</span>
-              </p>
-              <p className="text-xs text-muted-foreground">{companyName}</p>
-            </div>
-          </div>
+      <aside className="w-64 bg-sidebar text-sidebar-foreground flex flex-col shrink-0 border-r border-sidebar-border">
+        <div className="p-5 border-b border-sidebar-border">
+          <EthOsWordmark
+            variant="sidebar"
+            companyName={companyName}
+            showTagline
+          />
         </div>
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 p-3 space-y-1">
           {mainNav.map(({ href, label, icon: Icon }) =>
             navLink(href, label, Icon),
           )}
 
           {user && canManageSettings(user.role) && (
-            <div className="mt-4 pt-2 border-t border-border/40">
+            <div className="mt-3 pt-3 border-t border-sidebar-border">
               {navLink("/settings", "Settings", Settings)}
             </div>
           )}
 
-          <div className="relative mt-4 rounded-xl border border-primary/25 bg-gradient-to-b from-primary/5 to-transparent p-2 space-y-0.5">
-            <p className="px-2 pt-1 pb-1 text-[9px] font-semibold uppercase tracking-[0.15em] text-primary/70">
+          <div className="relative mt-3 rounded-xl border border-sidebar-border bg-sidebar-accent/40 p-2 space-y-0.5">
+            <p className="px-2 pt-1 pb-1 text-[9px] font-semibold uppercase tracking-[0.15em] text-sidebar-muted">
               {extrasNavLabel(role)}
             </p>
             {suiteNav.map(({ href, label, icon: Icon, ready }) =>
@@ -151,37 +149,46 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </nav>
 
-        <div className="p-4 border-t border-border/60 space-y-2">
-          <div className="space-y-2">
-            <p className="text-xs text-muted-foreground uppercase tracking-wider">
-              Signal sources
+        <div className="p-4 border-t border-sidebar-border space-y-2">
+          <p className="text-[10px] text-sidebar-muted uppercase tracking-wider">
+            Signal sources
+          </p>
+          <Badge
+            variant={connectedCount > 0 ? "success" : "secondary"}
+            className="bg-sidebar-accent border-sidebar-border text-white"
+          >
+            {connectedCount > 0
+              ? `${connectedCount} connected`
+              : "Disconnected"}
+          </Badge>
+          {lastSync && (
+            <p className="text-[11px] text-sidebar-muted">
+              DCS sync: {new Date(lastSync).toLocaleTimeString()}
             </p>
-            <Badge variant={connectedCount > 0 ? "success" : "secondary"}>
-              {connectedCount > 0
-                ? `${connectedCount} connected`
-                : "Disconnected"}
-            </Badge>
-            {lastSync && (
-              <p className="text-xs text-muted-foreground">
-                DCS sync: {new Date(lastSync).toLocaleTimeString()}
-              </p>
-            )}
-          </div>
+          )}
         </div>
       </aside>
-      <div className="flex-1 flex flex-col min-w-0">
-        <header className="sticky top-0 z-40 flex items-center justify-end gap-3 border-b border-border/60 bg-background/80 backdrop-blur-sm px-6 py-2.5 shrink-0">
+      <div className="flex-1 flex flex-col min-w-0 bg-card">
+        <header className="sticky top-0 z-40 flex items-center justify-between gap-4 border-b border-border bg-card/95 backdrop-blur-sm px-6 py-3 shrink-0">
+          <div className="min-w-0 hidden sm:block">
+            <p className="text-sm font-semibold text-foreground truncate">
+              {PRODUCT_TAGLINE}
+            </p>
+            <p className="text-xs text-muted-foreground truncate">
+              {PRODUCT_SCOPE_SHORT}
+            </p>
+          </div>
           {user && (
-            <>
-              <span className="text-sm text-muted-foreground hidden sm:inline">
+            <div className="flex items-center gap-3 shrink-0">
+              <span className="text-sm text-muted-foreground hidden md:inline text-right">
                 {user.name}
                 <span className="mx-1.5 text-border">·</span>
                 {ROLE_LABELS[user.role]}
               </span>
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
-                className="gap-2 text-muted-foreground"
+                className="gap-2"
                 onClick={() => {
                   logout();
                   router.push("/");
@@ -190,10 +197,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <LogOut className="h-4 w-4" />
                 Sign out
               </Button>
-            </>
+            </div>
           )}
         </header>
-        <main className="flex-1 overflow-auto">{children}</main>
+        <main className="flex-1 overflow-auto bg-background">{children}</main>
       </div>
     </div>
   );
