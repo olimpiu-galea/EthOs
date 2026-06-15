@@ -173,7 +173,7 @@ export function AlertDetailModal({
             type="button"
             size="sm"
             className={cn(
-              "absolute top-4 right-14 z-20 gap-2 h-9 px-4 text-xs font-semibold",
+              "absolute top-4 right-14 z-20 gap-2 h-9 px-4 text-xs font-semibold max-lg:static max-lg:w-full max-lg:mb-3 max-lg:right-auto",
               "bg-gradient-to-r from-primary via-primary to-primary/85 text-primary-foreground",
               "shadow-lg shadow-primary/30 ring-2 ring-primary/25 ring-offset-2 ring-offset-background",
               "hover:brightness-110 hover:shadow-primary/40 transition-all",
@@ -183,7 +183,7 @@ export function AlertDetailModal({
             <Sparkles className="h-4 w-4" />
             Ask about this alert
           </Button>
-          <DialogHeader className="relative space-y-2.5 text-left pr-36">
+          <DialogHeader className="relative space-y-2.5 text-left pr-36 max-lg:pr-0">
             <div className="flex flex-wrap items-center gap-2">
               <Badge variant={theme.badge} className="gap-1">
                 <AlertTriangle className="h-3 w-3" />

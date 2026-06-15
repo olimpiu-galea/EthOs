@@ -51,7 +51,7 @@ export default function FinancialPage() {
 
   if (!connected) {
     return (
-      <div className="p-8 max-w-lg mx-auto">
+      <div className="p-8 max-lg:p-4 max-w-lg mx-auto">
         <Card className="border-dashed">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">

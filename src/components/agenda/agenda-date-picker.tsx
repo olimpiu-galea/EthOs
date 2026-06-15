@@ -79,7 +79,7 @@ export function AgendaDatePicker({
   return (
     <div
       className={cn(
-        "inline-flex flex-wrap items-center gap-1.5 rounded-xl border border-primary/35",
+        "inline-flex flex-wrap items-center gap-1.5 rounded-xl border border-primary/35 max-lg:w-full",
         "bg-gradient-to-r from-primary/[0.08] via-background/80 to-background/60",
         "p-1 shadow-[0_0_24px_-12px_hsl(var(--primary)/0.35)]",
         className,
@@ -101,7 +101,7 @@ export function AgendaDatePicker({
         type="button"
         onClick={openPicker}
         className={cn(
-          "flex min-w-[13.25rem] items-center gap-2.5 rounded-lg px-3 py-2",
+          "flex min-w-[13.25rem] max-lg:min-w-0 max-lg:flex-1 items-center gap-2.5 rounded-lg px-3 py-2",
           "border border-primary/20 bg-background/50 hover:bg-primary/5",
           "hover:border-primary/35 transition-colors text-left",
         )}

@@ -157,7 +157,7 @@ export function LoggedInDashboard({ user }: { user: AuthUser }) {
   });
 
   return (
-    <div className="p-8 max-w-6xl mx-auto w-full space-y-8">
+    <div className="p-8 max-lg:p-4 max-w-6xl mx-auto w-full space-y-8">
       <header className="space-y-2">
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
           {companyName}

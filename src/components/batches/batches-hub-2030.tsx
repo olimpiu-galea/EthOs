@@ -254,7 +254,7 @@ export function BatchesHub2030() {
 
   return (
     <div className="relative min-h-[calc(100vh-0px)] flex flex-col bg-background overflow-hidden">
-      <header className="relative z-10 flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-border bg-card shadow-sm">
+      <header className="relative z-10 flex flex-wrap items-center justify-between gap-4 px-6 max-lg:px-4 py-4 border-b border-border bg-card shadow-sm">
         <div className="flex items-center gap-4">
           <div className="rounded-xl bg-muted p-2 ring-1 ring-border">
             <Layers className="h-6 w-6 text-foreground" />
@@ -276,7 +276,7 @@ export function BatchesHub2030() {
         </Badge>
       </header>
 
-      <div className="relative z-10 px-6 pb-3 border-b border-border bg-card">
+      <div className="relative z-10 px-6 max-lg:px-4 pb-3 border-b border-border bg-card">
         <div className="flex flex-wrap gap-2">
           {BATCH_TABS.map((tab) => {
             const count =
@@ -311,7 +311,7 @@ export function BatchesHub2030() {
         </div>
       </div>
 
-      <div className="relative flex-1 overflow-auto p-6 space-y-6">
+      <div className="relative flex-1 overflow-auto p-6 max-lg:p-4 space-y-6">
         <div className="grid gap-4 lg:grid-cols-12">
           {/* Batch picker */}
           <div className="lg:col-span-3 space-y-3">

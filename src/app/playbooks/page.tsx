@@ -157,7 +157,7 @@ export default function PlaybooksPage() {
   }
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8">
+    <div className="p-8 max-lg:p-4 max-w-7xl mx-auto space-y-8">
       <header className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div className="space-y-2">
           <h1 className="text-3xl font-bold tracking-tight">Playbooks</h1>
@@ -234,8 +234,8 @@ export default function PlaybooksPage() {
               No playbooks yet. Create one or activate a premium suggestion.
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+            <div className="overflow-x-auto max-lg:-mx-4 max-lg:px-4">
+              <table className="w-full text-sm min-w-[880px] lg:min-w-0">
                 <thead>
                   <tr className="border-b text-left text-muted-foreground">
                     <th className="pb-3 pr-4 font-medium">Name</th>

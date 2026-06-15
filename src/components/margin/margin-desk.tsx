@@ -193,7 +193,7 @@ export function MarginDesk() {
   const sellSignal = marketSignalLabel(data.marketVal);
 
   return (
-    <div className="p-8 max-w-6xl mx-auto space-y-8">
+    <div className="p-8 max-lg:p-4 max-w-6xl mx-auto space-y-8">
       <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
         <div className="space-y-2">
           <p className="text-xs uppercase tracking-widest text-primary font-medium">

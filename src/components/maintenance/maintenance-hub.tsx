@@ -416,7 +416,7 @@ export function MaintenanceHub() {
               "radial-gradient(circle at 10% 40%, hsl(var(--primary) / 0.12), transparent 45%), radial-gradient(circle at 90% 20%, hsl(var(--critical) / 0.08), transparent 40%)",
           }}
         />
-        <div className="relative mx-auto max-w-6xl px-6 py-8 space-y-6">
+        <div className="relative mx-auto max-w-6xl px-6 max-lg:px-4 py-8 max-lg:py-6 space-y-6">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
             <div className="space-y-2">
               <div className="flex flex-wrap items-center gap-2">
@@ -488,7 +488,7 @@ export function MaintenanceHub() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-6xl px-6 py-8 space-y-6">
+      <div className="mx-auto max-w-6xl px-6 max-lg:px-4 py-8 max-lg:py-6 space-y-6">
         <div className="grid gap-6 lg:grid-cols-[1fr_320px] items-start">
           <Card>
             <CardHeader className="pb-3">
@@ -516,8 +516,8 @@ export function MaintenanceHub() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
+              <div className="overflow-x-auto max-lg:-mx-4 max-lg:px-4">
+                <table className="w-full text-sm min-w-[1000px] lg:min-w-0">
                   <thead>
                     <tr className="border-b text-left text-muted-foreground">
                       <SortHeader label="Item ID" sortKey="itemId" activeKey={sortKey} dir={sortDir} onSort={handleSort} />

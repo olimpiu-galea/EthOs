@@ -366,7 +366,7 @@ export function PlantCopilotDemo() {
               "radial-gradient(circle at 20% 50%, hsl(var(--success) / 0.12), transparent 45%), radial-gradient(circle at 80% 20%, hsl(var(--critical) / 0.08), transparent 40%)",
           }}
         />
-        <div className="relative mx-auto max-w-[1400px] px-6 py-8">
+        <div className="relative mx-auto max-w-[1400px] px-6 max-lg:px-4 py-8 max-lg:py-6">
           <div className="space-y-3 max-w-2xl">
             <div className="flex flex-wrap items-center gap-2">
               <Badge variant="secondary" className="gap-1.5 font-normal">
@@ -391,7 +391,7 @@ export function PlantCopilotDemo() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-[1400px] px-6 py-6">
+      <div className="mx-auto max-w-[1400px] px-6 max-lg:px-4 py-6">
         <div className="grid gap-6 xl:grid-cols-[320px_minmax(0,1fr)]">
           <aside className="space-y-4 xl:sticky xl:top-4 xl:self-start">
             <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">

@@ -93,10 +93,6 @@ const HOUR_END = 23;
 
 const HOUR_ROW_HEIGHT = 56;
 
-const ALERT_CARD_WIDTH = 220;
-
-const ALERT_CARD_HEIGHT = 122;
-
 
 
 function formatTime(ts: number) {
@@ -412,7 +408,7 @@ export default function AgendaPage() {
 
   return (
 
-    <div className="p-8 max-w-5xl mx-auto space-y-8">
+    <div className="p-8 max-lg:p-4 max-w-5xl mx-auto space-y-8">
 
       <header className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
 
@@ -700,7 +696,7 @@ export default function AgendaPage() {
 
         <div className="rounded-xl border overflow-hidden flex flex-col max-h-[min(70vh,calc(100vh-16rem))]">
 
-          <div className="grid grid-cols-[72px_1fr] bg-muted/30 border-b text-xs font-semibold uppercase tracking-wider text-muted-foreground shrink-0">
+          <div className="grid grid-cols-[72px_1fr] max-lg:grid-cols-[52px_1fr] bg-muted/30 border-b text-xs font-semibold uppercase tracking-wider text-muted-foreground shrink-0">
 
             <div className="px-3 py-2">Hour</div>
 
@@ -740,7 +736,7 @@ export default function AgendaPage() {
 
                   className={cn(
 
-                    "grid grid-cols-[72px_1fr] border-b border-border/40",
+                    "grid grid-cols-[72px_1fr] max-lg:grid-cols-[52px_1fr] border-b border-border/40",
 
                     isNow && "bg-primary/5",
 
@@ -788,21 +784,13 @@ export default function AgendaPage() {
 
                           }}
 
-                          style={{
-                            width: ALERT_CARD_WIDTH,
-                            height: ALERT_CARD_HEIGHT,
-                          }}
-
                           className={cn(
-
                             "shrink-0 flex flex-col text-left rounded-lg border px-3 py-2.5 text-xs transition-all hover:border-primary/50",
-
+                            "w-[220px] h-[122px] max-lg:w-full max-lg:max-w-none max-lg:h-auto max-lg:min-h-[100px]",
                             item.status === "active"
                               ? "border-critical/35 bg-critical-muted ethos-critical-surface"
                               : "border-success/35 bg-success-muted ethos-success-surface",
-
                             highlightId === item.id && "ring-2 ring-primary",
-
                           )}
 
                         >
