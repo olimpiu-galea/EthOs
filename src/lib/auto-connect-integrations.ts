@@ -1,11 +1,8 @@
 import type { UserRole } from "@/lib/types";
-import {
-  signalFeedsForRole,
-  shouldAutoConnectIntegrations,
-} from "@/lib/role-access";
+import { shouldAutoConnectIntegrations } from "@/lib/role-access";
 import { SKIP_INTEGRATION_AUTO_CONNECT_KEY } from "@/lib/reset-lakeview-workspace";
 
-/** Connect signal feeds required for the signed-in role (no Integrations UI). */
+/** Connect all company-enabled signal feeds (respects Phrase 2 for commodity/procurement). */
 export async function autoConnectIntegrationsForRole(role: UserRole): Promise<void> {
   if (
     typeof sessionStorage !== "undefined" &&
@@ -17,7 +14,6 @@ export async function autoConnectIntegrationsForRole(role: UserRole): Promise<vo
 
   if (!shouldAutoConnectIntegrations(role)) return;
 
-  const feeds = signalFeedsForRole(role);
   const [
     { useDcsStore },
     { useLabStore },
@@ -36,23 +32,14 @@ export async function autoConnectIntegrationsForRole(role: UserRole): Promise<vo
     useSettingsStore.getState();
 
   const tasks: Promise<void>[] = [];
-  if (
-    feeds.includes("dcs") &&
-    companyFeeds.dcs &&
-    !useDcsStore.getState().connected
-  ) {
+  if (companyFeeds.dcs && !useDcsStore.getState().connected) {
     tasks.push(useDcsStore.getState().connect());
   }
-  if (
-    feeds.includes("lab") &&
-    companyFeeds.lab &&
-    !useLabStore.getState().connected
-  ) {
+  if (companyFeeds.lab && !useLabStore.getState().connected) {
     tasks.push(useLabStore.getState().connect());
   }
   if (
     phrase2Active &&
-    feeds.includes("commodity") &&
     companyFeeds.commodity &&
     !useCommodityStore.getState().connected
   ) {
@@ -60,7 +47,6 @@ export async function autoConnectIntegrationsForRole(role: UserRole): Promise<vo
   }
   if (
     phrase2Active &&
-    feeds.includes("inventory") &&
     companyFeeds.inventory &&
     !useInventoryStore.getState().connected
   ) {

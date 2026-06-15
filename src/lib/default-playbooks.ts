@@ -151,7 +151,11 @@ export async function ensureDefaultPlaybooks(): Promise<void> {
   );
   const teamId = defaultTeamIdForNewPlaybook(teams);
   const teamMeta = teamId
-    ? { teamId, routedRoles: routedRolesForTeam(teamId, teams, users) }
+    ? {
+        teamId,
+        teamIds: [teamId],
+        routedRoles: routedRolesForTeam(teamId, teams, users),
+      }
     : {};
 
   const builtins = [

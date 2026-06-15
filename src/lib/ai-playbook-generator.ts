@@ -3,7 +3,7 @@ import { inferRoutedRoles } from "./playbook-routing";
 import { listUsersForCompany } from "@/lib/company-registry";
 import { useAuthStore } from "@/stores/auth-store";
 import { useSettingsStore } from "@/stores/settings-store";
-import { inferTeamIdFromPlaybook, routedRolesForTeam } from "./teams";
+import { inferTeamIdFromPlaybook, routedRolesForTeams } from "./teams";
 import { canonicalSignalLabel } from "./ferm-signals";
 import { createEmptyCondition } from "./playbook-utils";
 import {
@@ -200,11 +200,13 @@ export function generatePlaybookFromDescription(
   const companyId = useSettingsStore.getState().companyId;
   const users = listUsersForCompany(companyId, useAuthStore.getState().users);
   const teamId = inferTeamIdFromPlaybook(result, teams);
+  const teamIds = teamId ? [teamId] : [];
   const routedRoles =
-    routedRolesForTeam(teamId, teams, users) ?? inferRoutedRoles(result);
+    routedRolesForTeams(teamIds, teams, users) ?? inferRoutedRoles(result);
   return {
     ...result,
     teamId,
+    teamIds: teamIds.length ? teamIds : undefined,
     routedRoles,
   };
 }

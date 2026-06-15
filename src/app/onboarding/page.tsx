@@ -96,9 +96,9 @@ export default function OnboardingPage() {
             <CardHeader>
               <CardTitle>Step 1 — Enable signal feeds</CardTitle>
               <CardDescription>
-                Choose which data sources this company can use. All feeds start
-                disabled — turn on only what you need. Connection happens on
-                Integrations in the next step.
+                Signal feeds are enabled by default for this workspace. Turn off
+                any source you do not need — connection happens on Integrations
+                in the next step.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">

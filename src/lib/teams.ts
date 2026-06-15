@@ -101,6 +101,39 @@ export function teamNameForId(
   return teamForId(teamId, teams)?.name ?? "Unassigned";
 }
 
+export function resolvePlaybookTeamIds(
+  playbook: Pick<
+    import("./types").Playbook,
+    "teamId" | "teamIds"
+  >,
+  teams: OpsTeam[] = [],
+): string[] {
+  const active = enabledTeams(teams);
+  const raw = playbook.teamIds?.length
+    ? playbook.teamIds
+    : playbook.teamId
+      ? [playbook.teamId]
+      : [];
+  return raw.filter((id) => active.some((t) => t.id === id));
+}
+
+export function resolveAlertTeamIds(
+  item: Pick<import("./types").AlertAgendaItem, "teamId" | "teamIds">,
+  teams: OpsTeam[] = [],
+): string[] {
+  return resolvePlaybookTeamIds(item, teams);
+}
+
+export function teamNamesForIds(
+  teamIds: string[],
+  teams: OpsTeam[],
+): string {
+  const names = teamIds
+    .map((id) => teamForId(id, teams)?.name)
+    .filter((name): name is string => Boolean(name));
+  return names.length ? names.join(", ") : "Unassigned";
+}
+
 export function routedRolesForTeam(
   teamId: string | undefined,
   teams: OpsTeam[],
@@ -114,6 +147,20 @@ export function routedRolesForTeam(
   for (const userId of team.memberUserIds) {
     const user = users.find((u) => u.id === userId);
     if (user) roles.add(user.role);
+  }
+  return roles.size ? [...roles] : undefined;
+}
+
+export function routedRolesForTeams(
+  teamIds: string[],
+  teams: OpsTeam[],
+  users: AuthUser[] = [],
+): UserRole[] | undefined {
+  const roles = new Set<UserRole>();
+  for (const teamId of teamIds) {
+    routedRolesForTeam(teamId, teams, users)?.forEach((role) =>
+      roles.add(role),
+    );
   }
   return roles.size ? [...roles] : undefined;
 }
@@ -133,11 +180,14 @@ export function isFinanceLikeTeam(team: OpsTeam | undefined): boolean {
 export function inferTeamIdFromPlaybook(
   playbook: Pick<
     import("./types").Playbook,
-    "teamId" | "routedRoles" | "name" | "conditions"
+    "teamId" | "teamIds" | "routedRoles" | "name" | "conditions"
   >,
   teams: OpsTeam[] = [],
 ): string | undefined {
   const active = enabledTeams(teams);
+  const fromIds = resolvePlaybookTeamIds(playbook, teams);
+  if (fromIds.length) return fromIds[0];
+
   if (playbook.teamId && active.some((t) => t.id === playbook.teamId)) {
     return playbook.teamId;
   }
@@ -205,4 +255,35 @@ export function userSeesTeamAlert(
   const team = teams.find((t) => t.id === teamId);
   if (!team || !team.enabled) return false;
   return team.memberUserIds.includes(viewer.id);
+}
+
+export function alertMatchesTeamLens(
+  item: Pick<import("./types").AlertAgendaItem, "teamId" | "teamIds">,
+  lens: AgendaLensId,
+  teams: OpsTeam[] = [],
+): boolean {
+  if (lens === "all") return true;
+  return resolveAlertTeamIds(item, teams).includes(lens);
+}
+
+export function userSeesAlert(
+  viewer: Pick<AuthUser, "id" | "role">,
+  item: Pick<import("./types").AlertAgendaItem, "teamId" | "teamIds">,
+  teams: OpsTeam[],
+): boolean {
+  if (
+    viewer.role === "platform_admin" ||
+    viewer.role === "company_admin" ||
+    viewer.role === "supervisor"
+  ) {
+    return true;
+  }
+
+  const teamIds = resolveAlertTeamIds(item, teams);
+  if (!teamIds.length) return true;
+
+  return teamIds.some((teamId) => {
+    const team = teams.find((t) => t.id === teamId);
+    return team?.enabled && team.memberUserIds.includes(viewer.id);
+  });
 }

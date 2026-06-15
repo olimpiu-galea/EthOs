@@ -4,17 +4,13 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  AlertTriangle,
   ArrowRight,
-  Beaker,
   BookOpen,
-  CheckCircle2,
   ClipboardCheck,
   FileBarChart,
   Layers,
   Lock,
   Shield,
-  Sparkles,
   TriangleAlert,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -22,12 +18,9 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useSettingsStore } from "@/stores/settings-store";
 import {
-  ETHANOL_INDUSTRY_CHALLENGES,
-  LAKEVIEW_ADVISOR_TIPS,
   LAKEVIEW_COMPLIANCE_ZONES,
   LAKEVIEW_DOC_CADENCE,
   LAKEVIEW_OPEN_DEVIATIONS,
-  LAKEVIEW_QA_PROCESS,
   type ComplianceStatus,
 } from "@/lib/lakeview-plant-compliance-fixture";
 
@@ -127,8 +120,7 @@ export function PlantComplianceDemo() {
           <p className="text-base text-muted-foreground max-w-3xl leading-relaxed">
             Not platform audit — this is how the <strong>plant</strong> stays
             defensible: batch records, Ferm Data samples, playbook responses,
-            SHO/DOR/BPR, and the industry challenges that actually fail audits
-            at ethanol facilities.
+            and SHO/DOR/BPR documentation.
           </p>
           <div className="flex flex-wrap gap-3 pt-1">
             <div className="rounded-lg border border-border bg-background/80 px-4 py-2 text-sm">
@@ -160,190 +152,89 @@ export function PlantComplianceDemo() {
           </div>
         </section>
 
-        <div className="grid gap-8 xl:grid-cols-12">
-          <section className="xl:col-span-7 space-y-4">
-            <div className="flex items-center gap-2">
-              <TriangleAlert className="h-5 w-5 text-critical" />
-              <h2 className="text-lg font-bold">
-                Industry challenges & Lakeview response
-              </h2>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              The highest-risk gaps at ethanol plants — and how Lakeview processes
-              plus EthOs surfaces address them before auditors do.
-            </p>
-            <div className="space-y-3">
-              {ETHANOL_INDUSTRY_CHALLENGES.map((c) => {
-                const s = STATUS_STYLES[c.severity];
-                return (
-                  <div
-                    key={c.id}
-                    className="rounded-xl border border-border bg-card p-5 space-y-3 shadow-sm"
-                  >
-                    <div className="flex flex-wrap items-start justify-between gap-2">
-                      <h3 className="font-semibold text-sm">{c.title}</h3>
-                      <Badge variant="outline" className={cn("text-[9px]", s.badge)}>
-                        {s.label}
-                      </Badge>
-                    </div>
-                    <div className="grid gap-3 sm:grid-cols-2 text-xs leading-relaxed">
-                      <div className="space-y-1">
-                        <p className="font-semibold uppercase tracking-wider text-[10px] text-muted-foreground">
-                          Why it fails audits
-                        </p>
-                        <p className="text-muted-foreground">{c.whyItMatters}</p>
-                      </div>
-                      <div className="space-y-1">
-                        <p className="font-semibold uppercase tracking-wider text-[10px] text-muted-foreground">
-                          Lakeview process
-                        </p>
-                        <p className="text-muted-foreground">{c.lakeviewProcess}</p>
-                      </div>
-                    </div>
-                    <div className="rounded-lg border border-primary/15 bg-primary/5 px-3 py-2 text-xs">
-                      <p className="font-semibold text-primary mb-0.5 flex items-center gap-1">
-                        <Sparkles className="h-3 w-3" />
-                        In EthOs today
-                      </p>
-                      <p className="text-muted-foreground">{c.ethOsSupport}</p>
-                    </div>
-                    <p className="text-[10px] text-muted-foreground">
-                      Owner: <strong className="text-foreground">{c.owner}</strong>
-                    </p>
+        <div className="grid gap-6 lg:grid-cols-2">
+          <section className="rounded-xl border border-border bg-card p-5 space-y-3 shadow-sm">
+            <h2 className="text-sm font-bold flex items-center gap-2">
+              <TriangleAlert className="h-4 w-4 text-critical" />
+              Deviation register
+            </h2>
+            <ul className="space-y-2">
+              {LAKEVIEW_OPEN_DEVIATIONS.map((d) => (
+                <li
+                  key={d.id}
+                  className="rounded-lg border border-border/70 bg-muted/10 p-3 space-y-1.5"
+                >
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="font-mono font-bold text-sm">{d.batchId}</span>
+                    <span className="text-xs text-muted-foreground">{d.fermenter}</span>
+                    <Badge
+                      variant="outline"
+                      className={cn("text-[9px] capitalize ml-auto", DEV_STATUS[d.status])}
+                    >
+                      {d.status}
+                    </Badge>
                   </div>
-                );
-              })}
-            </div>
+                  <p className="text-xs font-medium">{d.issue}</p>
+                  <p className="text-[10px] text-muted-foreground">{d.source}</p>
+                  <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
+                    <span className="text-[10px] text-muted-foreground">
+                      {d.owner} · due {d.due}
+                    </span>
+                    <Link
+                      href={d.link}
+                      className="text-[10px] text-primary hover:underline inline-flex items-center gap-0.5"
+                    >
+                      Batch workspace
+                      <ArrowRight className="h-3 w-3" />
+                    </Link>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <Link href="/agenda">
+              <Button variant="outline" size="sm" className="w-full gap-2 text-xs">
+                <BookOpen className="h-3.5 w-3.5" />
+                Review open alerts on Agenda
+              </Button>
+            </Link>
           </section>
 
-          <aside className="xl:col-span-5 space-y-6">
-            <section className="rounded-xl border border-border bg-card p-5 space-y-3 shadow-sm">
-              <h2 className="text-sm font-bold flex items-center gap-2">
-                <AlertTriangle className="h-4 w-4 text-critical" />
-                Deviation register
-              </h2>
-              <ul className="space-y-2">
-                {LAKEVIEW_OPEN_DEVIATIONS.map((d) => (
-                  <li
-                    key={d.id}
-                    className="rounded-lg border border-border/70 bg-muted/10 p-3 space-y-1.5"
-                  >
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-mono font-bold text-sm">{d.batchId}</span>
-                      <span className="text-xs text-muted-foreground">{d.fermenter}</span>
-                      <Badge
-                        variant="outline"
-                        className={cn("text-[9px] capitalize ml-auto", DEV_STATUS[d.status])}
-                      >
-                        {d.status}
-                      </Badge>
-                    </div>
-                    <p className="text-xs font-medium">{d.issue}</p>
-                    <p className="text-[10px] text-muted-foreground">{d.source}</p>
-                    <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
-                      <span className="text-[10px] text-muted-foreground">
-                        {d.owner} · due {d.due}
+          <section className="rounded-xl border border-border bg-card p-5 space-y-3 shadow-sm">
+            <h2 className="text-sm font-bold flex items-center gap-2">
+              <FileBarChart className="h-4 w-4 text-primary" />
+              Required documentation
+            </h2>
+            <ul className="space-y-2">
+              {LAKEVIEW_DOC_CADENCE.map((doc) => (
+                <li
+                  key={doc.abbr}
+                  className="rounded-lg border border-border/60 px-3 py-2.5 space-y-1"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-sm font-medium">
+                      {doc.abbr}
+                      <span className="text-muted-foreground font-normal ml-1.5 text-xs">
+                        {doc.template}
                       </span>
-                      <Link
-                        href={d.link}
-                        className="text-[10px] text-primary hover:underline inline-flex items-center gap-0.5"
-                      >
-                        Batch workspace
-                        <ArrowRight className="h-3 w-3" />
-                      </Link>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-              <Link href="/agenda">
-                <Button variant="outline" size="sm" className="w-full gap-2 text-xs">
-                  <BookOpen className="h-3.5 w-3.5" />
-                  Review open alerts on Agenda
-                </Button>
-              </Link>
-            </section>
-
-            <section className="rounded-xl border border-border bg-card p-5 space-y-3 shadow-sm">
-              <h2 className="text-sm font-bold flex items-center gap-2">
-                <FileBarChart className="h-4 w-4 text-primary" />
-                Required documentation
-              </h2>
-              <ul className="space-y-2">
-                {LAKEVIEW_DOC_CADENCE.map((doc) => (
-                  <li
-                    key={doc.abbr}
-                    className="rounded-lg border border-border/60 px-3 py-2.5 space-y-1"
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-sm font-medium">
-                        {doc.abbr}
-                        <span className="text-muted-foreground font-normal ml-1.5 text-xs">
-                          {doc.template}
-                        </span>
-                      </span>
-                      <DocStatusBadge status={doc.todayStatus} />
-                    </div>
-                    <p className="text-[10px] text-muted-foreground">{doc.cadence}</p>
-                    <p className="text-xs">{doc.lastTitle}</p>
-                    <p className="text-[10px] text-muted-foreground italic">
-                      {doc.complianceNote}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-              <Link href="/reports">
-                <Button variant="outline" size="sm" className="w-full gap-2 text-xs">
-                  Open Reports · filtered by today
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </Button>
-              </Link>
-            </section>
-
-            <section className="rounded-xl border border-dashed border-primary/25 bg-primary/5 p-5 space-y-3">
-              <h2 className="text-sm font-bold flex items-center gap-2 text-primary">
-                <Beaker className="h-4 w-4" />
-                Lakeview advisor
-              </h2>
-              <ul className="space-y-2">
-                {LAKEVIEW_ADVISOR_TIPS.map((tip, i) => (
-                  <li
-                    key={i}
-                    className="text-xs text-muted-foreground leading-relaxed flex gap-2"
-                  >
-                    <span className="text-primary font-bold shrink-0">{i + 1}.</span>
-                    {tip}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          </aside>
+                    </span>
+                    <DocStatusBadge status={doc.todayStatus} />
+                  </div>
+                  <p className="text-[10px] text-muted-foreground">{doc.cadence}</p>
+                  <p className="text-xs">{doc.lastTitle}</p>
+                  <p className="text-[10px] text-muted-foreground italic">
+                    {doc.complianceNote}
+                  </p>
+                </li>
+              ))}
+            </ul>
+            <Link href="/reports">
+              <Button variant="outline" size="sm" className="w-full gap-2 text-xs">
+                Open Reports · filtered by today
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Button>
+            </Link>
+          </section>
         </div>
-
-        <section className="space-y-4">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="h-5 w-5 text-success" />
-            <h2 className="text-lg font-bold">QA process — shift to shift</h2>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
-            {LAKEVIEW_QA_PROCESS.map((step) => (
-              <div
-                key={step.step}
-                className="rounded-xl border border-border bg-card p-4 space-y-2 relative"
-              >
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-bold">
-                  {step.step}
-                </span>
-                <p className="text-sm font-semibold pt-1">{step.title}</p>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  {step.detail}
-                </p>
-                <p className="text-[10px] font-mono text-primary/70 pt-1 border-t border-border/50">
-                  {step.artifact}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
 
         <section className="rounded-xl border border-border bg-muted/20 p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="space-y-1">

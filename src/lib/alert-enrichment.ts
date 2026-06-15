@@ -12,7 +12,11 @@ import {
 
   isOperationsLikeTeam,
 
+  resolveAlertTeamIds,
+  resolvePlaybookTeamIds,
+
   routedRolesForTeam,
+  routedRolesForTeams,
 
   teamForId,
 
@@ -106,11 +110,13 @@ export function enrichAlertFromPlaybook(
   const teams = teamsFromStore();
   const users = companyUsersFromStore();
 
-  const teamId =
+  const teamIds = resolvePlaybookTeamIds(playbook, teams);
 
-    playbook.teamId ?? inferTeamIdFromPlaybook(playbook, teams);
+  const teamId = teamIds[0] ?? inferTeamIdFromPlaybook(playbook, teams);
 
   const routedRoles =
+
+    routedRolesForTeams(teamIds, teams, users) ??
 
     routedRolesForTeam(teamId, teams, users) ??
 
@@ -118,12 +124,9 @@ export function enrichAlertFromPlaybook(
 
     inferRoutedRoles(playbook);
 
-  const team = teamForId(teamId, teams);
-
-  const batchContext =
-
-    isOperationsLikeTeam(team)
-
+  const batchContext = teamIds.some((id) =>
+    isOperationsLikeTeam(teamForId(id, teams)),
+  )
       ? batchContextForOperationalAlert()
 
       : undefined;
@@ -141,6 +144,8 @@ export function enrichAlertFromPlaybook(
     lifecycle: base.lifecycle ?? "new",
 
     escalationLevel: base.escalationLevel ?? 0,
+
+    teamIds: teamIds.length ? teamIds : teamId ? [teamId] : undefined,
 
     teamId,
 
@@ -181,7 +186,11 @@ export function migrateAlertItem(item: AlertAgendaItem): AlertAgendaItem {
 
 
 
+  const teamIds = resolveAlertTeamIds(item, teams);
+
   const teamId =
+
+    teamIds[0] ??
 
     item.teamId ??
 
@@ -192,6 +201,8 @@ export function migrateAlertItem(item: AlertAgendaItem): AlertAgendaItem {
         name: item.playbookName,
 
         teamId: item.teamId,
+
+        teamIds: item.teamIds,
 
         routedRoles: item.routedRoles,
 
@@ -206,6 +217,8 @@ export function migrateAlertItem(item: AlertAgendaItem): AlertAgendaItem {
 
 
   const routedRoles =
+
+    routedRolesForTeams(teamIds, teams, users) ??
 
     routedRolesForTeam(teamId, teams, users) ??
 
@@ -234,6 +247,8 @@ export function migrateAlertItem(item: AlertAgendaItem): AlertAgendaItem {
     lifecycle,
 
     escalationLevel: item.escalationLevel ?? 0,
+
+    teamIds: teamIds.length ? teamIds : teamId ? [teamId] : undefined,
 
     teamId,
 

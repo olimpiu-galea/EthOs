@@ -5,7 +5,7 @@ import {
   DEFAULT_ACTION_ITEMS,
   DEFAULT_GUIDANCE,
 } from "./default-playbook-response";
-import { inferTeamIdFromPlaybook } from "./teams";
+import { inferTeamIdFromPlaybook, resolvePlaybookTeamIds } from "./teams";
 import { useSettingsStore } from "@/stores/settings-store";
 
 function newConditionId(): string {
@@ -34,12 +34,16 @@ export function normalizePlaybookAlert(
   };
 }
 
-function resolveTeamId(raw: LegacyPlaybook): string | undefined {
+function resolveTeamIds(raw: LegacyPlaybook): string[] {
   const teams = useSettingsStore.getState().teams;
-  return raw.teamId ?? inferTeamIdFromPlaybook(raw, teams);
+  const fromStored = resolvePlaybookTeamIds(raw, teams);
+  if (fromStored.length) return fromStored;
+  const inferred = inferTeamIdFromPlaybook(raw, teams);
+  return inferred ? [inferred] : [];
 }
 
 function basePlaybookFields(raw: LegacyPlaybook) {
+  const teamIds = resolveTeamIds(raw);
   return {
     id: raw.id,
     name: raw.name,
@@ -47,7 +51,8 @@ function basePlaybookFields(raw: LegacyPlaybook) {
     status: raw.status,
     alertCooldownMs: raw.alertCooldownMs,
     alert: normalizePlaybookAlert(raw.alert),
-    teamId: resolveTeamId(raw),
+    teamIds: teamIds.length ? teamIds : undefined,
+    teamId: teamIds[0],
     routedRoles: raw.routedRoles,
     actionItems: raw.actionItems?.length
       ? raw.actionItems

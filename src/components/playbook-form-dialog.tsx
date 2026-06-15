@@ -56,14 +56,7 @@ import { Badge } from "@/components/ui/badge";
 import { listUsersForCompany } from "@/lib/company-registry";
 import { useAuthStore } from "@/stores/auth-store";
 import { useSettingsStore } from "@/stores/settings-store";
-import { enabledTeams, routedRolesForTeam } from "@/lib/teams";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { enabledTeams, routedRolesForTeams } from "@/lib/teams";
 
 type Props = {
   open: boolean;
@@ -84,6 +77,12 @@ function newActionItem(): PlaybookActionItem {
 
 function newGuidanceStep(): PlaybookGuidanceStep {
   return { title: "", body: "" };
+}
+
+function formTeamIds(form: Pick<Playbook, "teamId" | "teamIds">): string[] {
+  if (form.teamIds?.length) return form.teamIds;
+  if (form.teamId) return [form.teamId];
+  return [];
 }
 
 export function PlaybookFormDialog({
@@ -134,6 +133,14 @@ export function PlaybookFormDialog({
         conditionGroups: pb.conditionGroups,
         groupMatchMode: pb.groupMatchMode,
         alert: pb.alert,
+        teamIds:
+          pb.teamIds?.length
+            ? pb.teamIds
+            : pb.teamId
+              ? [pb.teamId]
+              : teams[0]
+                ? [teams[0].id]
+                : [],
         teamId: pb.teamId ?? teams[0]?.id,
         actionItems: pb.actionItems,
         guidance: pb.guidance,
@@ -163,10 +170,11 @@ export function PlaybookFormDialog({
   const disabled = !canEditConditions;
 
   function handleSubmit() {
+    const selectedTeamIds = formTeamIds(form);
     if (
       !form.name.trim() ||
       !hasValidPlaybookConditions(form) ||
-      (teams.length > 0 && !form.teamId)
+      (teams.length > 0 && selectedTeamIds.length === 0)
     ) {
       return;
     }
@@ -188,13 +196,11 @@ export function PlaybookFormDialog({
         title: form.alert.title.trim() || "Alert",
         message: form.alert.message.trim() || "Operator action required",
       },
-      teamId: form.teamId ?? teams[0]?.id,
+      teamIds: selectedTeamIds,
+      teamId: selectedTeamIds[0],
       routedRoles:
-        routedRolesForTeam(
-          form.teamId ?? teams[0]?.id,
-          allTeams,
-          companyUsers,
-        ) ?? inferRoutedRoles(form),
+        routedRolesForTeams(selectedTeamIds, allTeams, companyUsers) ??
+        inferRoutedRoles(form),
       actionItems,
       guidance,
       lastTriggeredAt: playbook?.lastTriggeredAt,
@@ -418,9 +424,10 @@ export function PlaybookFormDialog({
           />
 
           <section className="space-y-2">
-            <Label className="text-base font-semibold">Assigned team</Label>
+            <Label className="text-base font-semibold">Assigned teams</Label>
             <p className="text-xs text-muted-foreground">
-              Alerts from this playbook are routed to this team on the Agenda
+              Alerts from this playbook are routed to the selected teams on the
+              Agenda. You can assign one or more teams.
             </p>
             {teams.length === 0 ? (
               <div className="text-sm text-amber-400 bg-amber-500/10 border border-amber-500/25 rounded-lg px-3 py-3 space-y-2">
@@ -441,22 +448,42 @@ export function PlaybookFormDialog({
                 </Button>
               </div>
             ) : (
-              <Select
-                value={form.teamId ?? teams[0]?.id ?? ""}
-                onValueChange={(teamId) => setForm((f) => ({ ...f, teamId }))}
-                disabled={disabled}
-              >
-                <SelectTrigger className="h-11">
-                  <SelectValue placeholder="Select a team" />
-                </SelectTrigger>
-                <SelectContent>
-                  {teams.map((team) => (
-                    <SelectItem key={team.id} value={team.id}>
-                      {team.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div className="rounded-lg border divide-y max-h-48 overflow-y-auto">
+                {teams.map((team) => {
+                  const selected = formTeamIds(form).includes(team.id);
+                  return (
+                    <label
+                      key={team.id}
+                      className={cn(
+                        "flex items-center gap-3 px-3 py-2.5 cursor-pointer transition-colors",
+                        selected ? "bg-primary/10" : "hover:bg-muted/30",
+                        disabled && "opacity-60 cursor-not-allowed",
+                      )}
+                    >
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4 rounded border-border accent-primary"
+                        checked={selected}
+                        disabled={disabled}
+                        onChange={() => {
+                          setForm((f) => {
+                            const current = formTeamIds(f);
+                            const next = selected
+                              ? current.filter((id) => id !== team.id)
+                              : [...current, team.id];
+                            return {
+                              ...f,
+                              teamIds: next,
+                              teamId: next[0],
+                            };
+                          });
+                        }}
+                      />
+                      <span className="text-sm font-medium">{team.name}</span>
+                    </label>
+                  );
+                })}
+              </div>
             )}
           </section>
 
@@ -698,7 +725,7 @@ export function PlaybookFormDialog({
             disabled={
               !form.name.trim() ||
               !hasValidPlaybookConditions(form) ||
-              (teams.length > 0 && !form.teamId)
+              (teams.length > 0 && formTeamIds(form).length === 0)
             }
           >
             {playbook ? "Save playbook" : "Create playbook"}
@@ -753,10 +780,18 @@ export function PlaybookFormDialog({
                       Alert: {form.alert.title} · {form.alert.severity}
                     </p>
                   </div>
-                  {teams.find((t) => t.id === form.teamId)?.name && (
-                    <Badge variant="outline">
-                      Team: {teams.find((t) => t.id === form.teamId)?.name}
-                    </Badge>
+                  {formTeamIds(form).length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 justify-end">
+                      {formTeamIds(form).map((teamId) => {
+                        const name = teams.find((t) => t.id === teamId)?.name;
+                        if (!name) return null;
+                        return (
+                          <Badge key={teamId} variant="outline">
+                            Team: {name}
+                          </Badge>
+                        );
+                      })}
+                    </div>
                   )}
                 </div>
                 <p
@@ -775,10 +810,18 @@ export function PlaybookFormDialog({
                         ? "Match ALL"
                         : "Match ANY"}
                   </Badge>
-                  {teams.find((t) => t.id === form.teamId)?.name && (
-                    <Badge variant="outline">
-                      Team: {teams.find((t) => t.id === form.teamId)?.name}
-                    </Badge>
+                  {formTeamIds(form).length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 justify-end">
+                      {formTeamIds(form).map((teamId) => {
+                        const name = teams.find((t) => t.id === teamId)?.name;
+                        if (!name) return null;
+                        return (
+                          <Badge key={teamId} variant="outline">
+                            Team: {name}
+                          </Badge>
+                        );
+                      })}
+                    </div>
                   )}
                   <Badge variant="secondary">5 min cooldown</Badge>
                   <Badge variant="secondary">7-day window</Badge>

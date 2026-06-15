@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuthStore } from "@/stores/auth-store";
-import { DEMO_ACCOUNTS, DEFAULT_COMPANY, DEMO_PASSWORD } from "@/lib/auth-constants";
+import { DEMO_ACCOUNTS, DEFAULT_COMPANY } from "@/lib/auth-constants";
 import { OperationsSuiteToggle } from "@/components/operations-suite-toggle";
 import { workspaceHomePath } from "@/lib/role-access";
 import { cn } from "@/lib/utils";
@@ -90,8 +90,8 @@ export default function LoginPage() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder={DEMO_PASSWORD}
-                  autoComplete="current-password"
+                  placeholder="Enter password"
+                  autoComplete="off"
                 />
               </div>
               {error && (
@@ -113,7 +113,7 @@ export default function LoginPage() {
 
         <div className="space-y-3">
           <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground text-center">
-            Quick demo accounts · password: {DEMO_PASSWORD}
+            Quick demo accounts
           </p>
           <div className="grid gap-2">
             {demoAccounts.map((a) => (

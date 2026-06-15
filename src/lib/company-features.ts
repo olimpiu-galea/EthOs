@@ -4,18 +4,18 @@ import type { SignalSource } from "@/lib/types";
 export type CompanyFeedConfig = Record<SignalSource, boolean>;
 
 export const EMPTY_COMPANY_FEEDS: CompanyFeedConfig = {
-  dcs: false,
-  lab: false,
-  commodity: false,
-  inventory: false,
+  dcs: true,
+  lab: true,
+  commodity: true,
+  inventory: true,
 };
 
 /** Lakeview demo defaults */
 export const DEFAULT_COMPANY_FEEDS: CompanyFeedConfig = {
   dcs: true,
   lab: true,
-  commodity: false,
-  inventory: false,
+  commodity: true,
+  inventory: true,
 };
 
 export function defaultFeedsForCompany(companyId: string): CompanyFeedConfig {
@@ -54,7 +54,7 @@ export const FEED_LABELS: Record<SignalSource, { label: string; description: str
 
   inventory: {
 
-    label: "Inventory management",
+    label: "Procurement",
 
     description: "Materials on hand and reorder thresholds (Phrase 2).",
 

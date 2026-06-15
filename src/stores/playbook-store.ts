@@ -159,7 +159,7 @@ export const usePlaybookStore = create<PlaybookState>()(
     }),
     {
       name: "playbook-editor-playbooks",
-      version: 9,
+      version: 10,
       skipHydration: true,
       partialize: (s) => ({ playbooks: s.playbooks }),
       migrate: (persisted: unknown, version: number) => {
@@ -219,6 +219,17 @@ export const usePlaybookStore = create<PlaybookState>()(
             playbooks = playbooks.map((p) => ({
               ...p,
               alert: normalizePlaybookAlert(p.alert),
+            }));
+          }
+
+          if (version < 10) {
+            playbooks = playbooks.map((p) => ({
+              ...p,
+              teamIds: p.teamIds?.length
+                ? p.teamIds
+                : p.teamId
+                  ? [p.teamId]
+                  : undefined,
             }));
           }
 

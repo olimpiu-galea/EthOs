@@ -182,6 +182,7 @@ export function BatchesHub2030() {
   const [compareId, setCompareId] = useState("6402");
   const [phaseFilter, setPhaseFilter] = useState<BatchPhaseId | "all">("all");
   const [listTab, setListTab] = useState<BatchListTab>("active");
+  const [relatedAlertsExpanded, setRelatedAlertsExpanded] = useState(false);
 
   useEffect(() => {
     if (batchFromUrl && MOCK_BATCHES.some((b) => b.id === batchFromUrl)) {
@@ -192,6 +193,10 @@ export function BatchesHub2030() {
       }
     }
   }, [batchFromUrl]);
+
+  useEffect(() => {
+    setRelatedAlertsExpanded(false);
+  }, [selectedId]);
 
   const activeBatches = useMemo(
     () => MOCK_BATCHES.filter(isActiveBatch),
@@ -229,6 +234,10 @@ export function BatchesHub2030() {
       ),
     [agendaItems, selected.id],
   );
+
+  const visibleRelatedAlerts = relatedAlertsExpanded
+    ? relatedAlerts
+    : relatedAlerts.slice(0, 3);
 
   const filteredEvents = useMemo(() => {
     if (phaseFilter === "all") return selected.events;
@@ -473,7 +482,7 @@ export function BatchesHub2030() {
                     Related alerts ({relatedAlerts.length})
                   </p>
                   <ul className="space-y-1 text-sm">
-                    {relatedAlerts.map((a) => (
+                    {visibleRelatedAlerts.map((a) => (
                       <li key={a.id} className="text-muted-foreground">
                         <span className="font-medium text-foreground">{a.alertTitle ?? a.playbookName}</span>
                         {" · "}
@@ -482,6 +491,17 @@ export function BatchesHub2030() {
                       </li>
                     ))}
                   </ul>
+                  {relatedAlerts.length > 3 && (
+                    <button
+                      type="button"
+                      onClick={() => setRelatedAlertsExpanded((v) => !v)}
+                      className="mt-2 text-xs font-medium text-primary hover:underline"
+                    >
+                      {relatedAlertsExpanded
+                        ? "See less"
+                        : `See more (${relatedAlerts.length - 3} more)`}
+                    </button>
+                  )}
                 </div>
               )}
 

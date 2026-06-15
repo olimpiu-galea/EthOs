@@ -60,6 +60,10 @@ import { usePlaybookStore } from "@/stores/playbook-store";
 import { useCombinedLastSync } from "@/hooks/use-all-signal-tags";
 
 import { AlertDetailModal } from "@/components/agenda/alert-detail-modal";
+import {
+  AlertContextChatModal,
+  AlertChatTrigger,
+} from "@/components/agenda/alert-context-chat";
 
 import type { AlertAgendaItem } from "@/lib/types";
 
@@ -72,7 +76,7 @@ import {
 } from "@/lib/agenda-filter";
 import { upcomingPlaybookTriggers } from "@/lib/upcoming-playbook-triggers";
 
-import { agendaLensesForTeams, teamNameForId } from "@/lib/teams";
+import { agendaLensesForTeams, resolveAlertTeamIds, teamNameForId } from "@/lib/teams";
 import { canSeeAllAgendaTeams } from "@/lib/auth-constants";
 import { useSettingsStore } from "@/stores/settings-store";
 
@@ -137,6 +141,10 @@ export default function AgendaPage() {
   const [selectedAlert, setSelectedAlert] = useState<AlertAgendaItem | null>(null);
 
   const [detailOpen, setDetailOpen] = useState(false);
+
+  const [chatAlert, setChatAlert] = useState<AlertAgendaItem | null>(null);
+
+  const [chatOpen, setChatOpen] = useState(false);
 
   const [agendaLens, setAgendaLens] = useState<AgendaLensId>("all");
 
@@ -775,17 +783,15 @@ export default function AgendaPage() {
 
                             </span>
 
-                            <Badge
-
-                              variant="outline"
-
-                              className="text-[9px] capitalize"
-
-                            >
-
-                              {teamNameForId(item.teamId, teams)}
-
-                            </Badge>
+                            {resolveAlertTeamIds(item, teams).map((teamId) => (
+                              <Badge
+                                key={teamId}
+                                variant="outline"
+                                className="text-[9px] capitalize"
+                              >
+                                {teamNameForId(teamId, teams)}
+                              </Badge>
+                            ))}
 
                             <Badge
 
@@ -804,6 +810,16 @@ export default function AgendaPage() {
                                 Esc L{item.escalationLevel}
                               </Badge>
                             )}
+
+                            <AlertChatTrigger
+                              size="xs"
+                              className="ml-auto"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setChatAlert(item);
+                                setChatOpen(true);
+                              }}
+                            />
 
                             {item.status === "completed" ? (
 
@@ -859,6 +875,12 @@ export default function AgendaPage() {
 
         onOpenChange={setDetailOpen}
 
+      />
+
+      <AlertContextChatModal
+        alert={chatAlert}
+        open={chatOpen}
+        onOpenChange={setChatOpen}
       />
 
       <ShiftHandoverModal

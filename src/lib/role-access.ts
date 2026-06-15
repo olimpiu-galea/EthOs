@@ -5,7 +5,7 @@ import {
   operationsSuiteForDomain,
   type SuiteNavItem,
 } from "@/lib/domain-config";
-import { Package, Wallet } from "lucide-react";
+import { Package, Wallet, Wrench } from "lucide-react";
 
 export function canSeeIntegrations(role: UserRole): boolean {
   return role === "company_admin" || role === "platform_admin";
@@ -21,9 +21,22 @@ export function canSeeMarginDesk(role: UserRole): boolean {
   );
 }
 
-export function canSeeInventory(role: UserRole): boolean {
+export function canSeeProcurement(role: UserRole): boolean {
   return role !== "financial" && role !== "qa_lab";
 }
+
+export function canSeeMaintenance(role: UserRole): boolean {
+  return (
+    role === "maintenance" ||
+    role === "supervisor" ||
+    role === "operational" ||
+    role === "company_admin" ||
+    role === "platform_admin"
+  );
+}
+
+/** @deprecated use canSeeProcurement */
+export const canSeeInventory = canSeeProcurement;
 
 export type SignalFeed = "dcs" | "lab" | "commodity" | "inventory";
 
@@ -86,13 +99,21 @@ export function buildSuiteNav(
     });
   }
   if (
-    canSeeInventory(role) &&
+    canSeeProcurement(role) &&
     isCompanyFeedAvailable("inventory", feedOpts)
   ) {
     extras.push({
-      href: "/inventory",
-      label: "Inventory",
+      href: "/procurement",
+      label: "Procurement",
       icon: Package,
+      ready: true,
+    });
+  }
+  if (canSeeMaintenance(role)) {
+    extras.push({
+      href: "/maintenance",
+      label: "Maintenance",
+      icon: Wrench,
       ready: true,
     });
   }

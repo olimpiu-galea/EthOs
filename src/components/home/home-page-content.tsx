@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 import { FlowDiagram } from "@/components/home/flow-diagram";
 import { LandingHeader } from "@/components/home/landing-header";
-import { DEMO_PASSWORD } from "@/lib/auth-constants";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -132,7 +131,7 @@ function GuestHome() {
             <p className="text-xl font-semibold">Ready to explore?</p>
             <p className="text-sm text-muted-foreground max-w-md">
               Create a free demo account for Lakeview Ethanol, or sign in with a
-              demo role (password: <code className="text-primary">{DEMO_PASSWORD}</code>).
+              demo role below.
             </p>
           </div>
           <div className="flex flex-wrap gap-3 shrink-0">

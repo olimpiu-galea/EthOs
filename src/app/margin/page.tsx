@@ -41,7 +41,7 @@ export default function MarginPage() {
       return;
     }
     if (user && !canSeeMarginDesk(user.role)) {
-      router.replace("/inventory");
+      router.replace("/procurement");
     }
   }, [domain, phase2Enabled, commodityFeedEnabled, user, router]);
 

@@ -29,7 +29,7 @@ import {
 } from "@/lib/lab-sheet-availability";
 import { playbookConditionsFlat } from "@/lib/playbook-utils";
 import { conditionsPreviewForPlaybook } from "@/lib/rule-evaluator";
-import { teamNameForId } from "@/lib/teams";
+import { resolvePlaybookTeamIds, teamNameForId, teamNamesForIds } from "@/lib/teams";
 import { useSettingsStore } from "@/stores/settings-store";
 import { Button } from "@/components/ui/button";
 
@@ -238,7 +238,7 @@ export default function PlaybooksPage() {
                 <thead>
                   <tr className="border-b text-left text-muted-foreground">
                     <th className="pb-3 pr-4 font-medium">Name</th>
-                    <th className="pb-3 pr-4 font-medium">Team</th>
+                    <th className="pb-3 pr-4 font-medium">Teams</th>
                     <th className="pb-3 pr-4 font-medium">When</th>
                     <th className="pb-3 pr-4 font-medium">Alert</th>
                     <th className="pb-3 pr-4 font-medium">Active</th>
@@ -259,9 +259,22 @@ export default function PlaybooksPage() {
                         <PlaybookStats id={pb.id} backtestHits7d={pb.backtestHits7d} />
                       </td>
                       <td className="py-4 pr-4">
-                        <Badge variant="outline" className="text-xs">
-                          {teamNameForId(pb.teamId, teams)}
-                        </Badge>
+                        <div className="flex flex-wrap gap-1.5">
+                          {resolvePlaybookTeamIds(pb, teams).map((teamId) => (
+                            <Badge
+                              key={teamId}
+                              variant="outline"
+                              className="text-xs"
+                            >
+                              {teamNameForId(teamId, teams)}
+                            </Badge>
+                          ))}
+                          {resolvePlaybookTeamIds(pb, teams).length === 0 && (
+                            <Badge variant="outline" className="text-xs">
+                              Unassigned
+                            </Badge>
+                          )}
+                        </div>
                       </td>
                       <td className="py-4 pr-4 max-w-xs">
                         <p
@@ -355,7 +368,11 @@ export default function PlaybooksPage() {
               </div>
               <p className="text-xs text-muted-foreground">{item.highlight}</p>
               <p className="text-[10px] uppercase text-violet-400/80">
-                {teamNameForId(item.playbook.teamId, teams)} team
+                {teamNamesForIds(
+                  resolvePlaybookTeamIds(item.playbook, teams),
+                  teams,
+                )}{" "}
+                team
               </p>
               <Button
                 type="button"

@@ -68,7 +68,7 @@ const FEED_DEFINITIONS: FeedDefinition[] = [
   },
   {
     id: "inventory",
-    name: "Inventory",
+    name: "Procurement",
     format: "SKU ledger",
     capabilities: "Reorder alerts, operational playbooks",
     refresh: "~60s",

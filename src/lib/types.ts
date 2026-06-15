@@ -124,8 +124,10 @@ export type Playbook = {
   /** How rule groups combine; defaults to matchMode when omitted */
   groupMatchMode?: ConditionMatchMode;
   alert: PlaybookAlert;
-  /** Team assigned on create — controls who sees alerts on Agenda */
+  /** Primary team — first entry in teamIds (backward compatible) */
   teamId?: string;
+  /** One or more teams that receive alerts from this playbook */
+  teamIds?: string[];
   /** Derived from team members */
   routedRoles?: UserRole[];
   actionItems: PlaybookActionItem[];
@@ -241,6 +243,7 @@ export type AlertAgendaItem = {
   escalationLevel?: number;
   assignedRole?: UserRole;
   teamId?: string;
+  teamIds?: string[];
   routedRoles?: UserRole[];
   batchContext?: BatchContext;
   /** Pre-computed playbook alerts — keep historical timestamps */

@@ -1,16 +1,17 @@
 import type { AlertAgendaItem, AuthUser } from "./types";
 import { canSeeAllAgendaTeams } from "./auth-constants";
 import type { AgendaLensId, OpsTeam } from "./teams";
-import { enabledTeams, userSeesTeamAlert } from "./teams";
+import { alertMatchesTeamLens, enabledTeams, userSeesAlert } from "./teams";
 
 export type { AgendaLensId } from "./teams";
 
 function filterByTeamLens(
   items: AlertAgendaItem[],
   lens: AgendaLensId,
+  teams: OpsTeam[],
 ): AlertAgendaItem[] {
   if (lens === "all") return items;
-  return items.filter((i) => i.teamId === lens);
+  return items.filter((i) => alertMatchesTeamLens(i, lens, teams));
 }
 
 /** Filter agenda for a viewer based on team membership */
@@ -19,7 +20,7 @@ export function filterAgendaAsUser(
   viewer: Pick<AuthUser, "id" | "role">,
   teams: OpsTeam[],
 ): AlertAgendaItem[] {
-  return items.filter((i) => userSeesTeamAlert(viewer, i.teamId, teams));
+  return items.filter((i) => userSeesAlert(viewer, i, teams));
 }
 
 export function filterAgendaForViewer(
@@ -34,7 +35,7 @@ export function filterAgendaForViewer(
     return filterAgendaAsUser(items, viewer, activeTeams);
   }
 
-  return filterByTeamLens(items, lens);
+  return filterByTeamLens(items, lens, activeTeams);
 }
 
 export function nextTriggerEstimate(

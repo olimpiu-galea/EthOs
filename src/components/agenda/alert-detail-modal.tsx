@@ -26,7 +26,7 @@ import { useAuditStore } from "@/stores/audit-store";
 import { usePlaybookFeedbackStore } from "@/stores/playbook-feedback-store";
 import { useAuthStore } from "@/stores/auth-store";
 import { useSettingsStore } from "@/stores/settings-store";
-import { teamNameForId } from "@/lib/teams";
+import { resolveAlertTeamIds, teamNamesForIds } from "@/lib/teams";
 import {
   Dialog,
   DialogContent,
@@ -36,6 +36,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { AlertContextChatModal } from "@/components/agenda/alert-context-chat";
 
 const SEVERITY_THEME: Record<
   AlertSeverity,
@@ -114,6 +115,7 @@ export function AlertDetailModal({
   const auditEvents = useAuditStore((s) => s.forAlert);
   const addFeedback = usePlaybookFeedbackStore((s) => s.addFeedback);
   const [commentDraft, setCommentDraft] = useState("");
+  const [chatOpen, setChatOpen] = useState(false);
   const [now, setNow] = useState(Date.now());
 
   useEffect(() => {
@@ -144,13 +146,16 @@ export function AlertDetailModal({
     : 0;
   const timeline = alert ? auditEvents(alert.id) : [];
   const actor = user?.name ?? "User";
-  const teamName = alert ? teamNameForId(alert.teamId, teams) : "";
+  const teamNames = alert
+    ? teamNamesForIds(resolveAlertTeamIds(alert, teams), teams)
+    : "";
 
   if (!alert) return null;
 
   const isClosed = lifecycle === "resolved" || lifecycle === "false_alarm";
 
   return (
+    <>
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className={cn(
@@ -182,9 +187,9 @@ export function AlertDetailModal({
                   → {ROLE_LABELS[alert.assignedRole]}
                 </Badge>
               )}
-              {teamName && (
+              {teamNames && teamNames !== "Unassigned" && (
                 <Badge variant="outline" className="text-xs">
-                  {teamName}
+                  {teamNames}
                 </Badge>
               )}
             </div>
@@ -201,6 +206,18 @@ export function AlertDetailModal({
             <p className="font-mono text-xs text-primary/90">
               IF {alert.conditionsSummary}
             </p>
+            <div className="pt-1">
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                className="gap-2 h-8 text-xs border-primary/30 bg-primary/5 hover:bg-primary/10"
+                onClick={() => setChatOpen(true)}
+              >
+                <Sparkles className="h-3.5 w-3.5" />
+                Ask about this alert
+              </Button>
+            </div>
           </DialogHeader>
         </div>
 
@@ -519,5 +536,11 @@ export function AlertDetailModal({
         </div>
       </DialogContent>
     </Dialog>
+    <AlertContextChatModal
+      alert={alert}
+      open={chatOpen}
+      onOpenChange={setChatOpen}
+    />
+    </>
   );
 }

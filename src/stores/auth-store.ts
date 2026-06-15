@@ -8,6 +8,7 @@ import {
   DEMO_PASSWORD,
   DEFAULT_COMPANY,
   HEALTHCARE_COMPANY,
+  INDUSTRY_DOMAINS,
 } from "@/lib/auth-constants";
 import { autoConnectIntegrationsForRole } from "@/lib/auto-connect-integrations";
 import {
@@ -164,6 +165,9 @@ export const useAuthStore = create<AuthState>()(
       },
 
       signup: ({ name, email, password, companyName, domain }) => {
+        const domainReady = INDUSTRY_DOMAINS.find((d) => d.id === domain)?.ready;
+        if (!domainReady) return false;
+
         const exists =
           DEMO_ACCOUNTS.some(
             (a) => a.email.toLowerCase() === email.toLowerCase(),

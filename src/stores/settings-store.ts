@@ -23,7 +23,7 @@ type SettingsState = {
   companyId: string;
   companyName: string;
   domain: IndustryDomain;
-  /** When false, Extras nav (batches, margin, inventory) is hidden */
+  /** When false, Extras nav (batches, margin, procurement) is hidden */
   operationsSuiteEnabled: boolean;
   companyFeeds: CompanyFeedConfig;
   companyFeedsByCompany: Record<string, CompanyFeedConfig>;
@@ -75,7 +75,7 @@ export const useSettingsStore = create<SettingsState>()(
       companyId: DEFAULT_COMPANY.id,
       companyName: DEFAULT_COMPANY.name,
       domain: "ethanol",
-      operationsSuiteEnabled: false,
+      operationsSuiteEnabled: true,
       companyFeeds: { ...DEFAULT_COMPANY_FEEDS },
       companyFeedsByCompany: {
         [DEFAULT_COMPANY.id]: { ...DEFAULT_COMPANY_FEEDS },
@@ -174,9 +174,9 @@ export const useSettingsStore = create<SettingsState>()(
     }),
     {
       name: "signal-relay-settings",
-      version: 9,
+      version: 10,
       skipHydration: true,
-      migrate: (persisted: unknown) => {
+      migrate: (persisted: unknown, version: number) => {
         const raw = persisted as Partial<SettingsState> & {
           enabledTeamLenses?: string[];
         };
@@ -208,14 +208,28 @@ export const useSettingsStore = create<SettingsState>()(
           companyFeedsByCompany[DEFAULT_COMPANY.id] = { ...DEFAULT_COMPANY_FEEDS };
         }
 
+        if (version < 10) {
+          companyFeedsByCompany = Object.fromEntries(
+            Object.entries(companyFeedsByCompany).map(([id, feeds]) => [
+              id,
+              { ...DEFAULT_COMPANY_FEEDS, ...feeds },
+            ]),
+          );
+        }
+
         const teams =
           teamsByCompany[companyId] ?? defaultTeamsForCompany(companyId);
-        const companyFeeds =
+        let companyFeeds =
           companyFeedsByCompany[companyId] ?? defaultFeedsForCompany(companyId);
+
+        if (version < 10) {
+          companyFeeds = { ...DEFAULT_COMPANY_FEEDS };
+        }
 
         return {
           ...raw,
-          operationsSuiteEnabled: raw.operationsSuiteEnabled ?? false,
+          operationsSuiteEnabled:
+            version < 10 ? true : (raw.operationsSuiteEnabled ?? true),
           companyFeedsByCompany,
           companyFeeds,
           teamsByCompany,

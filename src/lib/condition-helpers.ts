@@ -5,7 +5,7 @@ export const SOURCE_OPTIONS: { id: SignalSource; label: string }[] = [
   { id: "dcs", label: "DCS" },
   { id: "lab", label: "Lab Sheet" },
   { id: "commodity", label: "Commodity" },
-  { id: "inventory", label: "Inventory" },
+  { id: "inventory", label: "Procurement" },
 ];
 
 function placeholderTag(

@@ -1,6 +1,6 @@
 import { clearPersistedAppStorage } from "@/lib/clear-app-storage";
 import { DEFAULT_COMPANY } from "@/lib/auth-constants";
-import { EMPTY_COMPANY_FEEDS } from "@/lib/company-features";
+import { DEFAULT_COMPANY_FEEDS } from "@/lib/company-features";
 import { DEFAULT_REPORT_TEMPLATES } from "@/stores/settings-store";
 
 export const SKIP_INTEGRATION_AUTO_CONNECT_KEY =
@@ -91,11 +91,11 @@ export async function resetLakeviewWorkspace(): Promise<void> {
     companyId: DEFAULT_COMPANY.id,
     companyName: DEFAULT_COMPANY.name,
     domain: "ethanol",
-    operationsSuiteEnabled: false,
-    companyFeeds: { ...EMPTY_COMPANY_FEEDS },
+    operationsSuiteEnabled: true,
+    companyFeeds: { ...DEFAULT_COMPANY_FEEDS },
     companyFeedsByCompany: {
       ...s.companyFeedsByCompany,
-      [DEFAULT_COMPANY.id]: { ...EMPTY_COMPANY_FEEDS },
+      [DEFAULT_COMPANY.id]: { ...DEFAULT_COMPANY_FEEDS },
     },
     teams: [],
     teamsByCompany: {

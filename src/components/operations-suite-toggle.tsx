@@ -56,7 +56,7 @@ export function OperationsSuiteToggle({
         )}
         title={
           operationsSuiteEnabled
-            ? "Extras enabled — batches, margin desk, inventory"
+            ? "Extras enabled — batches, margin desk, procurement, maintenance"
             : "Extras disabled"
         }
       >

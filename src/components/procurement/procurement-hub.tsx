@@ -89,7 +89,7 @@ function parseForm(form: FormState): Omit<InventoryLedgerItem, "id" | "updatedAt
   };
 }
 
-export function InventoryHub() {
+export function ProcurementHub() {
   const items = useInventoryItemsStore((s) => s.items);
   const addItem = useInventoryItemsStore((s) => s.addItem);
   const updateItem = useInventoryItemsStore((s) => s.updateItem);
@@ -157,7 +157,7 @@ export function InventoryHub() {
           </p>
           <div className="flex items-center gap-3">
             <Package className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold tracking-tight">Inventory</h1>
+            <h1 className="text-3xl font-bold tracking-tight">Procurement</h1>
           </div>
           <p className="text-muted-foreground max-w-xl">
             Materials ledger — feedstock, enzymes, nutrients, and CIP supplies
@@ -168,7 +168,7 @@ export function InventoryHub() {
           {feedConnected && (
             <Badge variant="success" className="gap-1">
               <Radio className="h-3 w-3" />
-              Inventory feed
+              Procurement feed
             </Badge>
           )}
           {lowStockCount > 0 && (

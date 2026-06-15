@@ -130,7 +130,7 @@ export const INDUSTRY_DOMAINS: {
     id: "healthcare",
     label: "Healthcare",
     description: "Patient flow, equipment & compliance",
-    ready: true,
+    ready: false,
   },
   {
     id: "steel",

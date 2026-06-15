@@ -231,7 +231,7 @@ export function PlantCopilotDemo() {
       },
       {
         id: "margin",
-        label: "Margin & inventory",
+        label: "Margin & procurement",
         detail: "Commodity exposure, tank levels, procurement signals",
         icon: Wallet,
         status: "indexed",

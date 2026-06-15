@@ -36,7 +36,7 @@ export const useInventoryStore = create<InventoryState>((set, get) => ({
     set({ loading: true, error: null });
     try {
       const res = await fetch("/fixtures/inventory-feed.csv");
-      if (!res.ok) throw new Error("Failed to load inventory feed.");
+      if (!res.ok) throw new Error("Failed to load procurement feed.");
       const text = await res.text();
       const tags = parseDcsCsv(text).map((t) => ({
         ...t,

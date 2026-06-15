@@ -1,17 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import {
-  ArrowRight,
-  Info,
   Radio,
   TrendingDown,
   TrendingUp,
   Wallet,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -227,68 +223,6 @@ export function MarginDesk() {
           )}
         </div>
       </header>
-
-      {batchImpact && batchImpact.ethanolGalShortfall > 0 && (
-        <Card className="border-amber-500/35 bg-gradient-to-br from-amber-500/10 to-card/40">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <TrendingDown className="h-5 w-5 text-amber-400" />
-              Active fermenter — yield opportunity cost
-            </CardTitle>
-            <CardDescription>
-              {batchImpact.batchId} · {batchImpact.fermenter} · {batchImpact.phaseLabel}{" "}
-              · {fmtGal(batchImpact.bushelsCharged)} bu charged
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <div>
-                <p className="text-xs text-muted-foreground">Projected yield</p>
-                <p className="text-xl font-bold tabular-nums">
-                  {batchImpact.projectedGalPerBu.toFixed(2)} gal/bu
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  vs {batchImpact.targetGalPerBu.toFixed(2)} std
-                </p>
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Ethanol equiv. gap</p>
-                <p className="text-xl font-bold tabular-nums text-amber-300">
-                  {fmtGal(batchImpact.ethanolGalShortfall)} gal
-                </p>
-                <p className="text-xs text-muted-foreground">at fermenter close</p>
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Desk margin</p>
-                <p className="text-xl font-bold tabular-nums">
-                  ${batchImpact.deskMarginPerGal.toFixed(2)}/gal
-                </p>
-                <p className="text-xs text-muted-foreground">MKT-MARGIN feed</p>
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Opportunity cost</p>
-                <p className="text-xl font-bold tabular-nums text-amber-300">
-                  {fmtUsd(batchImpact.opportunityCostUsd)}
-                </p>
-                <p className="text-xs text-muted-foreground">gal gap × desk margin</p>
-              </div>
-            </div>
-            <p className="text-xs text-muted-foreground flex items-start gap-2">
-              <Info className="h-3.5 w-3.5 shrink-0 mt-0.5" />
-              {batchImpact.note}
-            </p>
-            <p className="text-sm">{batchImpact.recommendation}</p>
-            <div className="flex flex-wrap gap-2">
-              <Button asChild variant="outline" size="sm" className="gap-2">
-                <Link href={`/batches?batch=${batchImpact.batchId}`}>
-                  View batch
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
