@@ -67,9 +67,9 @@ export const PREMIUM_CATALOG: PremiumCatalogItem[] = [
   {
     catalogId: "premium-margin-desk",
     price: 79,
-    highlight: "Commodity desk playbook — sell vs hold surplus",
+    highlight: "Financial playbook — sell vs hold surplus",
     playbook: {
-      name: "Surplus margin desk",
+      name: "Surplus financial",
       description:
         "Financial alert when margin, market signal, and inventory days align for a spot sale.",
       status: "disabled",
@@ -105,7 +105,7 @@ export const PREMIUM_CATALOG: PremiumCatalogItem[] = [
       alert: {
         type: "predefined",
         predefinedId: "info",
-        title: "Margin desk — evaluate spot sale",
+        title: "Financial — evaluate spot sale",
         message:
           "Strong margin with elevated inventory days. Review contract coverage before selling surplus.",
         severity: "info",

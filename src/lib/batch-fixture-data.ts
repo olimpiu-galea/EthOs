@@ -168,7 +168,7 @@ export const MOCK_BATCHES: BatchRecord[] = [
     brixDrop: 4.6,
     fermenterAgeH: 18,
     operatorNote:
-      "Cooling response lagging vs setpoint — matches Demo alarm on Agenda. Valve opened to 72%; re-check at 24h sample.",
+      "Cooling response lagging vs setpoint — matches Operational daily checkpoint on Agenda. Valve opened to 72%; re-check at 24h sample.",
     phases: [
       { id: "prep", label: "Prep & pre-CIP", short: "Prep", durationH: 2, status: "done" },
       { id: "fill", label: "Fill", short: "Fill", durationH: 4, status: "done" },
@@ -184,7 +184,7 @@ export const MOCK_BATCHES: BatchRecord[] = [
       { ts: "20:05", type: "phase", summary: "YP send posted — cell count in spec", field: "YP send" },
       { ts: "02:00", type: "sample", summary: "6h lab row — temp on target", field: "FERM-6H-TEMP/_.Value" },
       { ts: "08:00", type: "sample", summary: "12h lab row posted", field: "FERM-12H-POTENTIAL/_.Value" },
-      { ts: "08:00", type: "alert", summary: "Demo alarm — cooling slower than expected", field: "Cooling valve %" },
+      { ts: "08:00", type: "alert", summary: "Operational checkpoint — cooling slower than expected", field: "Cooling valve %" },
       { ts: "14:00", type: "sample", summary: "18h lab row — temp elevated", field: "FERM-18H-TEMP/_.Value" },
       { ts: "14:05", type: "signal", summary: "Cooling valve 72% open — DCS trend flat", field: "FermB_Cooling_SP" },
     ],

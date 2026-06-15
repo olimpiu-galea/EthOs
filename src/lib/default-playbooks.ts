@@ -8,10 +8,6 @@ import {
   ACETIC_PLAYBOOK_NAME,
 } from "./acetic-rules";
 import {
-  DAILY_DEMO_BUILTIN_ID,
-  DAILY_DEMO_PLAYBOOK_NAME,
-} from "./daily-demo-alarm-rules";
-import {
   buildPotentialVsTempConditionGroups,
   POTENTIAL_VS_TEMP_BUILTIN_ID,
   POTENTIAL_VS_TEMP_PLAYBOOK_NAME,
@@ -25,9 +21,12 @@ import {
   POTENTIAL_VS_TEMP_GUIDANCE,
 } from "./default-playbook-response-potential-temp";
 import {
-  DAILY_DEMO_ACTION_ITEMS,
-  DAILY_DEMO_GUIDANCE,
-} from "./default-playbook-response-daily-demo";
+  LAKEVIEW_TEAM_OPERATIONAL,
+  LAKEVIEW_WORKSPACE_DEMOS,
+  createWorkspaceDailyPlaybook,
+  ensureLakeviewDemoSeed,
+} from "./lakeview-demo-seed";
+import { routedRolesForTeam } from "./teams";
 
 export function createPotentialVsTempPlaybook(): Omit<Playbook, "id"> {
   return {
@@ -45,30 +44,6 @@ export function createPotentialVsTempPlaybook(): Omit<Playbook, "id"> {
     alert: criticalPlaybookAlert(
       "Measured temperature exceeded the control limit for this checkpoint",
     ),
-  };
-}
-
-export function createDailyDemoPlaybook(): Omit<Playbook, "id"> {
-  return {
-    name: DAILY_DEMO_PLAYBOOK_NAME,
-    description:
-      "Sample operations alert for demos — one pre-computed instance each day on the Agenda so teams can practice the full alert workflow.",
-    status: "active",
-    builtinId: DAILY_DEMO_BUILTIN_ID,
-    conditions: [],
-    matchMode: "all",
-    conditionGroups: [],
-    groupMatchMode: "all",
-    actionItems: DAILY_DEMO_ACTION_ITEMS.map((a) => ({ ...a })),
-    guidance: DAILY_DEMO_GUIDANCE.map((g) => ({ ...g })),
-    alert: {
-      type: "predefined",
-      predefinedId: "warning",
-      title: "Warning",
-      message:
-        "Ferm B — cooling response is slower than expected. Review the batch and confirm corrective action.",
-      severity: "warning",
-    },
   };
 }
 
@@ -114,6 +89,7 @@ function ensureBuiltinPlaybook(
       guidance: template.guidance,
       alert: template.alert,
       teamId: template.teamId ?? existing.teamId,
+      teamIds: template.teamIds ?? existing.teamIds,
       routedRoles: template.routedRoles ?? existing.routedRoles,
     });
     return;
@@ -127,21 +103,26 @@ function ensureBuiltinPlaybook(
     actionItems: template.actionItems,
     guidance: template.guidance,
     alert: template.alert,
-    ...(template.teamId && !existing.teamId
-      ? { teamId: template.teamId, routedRoles: template.routedRoles }
-      : {}),
+    ...(template.teamIds?.length
+      ? {
+          teamId: template.teamId,
+          teamIds: template.teamIds,
+          routedRoles: template.routedRoles,
+        }
+      : template.teamId && !existing.teamId
+        ? { teamId: template.teamId, routedRoles: template.routedRoles }
+        : {}),
   });
 }
 
 /** Ensure built-in playbooks exist for every workspace */
 export async function ensureDefaultPlaybooks(): Promise<void> {
+  await ensureLakeviewDemoSeed();
+
   const { usePlaybookStore } = await import("@/stores/playbook-store");
   const { useSettingsStore } = await import("@/stores/settings-store");
   const { listUsersForCompany } = await import("@/lib/company-registry");
   const { useAuthStore } = await import("@/stores/auth-store");
-  const { defaultTeamIdForNewPlaybook, routedRolesForTeam } = await import(
-    "@/lib/teams"
-  );
   const store = usePlaybookStore.getState();
   const settings = useSettingsStore.getState();
   const teams = settings.teams;
@@ -149,19 +130,24 @@ export async function ensureDefaultPlaybooks(): Promise<void> {
     settings.companyId,
     useAuthStore.getState().users,
   );
-  const teamId = defaultTeamIdForNewPlaybook(teams);
-  const teamMeta = teamId
+
+  const operationalTeam = teams.find((t) => t.id === LAKEVIEW_TEAM_OPERATIONAL);
+  const opMeta = operationalTeam
     ? {
-        teamId,
-        teamIds: [teamId],
-        routedRoles: routedRolesForTeam(teamId, teams, users),
+        teamId: operationalTeam.id,
+        teamIds: [operationalTeam.id],
+        routedRoles: routedRolesForTeam(operationalTeam.id, teams, users),
       }
     : {};
 
+  const workspaceTemplates = LAKEVIEW_WORKSPACE_DEMOS.map((demo) =>
+    createWorkspaceDailyPlaybook(demo, users, teams),
+  );
+
   const builtins = [
-    { ...createDailyDemoPlaybook(), ...teamMeta },
-    { ...createPotentialVsTempPlaybook(), ...teamMeta },
-    { ...createAceticPlaybook(), ...teamMeta },
+    ...workspaceTemplates,
+    { ...createPotentialVsTempPlaybook(), ...opMeta },
+    { ...createAceticPlaybook(), ...opMeta },
   ];
 
   for (const template of builtins) {
@@ -181,22 +167,19 @@ export async function ensureDefaultPlaybooks(): Promise<void> {
   );
   await applyLabGatedMockPlaybooksGate();
 
-  const dailyDemo = usePlaybookStore
-    .getState()
-    .playbooks.find((p) => p.builtinId === DAILY_DEMO_BUILTIN_ID);
-  if (dailyDemo) {
-    if (dailyDemo.status !== "active") {
-      store.updatePlaybook(dailyDemo.id, { status: "active" });
+  const { syncMockPlaybookAlerts, isWorkspaceDailyMockPlaybook } = await import(
+    "@/lib/mock-playbook-alerts"
+  );
+  const latestPlaybooks = usePlaybookStore.getState().playbooks;
+  for (const pb of latestPlaybooks.filter(isWorkspaceDailyMockPlaybook)) {
+    if (pb.status !== "active") {
+      store.updatePlaybook(pb.id, { status: "active" });
     }
-    const { syncMockPlaybookAlerts } = await import("@/lib/mock-playbook-alerts");
-    await syncMockPlaybookAlerts(
-      usePlaybookStore.getState().playbooks.find((p) => p.id === dailyDemo.id) ??
-        dailyDemo,
-    );
-
-    const { syncDailyDemoShiftReports } = await import(
-      "@/lib/daily-demo-shift-reports"
-    );
-    await syncDailyDemoShiftReports();
+  }
+  const syncedPlaybooks = usePlaybookStore
+    .getState()
+    .playbooks.filter(isWorkspaceDailyMockPlaybook);
+  for (const pb of syncedPlaybooks) {
+    await syncMockPlaybookAlerts(pb);
   }
 }

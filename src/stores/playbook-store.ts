@@ -159,7 +159,7 @@ export const usePlaybookStore = create<PlaybookState>()(
     }),
     {
       name: "playbook-editor-playbooks",
-      version: 10,
+      version: 11,
       skipHydration: true,
       partialize: (s) => ({ playbooks: s.playbooks }),
       migrate: (persisted: unknown, version: number) => {
@@ -175,7 +175,10 @@ export const usePlaybookStore = create<PlaybookState>()(
           let playbooks = list
             .map(migratePlaybook)
             .filter((p) => !isDemoPlaybook(p))
-            .filter((p) => p.name !== "Surplus margin desk")
+            .filter(
+              (p) =>
+                p.name !== "Surplus margin desk" && p.name !== "Surplus financial",
+            )
             .map((p) => ({
               ...p,
               alert: normalizePlaybookAlert(p.alert),
@@ -233,6 +236,10 @@ export const usePlaybookStore = create<PlaybookState>()(
             }));
           }
 
+          if (version < 11) {
+            playbooks = playbooks.filter((p) => !isDemoPlaybook(p));
+          }
+
           return { playbooks };
         } catch {
           return { playbooks: [] };
@@ -243,7 +250,10 @@ export const usePlaybookStore = create<PlaybookState>()(
           usePlaybookStore.setState({
             playbooks: state.playbooks
               .filter((p) => !isDemoPlaybook(p))
-              .filter((p) => p.name !== "Surplus margin desk")
+              .filter(
+              (p) =>
+                p.name !== "Surplus margin desk" && p.name !== "Surplus financial",
+            )
               .map((p) => {
                 const migrated = migratePlaybook(p as LegacyPlaybook);
                 return {

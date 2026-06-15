@@ -28,9 +28,7 @@ import { useSettingsStore } from "@/stores/settings-store";
 import {
   buildSuiteNav,
   canSeeIntegrations,
-  extrasNavLabel,
 } from "@/lib/role-access";
-import { OperationsSuiteToggle } from "@/components/operations-suite-toggle";
 import { ROLE_LABELS, canManageSettings } from "@/lib/auth-constants";
 import { EthOsWordmark } from "@/components/brand/ethos-wordmark";
 import { PRODUCT_SCOPE_SHORT, PRODUCT_TAGLINE } from "@/lib/brand";
@@ -139,13 +137,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           )}
 
           <div className="relative mt-3 rounded-xl border border-sidebar-border bg-sidebar-accent/40 p-2 space-y-0.5">
-            <p className="px-2 pt-1 pb-1 text-[9px] font-semibold uppercase tracking-[0.15em] text-sidebar-muted">
-              {extrasNavLabel(role)}
-            </p>
             {suiteNav.map(({ href, label, icon: Icon, ready }) =>
               navLink(href, label, Icon, !ready),
             )}
-            <OperationsSuiteToggle />
           </div>
         </nav>
 

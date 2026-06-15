@@ -23,7 +23,7 @@ export function ActiveBatchesStatCard({ className }: ActiveBatchesStatCardProps)
 
   if (phase2Enabled) {
     return (
-      <Link href="/batches" className={cn("block h-full", className)}>
+      <Link href="/operational" className={cn("block h-full", className)}>
         <Card className="h-full transition-colors hover:border-primary/35 hover:bg-muted/20 cursor-pointer">
           <CardContent className="pt-5 pb-4">{content}</CardContent>
         </Card>

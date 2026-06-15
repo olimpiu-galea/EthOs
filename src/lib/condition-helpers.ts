@@ -4,7 +4,7 @@ import type { DcsTagWithKey, Rule, SignalSource } from "@/lib/types";
 export const SOURCE_OPTIONS: { id: SignalSource; label: string }[] = [
   { id: "dcs", label: "DCS" },
   { id: "lab", label: "Lab Sheet" },
-  { id: "commodity", label: "Commodity" },
+  { id: "commodity", label: "Financial" },
   { id: "inventory", label: "Procurement" },
 ];
 

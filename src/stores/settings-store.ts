@@ -14,6 +14,7 @@ import {
   migrateTeamsForCompany,
   type OpsTeam,
 } from "@/lib/teams";
+import { mergeLakeviewDemoTeams } from "@/lib/lakeview-demo-seed";
 
 export const DEFAULT_REPORT_TEMPLATES: ReportTemplateConfig[] = [
   { id: "dor", enabled: true },
@@ -23,7 +24,7 @@ type SettingsState = {
   companyId: string;
   companyName: string;
   domain: IndustryDomain;
-  /** When false, Extras nav (batches, margin, procurement) is hidden */
+  /** When false, Extras nav (operational, financial, procurement) is hidden */
   operationsSuiteEnabled: boolean;
   companyFeeds: CompanyFeedConfig;
   companyFeedsByCompany: Record<string, CompanyFeedConfig>;
@@ -89,20 +90,8 @@ export const useSettingsStore = create<SettingsState>()(
       setDomain: (domain) => set({ domain }),
       setCompanyName: (name) => set({ companyName: name }),
       setCompanyId: (id) => set({ companyId: id }),
-      setOperationsSuiteEnabled: (enabled) => {
-        set({ operationsSuiteEnabled: enabled });
-        if (!enabled) {
-          void import("@/stores/commodity-store").then(({ useCommodityStore }) => {
-            if (useCommodityStore.getState().connected) {
-              useCommodityStore.getState().disconnect();
-            }
-          });
-          void import("@/stores/inventory-store").then(({ useInventoryStore }) => {
-            if (useInventoryStore.getState().connected) {
-              useInventoryStore.getState().disconnect();
-            }
-          });
-        }
+      setOperationsSuiteEnabled: (_enabled) => {
+        set({ operationsSuiteEnabled: true });
       },
       toggleCompanyFeed: (feed) => {
         const willEnable = !get().companyFeeds[feed];
@@ -174,7 +163,7 @@ export const useSettingsStore = create<SettingsState>()(
     }),
     {
       name: "signal-relay-settings",
-      version: 10,
+      version: 11,
       skipHydration: true,
       migrate: (persisted: unknown, version: number) => {
         const raw = persisted as Partial<SettingsState> & {
@@ -217,6 +206,14 @@ export const useSettingsStore = create<SettingsState>()(
           );
         }
 
+        if (version < 11) {
+          const lakeviewTeams = teamsByCompany[DEFAULT_COMPANY.id] ?? [];
+          teamsByCompany = {
+            ...teamsByCompany,
+            [DEFAULT_COMPANY.id]: mergeLakeviewDemoTeams(lakeviewTeams),
+          };
+        }
+
         const teams =
           teamsByCompany[companyId] ?? defaultTeamsForCompany(companyId);
         let companyFeeds =
@@ -228,8 +225,7 @@ export const useSettingsStore = create<SettingsState>()(
 
         return {
           ...raw,
-          operationsSuiteEnabled:
-            version < 10 ? true : (raw.operationsSuiteEnabled ?? true),
+          operationsSuiteEnabled: true,
           companyFeedsByCompany,
           companyFeeds,
           teamsByCompany,

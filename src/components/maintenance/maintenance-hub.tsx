@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   AlertTriangle,
@@ -12,6 +13,7 @@ import {
   Gauge,
   GitBranch,
   Lock,
+  Package,
   Search,
   ShieldAlert,
   Thermometer,
@@ -44,6 +46,17 @@ import {
   type MaintenanceAsset,
   type MaintenanceAssetCategory,
 } from "@/lib/maintenance-asset-fixture";
+import {
+  criticalAssetsNoCoverage,
+  criticalSparePartRisks,
+  LAKEVIEW_MAINTENANCE_PARTS,
+  longLeadTimeParts,
+  maintenancePartsKpis,
+  partsBelowMinimum,
+  partsNeededByWorkOrders,
+  type MaintenancePart,
+  type SparePartRisk,
+} from "@/lib/maintenance-parts-fixture";
 import { canSeeMaintenance } from "@/lib/role-access";
 import { useAuthStore } from "@/stores/auth-store";
 import { useSettingsStore } from "@/stores/settings-store";
@@ -347,17 +360,215 @@ function AssetDetailDialog({
   );
 }
 
+type HubTab = "parts" | "assets";
+
+const PART_RISK_BADGE: Record<
+  SparePartRisk,
+  "danger" | "warning" | "secondary" | "outline"
+> = {
+  critical: "danger",
+  high: "warning",
+  medium: "secondary",
+  low: "outline",
+};
+
+function PartRow({
+  part,
+  onOpen,
+}: {
+  part: MaintenancePart;
+  onOpen: () => void;
+}) {
+  const low = part.availableStock < part.minimumStock;
+
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      className={cn(
+        "w-full text-left rounded-lg border border-border/60 bg-card px-4 py-3 transition-colors hover:border-primary/40 hover:bg-primary/5",
+        part.stockoutRisk === "critical" && "border-destructive/30 bg-destructive/5",
+        part.stockoutRisk === "high" && low && "border-amber-500/25",
+      )}
+    >
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <div className="min-w-0 space-y-1">
+          <p className="font-mono text-[10px] text-primary/80">{part.partId}</p>
+          <p className="font-medium text-sm">{part.partName}</p>
+          <p className="text-[11px] text-muted-foreground">
+            {part.assetId} · {part.assetName} · {part.area}
+          </p>
+        </div>
+        <Badge variant={PART_RISK_BADGE[part.stockoutRisk]} className="text-[10px] shrink-0">
+          {part.stockoutRisk}
+        </Badge>
+      </div>
+      <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-muted-foreground">
+        <span>
+          Available{" "}
+          <strong
+            className={cn("tabular-nums", low && "text-amber-500")}
+          >
+            {part.availableStock}
+          </strong>
+          / {part.currentStock} {part.unitOfMeasure}
+        </span>
+        {part.reservedStock > 0 && (
+          <span>Reserved {part.reservedStock}</span>
+        )}
+        {part.openWorkOrders > 0 && (
+          <span className="font-mono">{part.workOrderIds.join(", ")}</span>
+        )}
+        <span>{part.storageLocation}</span>
+      </div>
+      <p className="mt-2 text-xs text-primary/90">{part.recommendedAction}</p>
+    </button>
+  );
+}
+
+function PartsSection({
+  title,
+  description,
+  parts,
+  onOpen,
+}: {
+  title: string;
+  description: string;
+  parts: MaintenancePart[];
+  onOpen: (part: MaintenancePart) => void;
+}) {
+  if (parts.length === 0) return null;
+
+  return (
+    <Card>
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base">{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-2">
+        {parts.map((part) => (
+          <PartRow key={part.id} part={part} onOpen={() => onOpen(part)} />
+        ))}
+      </CardContent>
+    </Card>
+  );
+}
+
+function PartDetailDialog({
+  part,
+  open,
+  onOpenChange,
+}: {
+  part: MaintenancePart | null;
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+}) {
+  if (!part) return null;
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <div className="flex flex-wrap gap-2 mb-1">
+            <Badge variant="outline" className="font-mono text-xs">
+              {part.partId}
+            </Badge>
+            <Badge variant={PART_RISK_BADGE[part.stockoutRisk]}>
+              {part.stockoutRisk} stockout risk
+            </Badge>
+            <Badge variant="outline">{part.category}</Badge>
+          </div>
+          <DialogTitle>{part.partName}</DialogTitle>
+          <p className="text-sm text-muted-foreground text-left">
+            CMMS · {part.plantId} · {part.area} · Owner: {part.owner}
+          </p>
+        </DialogHeader>
+
+        <div className="space-y-4 text-sm">
+          <div className="rounded-lg border border-border/60 p-3 space-y-1">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Critical asset
+            </p>
+            <p>
+              <span className="font-mono">{part.assetId}</span> — {part.assetName}
+            </p>
+            <p className="text-muted-foreground">Criticality: {part.criticality}</p>
+          </div>
+
+          <div className="grid grid-cols-3 gap-3">
+            <div className="rounded-lg border border-border/60 p-3">
+              <p className="text-[10px] uppercase text-muted-foreground">On hand</p>
+              <p className="font-semibold tabular-nums">{part.currentStock}</p>
+            </div>
+            <div className="rounded-lg border border-border/60 p-3">
+              <p className="text-[10px] uppercase text-muted-foreground">Reserved</p>
+              <p className="font-semibold tabular-nums">{part.reservedStock}</p>
+            </div>
+            <div className="rounded-lg border border-border/60 p-3">
+              <p className="text-[10px] uppercase text-muted-foreground">Available</p>
+              <p
+                className={cn(
+                  "font-semibold tabular-nums",
+                  part.availableStock < part.minimumStock && "text-amber-500",
+                )}
+              >
+                {part.availableStock}
+              </p>
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-border/60 p-3 space-y-2">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Storeroom & work orders
+            </p>
+            <p>Location: {part.storageLocation}</p>
+            <p>Lead time: {part.leadTimeDays} days · Reorder qty: {part.reorderQuantity}</p>
+            <p>Last used: {formatDate(part.lastUsedDate)} · {part.usageFrequency}</p>
+            {part.openWorkOrders > 0 && (
+              <p>
+                Open WOs:{" "}
+                <span className="font-mono">{part.workOrderIds.join(", ")}</span>
+              </p>
+            )}
+          </div>
+
+          <div className="rounded-lg border border-amber-500/25 bg-amber-500/5 p-3">
+            <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1">
+              Downtime impact
+            </p>
+            <p className="text-muted-foreground">{part.downtimeImpact}</p>
+            <p className="mt-2 font-medium text-primary">{part.recommendedAction}</p>
+          </div>
+
+          {part.relatedPurchaseOrderId && (
+            <p className="text-xs text-muted-foreground">
+              Replenishment in flight:{" "}
+              <span className="font-mono">{part.relatedPurchaseOrderId}</span> — see{" "}
+              <Link href="/procurement" className="text-primary underline-offset-2 hover:underline">
+                Procurement
+              </Link>{" "}
+              for PO status and supplier timing.
+            </p>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export function MaintenanceHub() {
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const domain = useSettingsStore((s) => s.domain);
   const phase2Enabled = useSettingsStore((s) => s.operationsSuiteEnabled);
 
+  const [tab, setTab] = useState<HubTab>("parts");
   const [category, setCategory] = useState<MaintenanceAssetCategory | "all">(
     "all",
   );
   const [query, setQuery] = useState("");
-  const [selected, setSelected] = useState<MaintenanceAsset | null>(null);
+  const [selectedAsset, setSelectedAsset] = useState<MaintenanceAsset | null>(null);
+  const [selectedPart, setSelectedPart] = useState<MaintenancePart | null>(null);
 
   useEffect(() => {
     if (domain !== "ethanol" || !phase2Enabled) {
@@ -369,9 +580,35 @@ export function MaintenanceHub() {
     }
   }, [domain, phase2Enabled, user, router]);
 
-  const kpis = useMemo(
+  const assetKpis = useMemo(
     () => maintenanceKpis(LAKEVIEW_MAINTENANCE_ASSETS),
     [],
+  );
+
+  const parts = LAKEVIEW_MAINTENANCE_PARTS;
+  const partKpis = useMemo(() => maintenancePartsKpis(parts), [parts]);
+
+  const partSections = useMemo(
+    () => ({
+      critical: criticalSparePartRisks(parts),
+      belowMin: partsBelowMinimum(parts),
+      byWo: partsNeededByWorkOrders(parts),
+      noCoverage: criticalAssetsNoCoverage(parts),
+      longLead: longLeadTimeParts(parts),
+    }),
+    [parts],
+  );
+
+  const recommendedParts = useMemo(
+    () =>
+      [...parts]
+        .filter((p) => p.stockoutRisk !== "low")
+        .sort((a, b) => {
+          const order = { critical: 0, high: 1, medium: 2, low: 3 };
+          return order[a.stockoutRisk] - order[b.stockoutRisk];
+        })
+        .slice(0, 5),
+    [parts],
   );
 
   const filtered = useMemo(() => {
@@ -411,8 +648,8 @@ export function MaintenanceHub() {
             <div className="space-y-2">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="secondary" className="gap-1.5 font-normal">
-                  <Wrench className="h-3.5 w-3.5" />
-                  Plant maintenance
+                  <Package className="h-3.5 w-3.5" />
+                  Maintenance · CMMS
                 </Badge>
                 <Badge variant="outline" className="gap-1 text-[11px]">
                   <Lock className="h-3 w-3" />
@@ -424,54 +661,194 @@ export function MaintenanceHub() {
                 <h1 className="text-3xl font-bold tracking-tight">Maintenance</h1>
               </div>
               <p className="text-muted-foreground max-w-2xl text-sm leading-relaxed">
-                Asset registry for sensors, valves, tanks, piping, and rotating
-                equipment — warranty, calibration, verification, and PM dates in
-                one CMMS-style view.
+                Which parts are available, which assets depend on them, and what
+                downtime risk exists if stock is missing? Spare-part coverage and
+                work-order readiness — not commercial buying workflow.
               </p>
             </div>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            {[
-              { label: "Registered assets", value: kpis.total, tone: "default" },
-              { label: "Overdue", value: kpis.overdue, tone: "danger" },
-              { label: "Due soon", value: kpis.dueSoon, tone: "warn" },
-              { label: "Out of service", value: kpis.outOfService, tone: "muted" },
-              {
-                label: "Warranty ≤ 90d",
-                value: kpis.warrantyExpiring,
-                tone: "warn",
-              },
-            ].map((k) => (
-              <Card
-                key={k.label}
-                className={cn(
-                  "border-border/60 bg-background/80 backdrop-blur-sm",
-                  k.tone === "danger" && "border-destructive/25",
-                  k.tone === "warn" && "border-critical/25",
-                )}
-              >
-                <CardContent className="pt-4 pb-3">
-                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                    {k.label}
-                  </p>
-                  <p
-                    className={cn(
-                      "text-2xl font-bold tabular-nums mt-1",
-                      k.tone === "danger" && "text-destructive",
-                      k.tone === "warn" && "text-critical-foreground",
-                    )}
-                  >
-                    {k.value}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => setTab("parts")}
+              className={cn(
+                "rounded-full border px-4 py-2 text-sm font-medium transition-colors",
+                tab === "parts"
+                  ? "border-primary bg-primary/15 text-primary"
+                  : "border-border text-muted-foreground hover:border-primary/30",
+              )}
+            >
+              Spare parts
+            </button>
+            <button
+              type="button"
+              onClick={() => setTab("assets")}
+              className={cn(
+                "rounded-full border px-4 py-2 text-sm font-medium transition-colors",
+                tab === "assets"
+                  ? "border-primary bg-primary/15 text-primary"
+                  : "border-border text-muted-foreground hover:border-primary/30",
+              )}
+            >
+              Asset registry
+            </button>
           </div>
+
+          {tab === "parts" ? (
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+              {[
+                { label: "Critical spare-part risks", value: partKpis.criticalRisks, tone: "danger" },
+                { label: "Below minimum", value: partKpis.belowMinimum, tone: "warn" },
+                { label: "Needed by open WOs", value: partKpis.neededByWo, tone: "warn" },
+                { label: "No spare coverage", value: partKpis.noCoverage, tone: "danger" },
+                { label: "Long lead-time parts", value: partKpis.longLead, tone: "muted" },
+              ].map((k) => (
+                <Card
+                  key={k.label}
+                  className={cn(
+                    "border-border/60 bg-background/80 backdrop-blur-sm",
+                    k.tone === "danger" && "border-destructive/25",
+                    k.tone === "warn" && "border-critical/25",
+                  )}
+                >
+                  <CardContent className="pt-4 pb-3">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground leading-tight">
+                      {k.label}
+                    </p>
+                    <p
+                      className={cn(
+                        "text-2xl font-bold tabular-nums mt-1",
+                        k.tone === "danger" && "text-destructive",
+                        k.tone === "warn" && "text-critical-foreground",
+                      )}
+                    >
+                      {k.value}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+              {[
+                { label: "Registered assets", value: assetKpis.total, tone: "default" },
+                { label: "Overdue", value: assetKpis.overdue, tone: "danger" },
+                { label: "Due soon", value: assetKpis.dueSoon, tone: "warn" },
+                { label: "Out of service", value: assetKpis.outOfService, tone: "muted" },
+                { label: "Warranty ≤ 90d", value: assetKpis.warrantyExpiring, tone: "warn" },
+              ].map((k) => (
+                <Card
+                  key={k.label}
+                  className={cn(
+                    "border-border/60 bg-background/80 backdrop-blur-sm",
+                    k.tone === "danger" && "border-destructive/25",
+                    k.tone === "warn" && "border-critical/25",
+                  )}
+                >
+                  <CardContent className="pt-4 pb-3">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                      {k.label}
+                    </p>
+                    <p
+                      className={cn(
+                        "text-2xl font-bold tabular-nums mt-1",
+                        k.tone === "danger" && "text-destructive",
+                        k.tone === "warn" && "text-critical-foreground",
+                      )}
+                    >
+                      {k.value}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
       <div className="mx-auto max-w-6xl px-6 py-8 space-y-6">
+        {tab === "parts" ? (
+          <>
+            <PartsSection
+              title="Critical spare-part risks"
+              description="High or critical stockout risk — reliability ownership sits with Maintenance."
+              parts={partSections.critical}
+              onOpen={setSelectedPart}
+            />
+            <PartsSection
+              title="Parts below minimum stock"
+              description="Available quantity under reorder threshold (after reservations)."
+              parts={partSections.belowMin.filter(
+                (p) => !partSections.critical.includes(p),
+              )}
+              onOpen={setSelectedPart}
+            />
+            <PartsSection
+              title="Parts needed by open work orders"
+              description="Reserved or required for active maintenance work."
+              parts={partSections.byWo.filter(
+                (p) =>
+                  !partSections.critical.includes(p) &&
+                  !partSections.belowMin.includes(p),
+              )}
+              onOpen={setSelectedPart}
+            />
+            <PartsSection
+              title="Critical assets with no spare coverage"
+              description="Zero available stock on high/critical assets."
+              parts={partSections.noCoverage}
+              onOpen={setSelectedPart}
+            />
+            <PartsSection
+              title="Long-lead-time parts"
+              description="Lead time ≥ 21 days — plan ahead for reliability."
+              parts={partSections.longLead.filter(
+                (p) => !partSections.critical.includes(p),
+              )}
+              onOpen={setSelectedPart}
+            />
+
+            {recommendedParts.length > 0 && (
+              <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-card">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-primary" />
+                    Recommended actions
+                  </CardTitle>
+                  <CardDescription>
+                    Storeroom and work-order next steps (demo).
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  {recommendedParts.map((part) => (
+                    <PartRow
+                      key={part.id}
+                      part={part}
+                      onOpen={() => setSelectedPart(part)}
+                    />
+                  ))}
+                </CardContent>
+              </Card>
+            )}
+
+            <div className="rounded-xl border border-border/60 bg-muted/20 px-4 py-3 flex gap-3 text-sm">
+              <Package className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
+              <p className="text-muted-foreground">
+                <strong className="text-foreground font-medium">
+                  Maintenance owns spare-part availability.
+                </strong>{" "}
+                Purchase orders and supplier timing live on{" "}
+                <Link href="/procurement" className="text-primary underline-offset-2 hover:underline">
+                  Procurement
+                </Link>
+                . Overlapping SKUs may show a WO here and a PO there — neither page
+                replaces the other system of record.
+              </p>
+            </div>
+          </>
+        ) : (
+          <>
         <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
           <div className="relative max-w-sm w-full">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -537,7 +914,7 @@ export function MaintenanceHub() {
               <AssetCard
                 key={asset.id}
                 asset={asset}
-                onOpen={() => setSelected(asset)}
+                onOpen={() => setSelectedAsset(asset)}
               />
             ))}
           </div>
@@ -583,16 +960,22 @@ export function MaintenanceHub() {
           <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
           <p className="text-muted-foreground">
             <strong className="text-foreground font-medium">Demo only</strong> —
-            dates and statuses are fixture data for Lakeview Ethanol. Connect a
-            CMMS feed in a future release to sync work orders and certificates.
+            asset dates and spare-part levels are fixture data for Lakeview Ethanol.
           </p>
         </div>
+          </>
+        )}
       </div>
 
       <AssetDetailDialog
-        asset={selected}
-        open={selected != null}
-        onOpenChange={(v) => !v && setSelected(null)}
+        asset={selectedAsset}
+        open={selectedAsset != null}
+        onOpenChange={(v) => !v && setSelectedAsset(null)}
+      />
+      <PartDetailDialog
+        part={selectedPart}
+        open={selectedPart != null}
+        onOpenChange={(v) => !v && setSelectedPart(null)}
       />
     </div>
   );

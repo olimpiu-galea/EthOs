@@ -207,7 +207,7 @@ export function PlantCopilotDemo() {
       },
       {
         id: "batches",
-        label: "Batch workspace",
+        label: "Operational workspace",
         detail: "Active batches, phase, age, fermenter assignment",
         icon: Layers,
         status: "live",
@@ -232,7 +232,7 @@ export function PlantCopilotDemo() {
       {
         id: "margin",
         label: "Margin & procurement",
-        detail: "Commodity exposure, tank levels, procurement signals",
+        detail: "Financial exposure, tank levels, procurement signals",
         icon: Wallet,
         status: "indexed",
         metric: "Phrase 2 feeds · optional context",
@@ -493,7 +493,7 @@ export function PlantCopilotDemo() {
               </div>
               <p className="text-[11px] text-center text-muted-foreground">
                 Production Copilot will stream answers here with clickable citations into
-                Agenda, Batches, and Reports — this page is a visual prototype only.
+                Agenda, Operational, and Reports — this page is a visual prototype only.
               </p>
             </div>
           </section>

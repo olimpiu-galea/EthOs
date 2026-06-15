@@ -11,7 +11,7 @@ export function canSeeIntegrations(role: UserRole): boolean {
   return role === "company_admin" || role === "platform_admin";
 }
 
-export function canSeeMarginDesk(role: UserRole): boolean {
+export function canSeeFinancial(role: UserRole): boolean {
   return (
     role === "financial" ||
     role === "procurement" ||
@@ -20,6 +20,9 @@ export function canSeeMarginDesk(role: UserRole): boolean {
     role === "platform_admin"
   );
 }
+
+/** @deprecated use canSeeFinancial */
+export const canSeeMarginDesk = canSeeFinancial;
 
 export function canSeeProcurement(role: UserRole): boolean {
   return role !== "financial" && role !== "qa_lab";
@@ -88,17 +91,6 @@ export function buildSuiteNav(
 
   const extras: SuiteNavItem[] = [];
   if (
-    canSeeMarginDesk(role) &&
-    isCompanyFeedAvailable("commodity", feedOpts)
-  ) {
-    extras.push({
-      href: "/margin",
-      label: "Margin Desk",
-      icon: Wallet,
-      ready: true,
-    });
-  }
-  if (
     canSeeProcurement(role) &&
     isCompanyFeedAvailable("inventory", feedOpts)
   ) {
@@ -117,21 +109,28 @@ export function buildSuiteNav(
       ready: true,
     });
   }
+  if (
+    canSeeFinancial(role) &&
+    isCompanyFeedAvailable("commodity", feedOpts)
+  ) {
+    extras.push({
+      href: "/financial",
+      label: "Financial",
+      icon: Wallet,
+      ready: true,
+    });
+  }
 
   if (extras.length === 0) return base;
 
-  const batchesIdx = base.findIndex((i) => i.href === "/batches");
-  if (batchesIdx < 0) return [...base, ...extras];
+  const operationalIdx = base.findIndex((i) => i.href === "/operational");
+  if (operationalIdx < 0) return [...base, ...extras];
 
   return [
-    ...base.slice(0, batchesIdx + 1),
+    ...base.slice(0, operationalIdx + 1),
     ...extras,
-    ...base.slice(batchesIdx + 1),
+    ...base.slice(operationalIdx + 1),
   ];
-}
-
-export function extrasNavLabel(_role?: UserRole): string {
-  return "Extras";
 }
 
 /** Default app entry after login / Open workspace */

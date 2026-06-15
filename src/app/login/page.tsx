@@ -11,7 +11,6 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuthStore } from "@/stores/auth-store";
 import { DEMO_ACCOUNTS, DEFAULT_COMPANY } from "@/lib/auth-constants";
-import { OperationsSuiteToggle } from "@/components/operations-suite-toggle";
 import { workspaceHomePath } from "@/lib/role-access";
 import { cn } from "@/lib/utils";
 import { PRODUCT_SCOPE } from "@/lib/brand";
@@ -54,7 +53,6 @@ export default function LoginPage() {
           <Link href="/" className="shrink-0">
             <EthOsWordmark showScope />
           </Link>
-          <OperationsSuiteToggle variant="inline" />
         </div>
       </header>
 

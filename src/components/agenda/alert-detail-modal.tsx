@@ -169,7 +169,21 @@ export function AlertDetailModal({
             theme.ring,
           )}
         >
-          <DialogHeader className="relative space-y-2.5 text-left">
+          <Button
+            type="button"
+            size="sm"
+            className={cn(
+              "absolute top-4 right-14 z-20 gap-2 h-9 px-4 text-xs font-semibold",
+              "bg-gradient-to-r from-primary via-primary to-primary/85 text-primary-foreground",
+              "shadow-lg shadow-primary/30 ring-2 ring-primary/25 ring-offset-2 ring-offset-background",
+              "hover:brightness-110 hover:shadow-primary/40 transition-all",
+            )}
+            onClick={() => setChatOpen(true)}
+          >
+            <Sparkles className="h-4 w-4" />
+            Ask about this alert
+          </Button>
+          <DialogHeader className="relative space-y-2.5 text-left pr-36">
             <div className="flex flex-wrap items-center gap-2">
               <Badge variant={theme.badge} className="gap-1">
                 <AlertTriangle className="h-3 w-3" />
@@ -193,7 +207,7 @@ export function AlertDetailModal({
                 </Badge>
               )}
             </div>
-            <DialogTitle className="text-2xl font-bold tracking-tight pr-10 leading-tight">
+            <DialogTitle className="text-2xl font-bold tracking-tight leading-tight">
               {alert.playbookName}
             </DialogTitle>
             <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
@@ -206,18 +220,6 @@ export function AlertDetailModal({
             <p className="font-mono text-xs text-primary/90">
               IF {alert.conditionsSummary}
             </p>
-            <div className="pt-1">
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                className="gap-2 h-8 text-xs border-primary/30 bg-primary/5 hover:bg-primary/10"
-                onClick={() => setChatOpen(true)}
-              >
-                <Sparkles className="h-3.5 w-3.5" />
-                Ask about this alert
-              </Button>
-            </div>
           </DialogHeader>
         </div>
 

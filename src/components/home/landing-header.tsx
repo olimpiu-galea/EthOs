@@ -7,7 +7,6 @@ import { EthOsWordmark } from "@/components/brand/ethos-wordmark";
 import { Button } from "@/components/ui/button";
 import { workspaceHomePath } from "@/lib/role-access";
 import { useAuthStore } from "@/stores/auth-store";
-import { OperationsSuiteToggle } from "@/components/operations-suite-toggle";
 
 export function LandingHeader() {
   const router = useRouter();
@@ -27,7 +26,6 @@ export function LandingHeader() {
         </Link>
 
         <div className="flex items-center gap-2 sm:gap-3">
-          <OperationsSuiteToggle variant="inline" />
           {user ? (
             <>
               <span className="hidden sm:inline text-sm text-muted-foreground truncate max-w-[140px]">

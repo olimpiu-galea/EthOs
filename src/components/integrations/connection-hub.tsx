@@ -60,8 +60,8 @@ const FEED_DEFINITIONS: FeedDefinition[] = [
   },
   {
     id: "commodity",
-    name: "Commodity margin",
-    format: "Margin feed",
+    name: "Financial",
+    format: "Financial feed",
     capabilities: "Sell vs hold, financial playbooks",
     refresh: "~60s",
     icon: TrendingUp,

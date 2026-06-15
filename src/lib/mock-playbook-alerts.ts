@@ -17,18 +17,15 @@ import {
   POTENTIAL_VS_TEMP_ACTION_ITEMS,
   POTENTIAL_VS_TEMP_GUIDANCE,
 } from "./default-playbook-response-potential-temp";
-import {
-  DAILY_DEMO_ACTION_ITEMS,
-  DAILY_DEMO_GUIDANCE,
-} from "./default-playbook-response-daily-demo";
 import { isLabSheetReady } from "./lab-sheet-availability";
 import { ACETIC_BUILTIN_ID } from "./acetic-rules";
 import { POTENTIAL_VS_TEMP_BUILTIN_ID } from "./potential-vs-temp-rules";
 import {
-  DAILY_DEMO_BUILTIN_ID,
-  DAILY_DEMO_PLAYBOOK_NAME,
-} from "./daily-demo-alarm-rules";
-import { mapDailyDemoAlertsForYear } from "./daily-demo-alerts-adapter";
+  isWorkspaceDailyBuiltinId,
+  LAKEVIEW_WORKSPACE_DEMOS,
+  workspaceDemoByBuiltinId,
+} from "./lakeview-demo-seed";
+import { mapWorkspaceDailyAlertsForYear } from "./workspace-daily-alerts-adapter";
 import { mapAceticAlerts } from "./acetic-alerts-adapter";
 import {
   mapPotentialTempAlerts,
@@ -38,6 +35,16 @@ import aceticAlertsRaw from "@mockAlerts/AceticAlerts.json";
 import potentialTempAlertsRaw from "@mockAlerts/PotentialTempAlerts.json";
 
 type MappedMockAlert = MappedPotentialTempAlert;
+
+const WORKSPACE_DEFAULTS = Object.fromEntries(
+  LAKEVIEW_WORKSPACE_DEMOS.map((d) => [
+    d.builtinId,
+    { actionItems: d.actionItems, guidance: d.guidance },
+  ]),
+) as Record<
+  string,
+  { actionItems: PlaybookActionItem[]; guidance: PlaybookGuidanceStep[] }
+>;
 
 const MOCK_DEFAULTS: Record<
   string,
@@ -51,10 +58,7 @@ const MOCK_DEFAULTS: Record<
     actionItems: ACETIC_ACTION_ITEMS,
     guidance: ACETIC_GUIDANCE,
   },
-  [DAILY_DEMO_BUILTIN_ID]: {
-    actionItems: DAILY_DEMO_ACTION_ITEMS,
-    guidance: DAILY_DEMO_GUIDANCE,
-  },
+  ...WORKSPACE_DEFAULTS,
 };
 
 const MOCK_DATASETS: Record<string, MappedMockAlert[]> = {
@@ -66,10 +70,16 @@ const MOCK_DATASETS: Record<string, MappedMockAlert[]> = {
   ),
 };
 
+export function isWorkspaceDailyMockPlaybook(
+  playbook: Pick<Playbook, "builtinId">,
+): boolean {
+  return isWorkspaceDailyBuiltinId(playbook.builtinId);
+}
+
 export function isMockPlaybook(
   playbook: Pick<Playbook, "builtinId">,
 ): boolean {
-  if (playbook.builtinId === DAILY_DEMO_BUILTIN_ID) return true;
+  if (isWorkspaceDailyMockPlaybook(playbook)) return true;
   return (
     playbook.builtinId != null && playbook.builtinId in MOCK_DATASETS
   );
@@ -78,13 +88,14 @@ export function isMockPlaybook(
 export function isLabRequiredMockPlaybook(
   playbook: Pick<Playbook, "builtinId">,
 ): boolean {
-  return isMockPlaybook(playbook) && playbook.builtinId !== DAILY_DEMO_BUILTIN_ID;
+  return isMockPlaybook(playbook) && !isWorkspaceDailyMockPlaybook(playbook);
 }
 
 function mockRecordsForPlaybook(playbook: Playbook): MappedMockAlert[] {
   if (!playbook.builtinId) return [];
-  if (playbook.builtinId === DAILY_DEMO_BUILTIN_ID) {
-    return mapDailyDemoAlertsForYear();
+  if (isWorkspaceDailyMockPlaybook(playbook)) {
+    const demo = workspaceDemoByBuiltinId(playbook.builtinId);
+    return demo ? mapWorkspaceDailyAlertsForYear(demo) : [];
   }
   return MOCK_DATASETS[playbook.builtinId] ?? [];
 }

@@ -246,9 +246,9 @@ export function PlantComplianceDemo() {
           </div>
           <div className="flex flex-wrap gap-2 shrink-0">
             <Button asChild variant="outline" size="sm" className="gap-1.5">
-              <Link href="/batches">
+              <Link href="/operational">
                 <Layers className="h-3.5 w-3.5" />
-                Batches
+                Operational
               </Link>
             </Button>
             <Button asChild variant="outline" size="sm" className="gap-1.5">

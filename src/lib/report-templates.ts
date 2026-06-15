@@ -283,7 +283,7 @@ export const REPORT_TEMPLATES: Record<ReportTemplateId, ReportTemplateDef> = {
           {
             id: "marginNotes",
             label: "Margin / surplus notes",
-            placeholder: "Commodity position, sell/hold context…",
+            placeholder: "Financial position, sell/hold context…",
             type: "textarea",
           },
         ],

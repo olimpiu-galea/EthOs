@@ -43,7 +43,7 @@ import {
 const SOURCE_LABELS = {
   dcs: "DCS",
   lab: "Lab Sheet",
-  commodity: "Commodity",
+  commodity: "Financial",
   inventory: "Procurement",
 } as const;
 
@@ -184,7 +184,7 @@ export default function IntegrationsPage() {
       <header className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">Integrations</h1>
         <p className="text-muted-foreground max-w-2xl">
-          Connect DCS, Lab Sheet, Commodity Margin, and Procurement feeds. All
+          Connect DCS, Lab Sheet, Financial, and Procurement feeds. All
           sources share the same field model for cross-source playbooks.
         </p>
       </header>

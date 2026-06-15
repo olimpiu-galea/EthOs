@@ -104,10 +104,10 @@ export function buildMarginAssignmentAlert(
 
   return {
     playbookId: "margin-desk-decision",
-    playbookName: "Margin desk decision",
+    playbookName: "Financial decision",
     alertTitle: `${decisionLabel(decision.type)} — action required`,
     alertMessage: [
-      `${decision.actor} (${decision.actorRole}) recorded ${decision.type.toUpperCase()} on Margin Desk.`,
+      `${decision.actor} (${decision.actorRole}) recorded ${decision.type.toUpperCase()} on Financial.`,
       loadoutLine,
       decision.note ? `Note: ${decision.note}` : null,
       `Margin $${decision.snapshot.marginPerGal.toFixed(2)}/gal · Surplus ${decision.snapshot.surplusGal.toLocaleString()} gal · Signal ${decision.snapshot.marketSignal}.`,
@@ -119,7 +119,7 @@ export function buildMarginAssignmentAlert(
     durationMs: ALERT_DURATION_MS,
     status: "active",
     lifecycle: "new",
-    conditionsSummary: `Margin desk · ${decision.type}`,
+    conditionsSummary: `Financial · ${decision.type}`,
     actionItems: FINANCIAL_ACTION_ITEMS,
     guidance: FINANCIAL_GUIDANCE,
     completedActionIds: [],
@@ -136,9 +136,9 @@ export function buildMarginThresholdAlert(
 ): Omit<AlertAgendaItem, "id"> {
   return {
     playbookId: "margin-desk-threshold",
-    playbookName: "Margin desk threshold",
+    playbookName: "Financial threshold",
     alertTitle: "Low margin + high inventory",
-    alertMessage: `Margin $${snapshot.marginPerGal.toFixed(2)}/gal is below $${MARGIN_THRESHOLD.marginPerGalBelow.toFixed(2)} while inventory days supply is ${snapshot.inventoryDays.toFixed(1)}d (policy > ${MARGIN_THRESHOLD.inventoryDaysAbove}d). Review sell/hold on Margin Desk.`,
+    alertMessage: `Margin $${snapshot.marginPerGal.toFixed(2)}/gal is below $${MARGIN_THRESHOLD.marginPerGalBelow.toFixed(2)} while inventory days supply is ${snapshot.inventoryDays.toFixed(1)}d (policy > ${MARGIN_THRESHOLD.inventoryDaysAbove}d). Review sell/hold on Financial.`,
     severity: "warning",
     triggeredAt: now,
     durationMs: ALERT_DURATION_MS,

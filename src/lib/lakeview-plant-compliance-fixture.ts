@@ -81,12 +81,12 @@ export const LAKEVIEW_OPEN_DEVIATIONS: DeviationRow[] = [
     id: "dev-6418-cool",
     batchId: "6418",
     fermenter: "Ferm B",
-    issue: "Cooling response lag — Demo alarm open on Agenda",
+    issue: "Cooling response lag — Operational daily checkpoint open on Agenda",
     source: "Daily Demo playbook · DCS + 18h lab",
     status: "investigating",
     owner: "Operational → Supervisor",
     due: "This shift",
-    link: "/batches?batch=6418",
+    link: "/operational?batch=6418",
   },
   {
     id: "dev-6402-margin",
@@ -97,7 +97,7 @@ export const LAKEVIEW_OPEN_DEVIATIONS: DeviationRow[] = [
     status: "open",
     owner: "Supervisor · QA review",
     due: "Before 50h sample",
-    link: "/batches?batch=6402",
+    link: "/operational?batch=6402",
   },
   {
     id: "dev-6391-yield",
@@ -108,7 +108,7 @@ export const LAKEVIEW_OPEN_DEVIATIONS: DeviationRow[] = [
     status: "investigating",
     owner: "QA · CAPA owner TBD",
     due: "QA weekly",
-    link: "/batches?batch=6391",
+    link: "/operational?batch=6391",
   },
 ];
 

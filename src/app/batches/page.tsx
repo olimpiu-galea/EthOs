@@ -1,28 +1,24 @@
 "use client";
 
 import { Suspense, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { BatchesHub2030 } from "@/components/batches/batches-hub-2030";
-import { useSettingsStore } from "@/stores/settings-store";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function BatchesPage() {
+function BatchesRedirectInner() {
   const router = useRouter();
-  const phase2Enabled = useSettingsStore((s) => s.operationsSuiteEnabled);
-  const domain = useSettingsStore((s) => s.domain);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (domain !== "ethanol" || !phase2Enabled) {
-      router.replace("/playbooks");
-    }
-  }, [domain, phase2Enabled, router]);
+    const q = searchParams.toString();
+    router.replace(q ? `/operational?${q}` : "/operational");
+  }, [router, searchParams]);
 
-  if (domain !== "ethanol" || !phase2Enabled) return null;
+  return null;
+}
 
+export default function BatchesRedirectPage() {
   return (
-    <Suspense
-      fallback={<div className="p-8 text-muted-foreground">Loading batches…</div>}
-    >
-      <BatchesHub2030 />
+    <Suspense fallback={null}>
+      <BatchesRedirectInner />
     </Suspense>
   );
 }

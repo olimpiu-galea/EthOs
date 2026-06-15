@@ -37,7 +37,7 @@ export function operationsSuiteForDomain(
     case "ethanol":
     default:
       return [
-        { href: "/batches", label: "Batches", icon: Layers, ready: true },
+        { href: "/operational", label: "Operational", icon: Layers, ready: true },
         {
           href: "/compliance",
           label: "Compliance",

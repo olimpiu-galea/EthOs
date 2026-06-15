@@ -79,33 +79,33 @@ export function AlertContextChatModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md w-[min(96vw,28rem)] p-0 gap-0 overflow-hidden">
-        <DialogHeader className="px-4 pt-4 pb-3 border-b border-border/60 text-left space-y-2">
+      <DialogContent className="max-w-[min(96vw,70rem)] w-full p-0 gap-0 overflow-hidden sm:max-w-[min(96vw,70rem)]">
+        <DialogHeader className="px-6 pt-5 pb-4 border-b border-border/60 text-left space-y-3">
           <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="secondary" className="gap-1 font-normal">
-              <Bot className="h-3 w-3" />
+            <Badge variant="secondary" className="gap-1.5 font-normal text-xs">
+              <Bot className="h-3.5 w-3.5" />
               Alert Copilot
             </Badge>
-            <Badge variant="outline" className="gap-1 text-[10px]">
+            <Badge variant="outline" className="gap-1 text-xs">
               <Lock className="h-3 w-3" />
               Demo
             </Badge>
           </div>
-          <DialogTitle className="text-base font-semibold leading-snug pr-6">
+          <DialogTitle className="text-xl font-semibold leading-snug pr-8">
             Ask about this alert only
           </DialogTitle>
-          <p className="text-[11px] text-muted-foreground leading-relaxed">
+          <p className="text-sm text-muted-foreground leading-relaxed">
             Context locked to:{" "}
             <span className="text-foreground font-medium">{contextLabel(alert)}</span>
           </p>
         </DialogHeader>
 
-        <div className="px-4 py-3 space-y-3 bg-muted/20 max-h-[22rem] overflow-y-auto">
-          <div className="flex gap-2">
-            <div className="h-7 w-7 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
-              <Sparkles className="h-3.5 w-3.5 text-primary" />
+        <div className="px-6 py-5 space-y-4 bg-muted/20 min-h-[34rem] max-h-[min(75vh,55rem)] overflow-y-auto">
+          <div className="flex gap-3">
+            <div className="h-10 w-10 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
+              <Sparkles className="h-5 w-5 text-primary" />
             </div>
-            <div className="rounded-2xl rounded-tl-md border border-border/80 bg-card px-3 py-2.5 text-xs leading-relaxed text-left shadow-sm">
+            <div className="rounded-2xl rounded-tl-md border border-border/80 bg-card px-4 py-3.5 text-sm leading-relaxed text-left shadow-sm max-w-[90%]">
               I can answer questions about{" "}
               <strong className="font-medium">{alert.playbookName}</strong> —
               triggered at{" "}
@@ -119,19 +119,19 @@ export function AlertContextChatModal({
           </div>
 
           {demoNote && (
-            <p className="text-[11px] text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/25 rounded-lg px-3 py-2">
+            <p className="text-sm text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/25 rounded-lg px-4 py-3">
               {demoNote}
             </p>
           )}
         </div>
 
-        <div className="px-4 pb-2 flex flex-wrap gap-1.5">
+        <div className="px-6 pb-3 flex flex-wrap gap-2">
           {prompts.map((p) => (
             <button
               key={p}
               type="button"
               onClick={() => handleDemoSubmit(p)}
-              className="text-[10px] rounded-full border border-border bg-background px-2.5 py-1 text-muted-foreground hover:border-primary/40 hover:text-foreground transition-colors text-left"
+              className="text-xs rounded-full border border-border bg-background px-3.5 py-1.5 text-muted-foreground hover:border-primary/40 hover:text-foreground hover:bg-primary/5 transition-colors text-left"
             >
               {p}
             </button>
@@ -139,7 +139,7 @@ export function AlertContextChatModal({
         </div>
 
         <form
-          className="flex gap-2 px-4 pb-4 pt-1 border-t border-border/60"
+          className="flex gap-3 px-6 pb-6 pt-2 border-t border-border/60"
           onSubmit={(e) => {
             e.preventDefault();
             handleDemoSubmit(draft);
@@ -149,15 +149,15 @@ export function AlertContextChatModal({
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             placeholder="Ask about this alert…"
-            className="h-9 text-sm"
+            className="h-11 text-base"
           />
           <Button
             type="submit"
             size="icon"
-            className="h-9 w-9 shrink-0"
+            className="h-11 w-11 shrink-0"
             disabled={!draft.trim()}
           >
-            <Send className="h-4 w-4" />
+            <Send className="h-5 w-5" />
           </Button>
         </form>
       </DialogContent>

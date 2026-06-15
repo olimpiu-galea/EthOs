@@ -201,10 +201,10 @@ export function MarginDesk() {
           </p>
           <div className="flex items-center gap-3">
             <Wallet className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold tracking-tight">Margin Desk</h1>
+            <h1 className="text-3xl font-bold tracking-tight">Financial</h1>
           </div>
           <p className="text-muted-foreground max-w-2xl text-sm leading-relaxed">
-            Plant margin from the commodity desk feed. Fermenter batches drop beer to
+            Plant margin from the Financial feed. Fermenter batches drop beer to
             the beer well; ethanol commingles in product tanks before denaturing and rack
             loadout — dollar impact on an active fermenter is{" "}
             <strong className="text-foreground font-medium">opportunity cost</strong>,
@@ -214,7 +214,7 @@ export function MarginDesk() {
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant={connected ? "success" : "secondary"} className="gap-1">
             <Radio className="h-3 w-3" />
-            {connected ? "Commodity connected" : "Not connected"}
+            {connected ? "Financial feed connected" : "Not connected"}
           </Badge>
           {lastSync && (
             <span className="text-xs text-muted-foreground tabular-nums">
@@ -226,7 +226,7 @@ export function MarginDesk() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
-          label="Desk margin (net)"
+          label="Plant margin (net)"
           value={
             data.margin ? `$${numericValue(data.margin.value).toFixed(2)}` : "—"
           }
@@ -241,7 +241,7 @@ export function MarginDesk() {
           value={tank ? fmtGal(tank.surplusGal) : "—"}
           sub={
             tank
-              ? `${fmtUsd(tank.surplusValueAtDeskMargin)} @ desk margin · denatured`
+              ? `${fmtUsd(tank.surplusValueAtDeskMargin)} @ plant margin · denatured`
               : "After contract fulfillment"
           }
           sparkTag="MKT-SURPLUS/_.Gal"
@@ -317,12 +317,12 @@ export function MarginDesk() {
                   value={`$${plant.contributionPerGal.toFixed(2)}`}
                 />
                 <MarginLine
-                  label="Desk margin (feed)"
+                  label="Plant margin (feed)"
                   value={`$${plant.deskMarginPerGal.toFixed(2)}`}
                 />
               </div>
               <p className="text-[10px] text-muted-foreground pt-2 leading-snug">
-                Desk margin includes plant fixed costs not in spot tags. Use desk margin
+                Plant margin includes fixed costs not in spot tags. Use plant margin
                 for fermenter $ impact and surplus valuation.
               </p>
             </CardContent>
@@ -374,7 +374,7 @@ export function MarginDesk() {
 
         <Card className="lg:col-span-1">
           <CardHeader className="pb-2">
-            <CardTitle className="text-base">Commodity inputs</CardTitle>
+            <CardTitle className="text-base">Market inputs</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid gap-2">

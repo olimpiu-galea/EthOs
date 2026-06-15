@@ -261,7 +261,7 @@ export function BatchesHub2030() {
           </div>
           <div>
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium">
-              Batch intelligence
+              Operational
             </p>
             <h1 className="text-xl font-bold tracking-tight">
               Fermenter batches — lab, DCS & yield

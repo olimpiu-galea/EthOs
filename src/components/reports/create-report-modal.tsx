@@ -303,13 +303,13 @@ export function CreateReportModal({
           <div className="overflow-y-auto px-6 py-5 space-y-6 border-b lg:border-b-0 lg:border-r border-border/60">
             {templateId === "financial" && commodityConnected && (
               <p className="text-xs text-primary/90 rounded-lg border border-primary/25 bg-primary/5 px-3 py-2">
-                Fields pre-filled from live commodity feed. A signal snapshot
+                Fields pre-filled from live Financial feed. A signal snapshot
                 will be saved with the document.
               </p>
             )}
             {templateId === "financial" && !commodityConnected && (
               <p className="text-xs text-muted-foreground rounded-lg border border-dashed px-3 py-2">
-                Connect Commodity Margin on Integrations to auto-fill this
+                Connect Financial feed on Integrations to auto-fill this
                 report and capture signals at save time.
               </p>
             )}

@@ -152,7 +152,7 @@ export function MarginDecisionPanel() {
         auditLog({
           marginDecisionId: decision.id,
           reportId,
-          action: "FMR created from Margin Desk",
+          action: "FMR created from Financial",
           actor: user.name,
         });
       }
@@ -178,7 +178,7 @@ export function MarginDecisionPanel() {
     const reportId = createDocument(fmr);
     auditLog({
       reportId,
-      action: "FMR draft opened from Margin Desk",
+      action: "FMR draft opened from Financial",
       actor: user.name,
       note: "Pre-filled from live commodity snapshot",
     });

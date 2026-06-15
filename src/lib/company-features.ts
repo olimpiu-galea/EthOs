@@ -46,9 +46,9 @@ export const FEED_LABELS: Record<SignalSource, { label: string; description: str
 
   commodity: {
 
-    label: "Commodity margin feed",
+    label: "Financial feed",
 
-    description: "Surplus gallons, margin per gal, and sell/hold signals (Phrase 2).",
+    description: "Surplus gallons, margin per gal, and sell/hold signals for the Financial page (Phrase 2).",
 
   },
 
