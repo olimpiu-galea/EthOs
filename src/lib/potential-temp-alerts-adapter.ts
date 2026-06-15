@@ -1,4 +1,5 @@
 import type { BatchContext, PlaybookActionItem } from "./types";
+import { remapMockAlertTimestamp } from "./mock-alert-calendar";
 
 export type PotentialTempAlertRecord = {
   id: string;
@@ -133,7 +134,7 @@ export function mapPotentialTempAlert(
   record: PotentialTempAlertRecord,
 ): MappedPotentialTempAlert {
   const checkpointHour = parseCheckpointHour(record.description);
-  const triggeredAt = new Date(record.interval.start).getTime();
+  const triggeredAt = remapMockAlertTimestamp(record.interval.start);
 
   return {
     mockAlertKey: record.id,

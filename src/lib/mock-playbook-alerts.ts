@@ -102,7 +102,7 @@ function mockRecordsForPlaybook(playbook: Playbook): MappedMockAlert[] {
   return MOCK_DATASETS[playbook.builtinId] ?? [];
 }
 
-const MOCK_ALERT_TRIM_PER_PLAYBOOK = 64;
+const MOCK_ALERT_TRIM_PER_PLAYBOOK = 400;
 
 function trimMockAlertsPerPlaybook(
   items: AlertAgendaItem[],

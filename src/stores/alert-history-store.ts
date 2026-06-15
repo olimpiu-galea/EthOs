@@ -20,6 +20,7 @@ import {
   resolveAlertStatus,
 } from "@/lib/agenda-time";
 import { localDateKey } from "@/lib/dcs-timeline";
+import { mockAlertCalendarYear } from "@/lib/mock-alert-calendar";
 
 import { isDemoAlertItem } from "@/lib/demo-playbook";
 import { isMockPlaybook } from "@/lib/mock-playbook-alerts";
@@ -694,7 +695,7 @@ export const useAlertHistoryStore = create<AlertHistoryState>()(
 
       name: "playbook-editor-alert-history",
 
-      version: 10,
+      version: 11,
 
       skipHydration: true,
 
@@ -705,14 +706,16 @@ export const useAlertHistoryStore = create<AlertHistoryState>()(
           const raw = persisted as { items?: AlertAgendaItem[] };
           const now = agendaNow();
           const todayKey = localDateKey();
+          const demoYear = mockAlertCalendarYear();
 
           const items = (raw.items ?? [])
             .filter((i) => !isDemoAlertItem(i) && !isLegacyHealthAlert(i))
             .filter((i) => {
-              if (!i.isMockAlert || !i.mockAlertKey?.startsWith("workspace-daily-")) {
-                return true;
+              if (!i.isMockAlert) return true;
+              if (i.mockAlertKey?.startsWith("workspace-daily-")) {
+                return i.mockAlertKey.endsWith(todayKey);
               }
-              return i.mockAlertKey.endsWith(todayKey);
+              return new Date(i.triggeredAt).getFullYear() === demoYear;
             })
             .map((i) => finalizeItem(migrateAlertItem(i), now));
 

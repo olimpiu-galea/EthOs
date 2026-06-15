@@ -672,7 +672,7 @@ export default function AgendaPage() {
             <p className="text-sm text-muted-foreground max-w-md mx-auto">
               {!isViewingToday ? (
                 isAgendaAdmin
-                  ? "Connect Lab Sheet under Integrations and turn on Potential vs Temp or Acetic playbooks to load demo history for past dates."
+                  ? "Turn on Potential vs Temp or Acetic playbooks to load demo history across the calendar year."
                   : "Yesterday's alerts only — older history is available to supervisors and admins."
               ) : dayItems.length > 0 ? (
                 "This team lens may be hiding alerts — try All teams or another role."
