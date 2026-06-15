@@ -95,7 +95,7 @@ const HOUR_ROW_HEIGHT = 56;
 
 const ALERT_CARD_WIDTH = 220;
 
-const ALERT_CARD_HEIGHT = 108;
+const ALERT_CARD_HEIGHT = 122;
 
 
 
@@ -786,7 +786,7 @@ export default function AgendaPage() {
 
                           className={cn(
 
-                            "shrink-0 flex flex-col text-left rounded-lg border px-3 py-2 text-xs transition-all hover:border-primary/50 overflow-hidden",
+                            "shrink-0 flex flex-col text-left rounded-lg border px-3 py-2.5 text-xs transition-all hover:border-primary/50",
 
                             item.status === "active"
                               ? "border-critical/35 bg-critical-muted ethos-critical-surface"
@@ -831,19 +831,19 @@ export default function AgendaPage() {
 
                           </div>
 
-                          <p className="shrink-0 font-medium mt-1 leading-snug truncate">
+                          <p className="shrink-0 font-medium mt-0.5 leading-snug truncate">
 
                             {item.playbookName}
 
                           </p>
 
-                          <p className="shrink-0 text-muted-foreground leading-snug line-clamp-2 min-h-[2rem]">
+                          <p className="shrink-0 text-muted-foreground leading-snug truncate">
 
                             {item.alertTitle}
 
                           </p>
 
-                          <div className="mt-auto flex flex-wrap gap-1 pt-1 max-h-[34px] overflow-hidden content-start">
+                          <div className="mt-auto shrink-0 flex flex-wrap gap-1 pt-1.5">
 
                             {resolveAlertTeamIds(item, teams).map((teamId) => (
                               <Badge
