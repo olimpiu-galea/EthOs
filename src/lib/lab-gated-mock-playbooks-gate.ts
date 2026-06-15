@@ -1,5 +1,6 @@
-import { isLabSheetReady } from "@/lib/lab-sheet-availability";
+import { isLabGatedMockPlaybook } from "@/lib/lab-sheet-availability";
 
+/** Keep all mock/builtin playbooks active and agenda alerts in sync. */
 export async function applyLabGatedMockPlaybooksGate(): Promise<void> {
   const { usePlaybookStore } = await import("@/stores/playbook-store");
   const { syncMockPlaybookAlerts, isMockPlaybook } = await import(
@@ -7,17 +8,8 @@ export async function applyLabGatedMockPlaybooksGate(): Promise<void> {
   );
 
   const store = usePlaybookStore.getState();
-  const ready = isLabSheetReady();
 
   for (const pb of store.playbooks.filter(isMockPlaybook)) {
-    if (!ready) {
-      if (pb.status === "active") {
-        store.updatePlaybook(pb.id, { status: "disabled" });
-      }
-      await syncMockPlaybookAlerts({ ...pb, status: "disabled" });
-      continue;
-    }
-
     if (pb.status !== "active") {
       store.updatePlaybook(pb.id, { status: "active" });
     }
@@ -26,4 +18,15 @@ export async function applyLabGatedMockPlaybooksGate(): Promise<void> {
       usePlaybookStore.getState().playbooks.find((p) => p.id === pb.id) ?? pb;
     await syncMockPlaybookAlerts({ ...current, status: "active" });
   }
+
+  for (const pb of store.playbooks.filter(
+    (p) => p.builtinId && !isMockPlaybook(p),
+  )) {
+    if (pb.status !== "active") {
+      store.updatePlaybook(pb.id, { status: "active" });
+    }
+  }
 }
+
+// Re-export for clarity at call sites that only gate lab-linked builtins.
+export { isLabGatedMockPlaybook };

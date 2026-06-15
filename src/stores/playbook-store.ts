@@ -7,10 +7,6 @@ import { migratePlaybook, normalizePlaybookAlert } from "@/lib/playbook-migrate"
 import { createPotentialVsTempPlaybook } from "@/lib/default-playbooks";
 import { createEmptyCondition } from "@/lib/playbook-utils";
 import { isDemoPlaybook } from "@/lib/demo-playbook";
-import {
-  isLabGatedMockPlaybook,
-  isLabSheetReady,
-} from "@/lib/lab-sheet-availability";
 import { POTENTIAL_VS_TEMP_BUILTIN_ID } from "@/lib/potential-vs-temp-rules";
 import { inferTeamIdFromPlaybook } from "@/lib/teams";
 import { useSettingsStore } from "@/stores/settings-store";
@@ -111,15 +107,13 @@ export const usePlaybookStore = create<PlaybookState>()(
           },
         );
 
-        if (isLabGatedMockPlaybook(updated)) {
-          void import("@/lib/mock-playbook-alerts").then(
-            ({ syncMockPlaybookAlerts, isMockPlaybook }) => {
-              if (isMockPlaybook(updated)) {
-                void syncMockPlaybookAlerts(updated);
-              }
-            },
-          );
-        }
+        void import("@/lib/mock-playbook-alerts").then(
+          ({ syncMockPlaybookAlerts, isMockPlaybook }) => {
+            if (isMockPlaybook(updated)) {
+              void syncMockPlaybookAlerts(updated);
+            }
+          },
+        );
       },
       deletePlaybook: (id) =>
         set((s) => ({
@@ -130,13 +124,6 @@ export const usePlaybookStore = create<PlaybookState>()(
         set((s) => ({
           playbooks: s.playbooks.map((p) => {
             if (p.id !== id) return p;
-            if (
-              isLabGatedMockPlaybook(p) &&
-              p.status !== "active" &&
-              !isLabSheetReady()
-            ) {
-              return p;
-            }
             updated = {
               ...p,
               status: p.status === "active" ? "disabled" : "active",

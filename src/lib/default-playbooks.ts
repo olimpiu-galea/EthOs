@@ -88,6 +88,7 @@ function ensureBuiltinPlaybook(
       actionItems: template.actionItems,
       guidance: template.guidance,
       alert: template.alert,
+      status: "active",
       teamId: template.teamId ?? existing.teamId,
       teamIds: template.teamIds ?? existing.teamIds,
       routedRoles: template.routedRoles ?? existing.routedRoles,
@@ -103,6 +104,7 @@ function ensureBuiltinPlaybook(
     actionItems: template.actionItems,
     guidance: template.guidance,
     alert: template.alert,
+    status: "active",
     ...(template.teamIds?.length
       ? {
           teamId: template.teamId,
@@ -166,20 +168,4 @@ export async function ensureDefaultPlaybooks(): Promise<void> {
     "@/lib/lab-gated-mock-playbooks-gate"
   );
   await applyLabGatedMockPlaybooksGate();
-
-  const { syncMockPlaybookAlerts, isWorkspaceDailyMockPlaybook } = await import(
-    "@/lib/mock-playbook-alerts"
-  );
-  const latestPlaybooks = usePlaybookStore.getState().playbooks;
-  for (const pb of latestPlaybooks.filter(isWorkspaceDailyMockPlaybook)) {
-    if (pb.status !== "active") {
-      store.updatePlaybook(pb.id, { status: "active" });
-    }
-  }
-  const syncedPlaybooks = usePlaybookStore
-    .getState()
-    .playbooks.filter(isWorkspaceDailyMockPlaybook);
-  for (const pb of syncedPlaybooks) {
-    await syncMockPlaybookAlerts(pb);
-  }
 }

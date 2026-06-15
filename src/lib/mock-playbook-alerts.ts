@@ -17,7 +17,6 @@ import {
   POTENTIAL_VS_TEMP_ACTION_ITEMS,
   POTENTIAL_VS_TEMP_GUIDANCE,
 } from "./default-playbook-response-potential-temp";
-import { isLabSheetReady } from "./lab-sheet-availability";
 import { ACETIC_BUILTIN_ID } from "./acetic-rules";
 import { POTENTIAL_VS_TEMP_BUILTIN_ID } from "./potential-vs-temp-rules";
 import {
@@ -157,11 +156,6 @@ export async function syncMockPlaybookAlerts(playbook: Playbook): Promise<void> 
   );
 
   if (!isMockPlaybook(playbook)) {
-    useAlertHistoryStore.setState({ items: otherItems });
-    return;
-  }
-
-  if (isLabRequiredMockPlaybook(playbook) && !isLabSheetReady()) {
     useAlertHistoryStore.setState({ items: otherItems });
     return;
   }

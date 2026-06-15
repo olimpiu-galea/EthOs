@@ -28,17 +28,10 @@ export function isLabGatedMockPlaybook(
 }
 
 /** Shown on the Playbooks page only when its prerequisites are met. */
-export function isPlaybookListed(playbook: Playbook): boolean {
-  if (isLabGatedMockPlaybook(playbook)) {
-    return isLabSheetReady();
-  }
+export function isPlaybookListed(_playbook: Playbook): boolean {
   return true;
 }
 
 export function isPlaybookEffectivelyActive(playbook: Playbook): boolean {
-  if (playbook.status !== "active") return false;
-  if (isLabGatedMockPlaybook(playbook)) {
-    return isLabSheetReady();
-  }
-  return true;
+  return playbook.status === "active";
 }

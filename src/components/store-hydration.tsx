@@ -46,6 +46,7 @@ function allStoresHydrated(): boolean {
 function runDeferredBootTasks() {
   const run = () => {
     void (async () => {
+      await autoConnectCompanyFeeds();
       await purgeDemoPlaybooks();
       await ensureDefaultPlaybooks();
       await autoConnectCompanyFeeds();
@@ -92,6 +93,25 @@ export function StoreHydration({ children }: { children: React.ReactNode }) {
       clearTimeout(fallback);
     };
   }, []);
+
+  useEffect(() => {
+    if (!ready) return;
+
+    const reconnect = () => {
+      void autoConnectCompanyFeeds();
+    };
+
+    const interval = setInterval(reconnect, 30_000);
+    const onVisible = () => {
+      if (document.visibilityState === "visible") reconnect();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  }, [ready]);
 
   if (!ready) {
     return (
