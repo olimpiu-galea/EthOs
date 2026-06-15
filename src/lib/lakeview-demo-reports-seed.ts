@@ -61,7 +61,7 @@ function buildLakeviewDemoReports(now = Date.now()): ReportDocument[] {
       alarmsSummary:
         "3 alert(s) in pack · 2 still open · 1 warning(s) open · 1 acknowledged and monitoring",
       openAlerts:
-        "• [warning] Potential vs Temp — Cooling response lag (acknowledged) @ 04:12\n• [info] Financial daily checkpoint — Info (new) @ 10:00 prior day",
+        "• [warning] Potential vs Temp — Cooling response lag (acknowledged) @ 04:12\n• [info] Finance daily checkpoint — Info (new) @ 10:00 prior day",
       pendingActions:
         "Potential vs Temp: Confirm cooling valve response · Re-check 24h sample",
       batchStatus: "6418 · Ferm B · Fermentation · 18h · 15.1% projected yield",

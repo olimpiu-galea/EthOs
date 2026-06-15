@@ -700,7 +700,7 @@ export function ProcurementHub() {
         <div className="rounded-xl border border-amber-500/25 bg-amber-500/5 px-4 py-3 flex gap-3 text-sm">
           <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
           <p className="text-muted-foreground">
-            Demo fixture data for Lakeview Ethanol — connect ERP procurement feed for live PO
+            Demo fixture data for Lakeview Energy — connect ERP procurement feed for live PO
             and supplier sync.
           </p>
         </div>

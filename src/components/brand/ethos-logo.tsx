@@ -6,7 +6,7 @@ type EthOsLogoProps = {
   variant?: "light" | "dark";
 };
 
-/** Molecule-style mark matching EthOs reference */
+/** Molecule-style mark matching EthOS reference */
 export function EthOsLogo({ className, variant = "light" }: EthOsLogoProps) {
   const fill = variant === "light" ? "white" : "currentColor";
   return (

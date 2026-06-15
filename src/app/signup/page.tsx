@@ -66,7 +66,7 @@ export default function SignupPage() {
       <div className="w-full max-w-lg space-y-8">
         <div className="text-center space-y-2">
           <div className="flex justify-center">
-            <EthOsWordmark showScope />
+            <EthOsWordmark />
           </div>
           <p className="text-muted-foreground">
             Register your company on {PRODUCT_NAME} — you&apos;ll be the Company Admin
@@ -92,7 +92,7 @@ export default function SignupPage() {
                     className="pl-9"
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
-                    placeholder="e.g. Lakeview Ethanol"
+                    placeholder="e.g. Lakeview Energy"
                   />
                 </div>
               </div>

@@ -56,12 +56,12 @@ export default function FinancialPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Radio className="h-5 w-5 text-primary" />
-              Financial
+              Finance
             </CardTitle>
             <CardDescription>
               {user && canSeeIntegrations(user.role)
-                ? "Connect the Financial feed on Integrations to open this page."
-                : "Financial feed is connecting… refresh in a moment."}
+                ? "Connect the commodity feed on Integrations to open this page."
+                : "Finance feed is connecting… refresh in a moment."}
             </CardDescription>
           </CardHeader>
           <CardContent>

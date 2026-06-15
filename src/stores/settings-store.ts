@@ -163,7 +163,7 @@ export const useSettingsStore = create<SettingsState>()(
     }),
     {
       name: "signal-relay-settings",
-      version: 11,
+      version: 12,
       skipHydration: true,
       migrate: (persisted: unknown, version: number) => {
         const raw = persisted as Partial<SettingsState> & {
@@ -214,6 +214,11 @@ export const useSettingsStore = create<SettingsState>()(
           };
         }
 
+        const companyName =
+          companyId === DEFAULT_COMPANY.id
+            ? DEFAULT_COMPANY.name
+            : (raw.companyName ?? DEFAULT_COMPANY.name);
+
         const teams =
           teamsByCompany[companyId] ?? defaultTeamsForCompany(companyId);
         let companyFeeds =
@@ -225,6 +230,7 @@ export const useSettingsStore = create<SettingsState>()(
 
         return {
           ...raw,
+          companyName,
           operationsSuiteEnabled: true,
           companyFeedsByCompany,
           companyFeeds,

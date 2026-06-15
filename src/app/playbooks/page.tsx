@@ -178,7 +178,7 @@ export default function PlaybooksPage() {
         </Button>
       </header>
 
-      {/* EthOs team CTA */}
+      {/* EthOS team CTA */}
       <div className="relative overflow-hidden rounded-2xl border border-primary/40 bg-gradient-to-br from-primary/15 via-violet-500/10 to-background p-6 sm:p-8">
         <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-primary/20 blur-3xl pointer-events-none" />
         <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-6">
@@ -186,11 +186,11 @@ export default function PlaybooksPage() {
             <div className="flex items-center gap-2 text-primary">
               <Sparkles className="h-5 w-5" />
               <span className="text-xs font-semibold uppercase tracking-widest">
-                EthOs Intelligence
+                EthOS Intelligence
               </span>
             </div>
             <h2 className="text-xl font-bold">
-              Ask the EthOs team to analyze your data
+              Ask the EthOS team to analyze your data
             </h2>
             <p className="text-sm text-muted-foreground">
               Our engineers review your connected feeds, historical alerts, and

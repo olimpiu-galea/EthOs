@@ -208,23 +208,23 @@ export const LAKEVIEW_WORKSPACE_DEMOS: LakeviewWorkspaceDemo[] = [
     workspaceId: "financial",
     userId: "financial",
     teamId: LAKEVIEW_TEAM_FINANCIAL,
-    teamName: "Financial",
+    teamName: "Finance",
     teamDescription: "Margin desk, inventory carry, and commodity exposure",
     builtinId: "workspace-daily-financial",
-    playbookName: "Financial daily checkpoint",
+    playbookName: "Finance daily checkpoint",
     playbookDescription:
-      "Daily financial alert for demos — margin below target with high inventory days, tied to the Financial team.",
+      "Daily finance alert for demos — margin below target with high inventory days, tied to the Finance team.",
     triggerHour: 10,
     triggerMinute: 0,
-    alertTitle: "Financial checkpoint",
+    alertTitle: "Finance checkpoint",
     alertMessage:
       "Ethanol margin is below the weekly plan while corn and ethanol inventory days are elevated. Review hedge and run-rate options.",
-    conditionsSummary: "Financial demo · one instance per day on the Agenda",
+    conditionsSummary: "Finance demo · one instance per day on the Agenda",
     severity: "info",
     actionItems: FINANCIAL_ACTION_ITEMS,
     guidance: [
       {
-        title: "Financial workspace",
+        title: "Finance workspace",
         body: "Use margin desk charts and inventory days for the full picture.",
       },
       {
@@ -385,6 +385,9 @@ export async function ensureLakeviewDemoSeed(): Promise<void> {
   const next = mergeLakeviewDemoTeams(existing);
 
   useSettingsStore.setState((s) => ({
+    ...(s.companyId === DEFAULT_COMPANY.id
+      ? { companyName: DEFAULT_COMPANY.name }
+      : {}),
     teams: s.companyId === DEFAULT_COMPANY.id ? next : s.teams,
     teamsByCompany: {
       ...s.teamsByCompany,

@@ -159,15 +159,17 @@ export function LoggedInDashboard({ user }: { user: AuthUser }) {
   return (
     <div className="p-8 max-w-6xl mx-auto w-full space-y-8">
       <header className="space-y-2">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
+          {companyName}
+        </h1>
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant="outline" className="text-primary border-primary/40">
             {ROLE_LABELS[role]}
           </Badge>
-          <span className="text-xs text-muted-foreground">{companyName}</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+        <p className="text-xl sm:text-2xl font-semibold tracking-tight">
           Good {getDayPart()}, {user.name.split(" ")[0]}
-        </h1>
+        </p>
         <p className="text-muted-foreground">{greetingDate}</p>
       </header>
 

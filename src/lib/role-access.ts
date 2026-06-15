@@ -115,7 +115,7 @@ export function buildSuiteNav(
   ) {
     extras.push({
       href: "/financial",
-      label: "Financial",
+      label: "Finance",
       icon: Wallet,
       ready: true,
     });

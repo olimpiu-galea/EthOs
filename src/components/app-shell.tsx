@@ -31,7 +31,6 @@ import {
 } from "@/lib/role-access";
 import { ROLE_LABELS, canManageSettings } from "@/lib/auth-constants";
 import { EthOsWordmark } from "@/components/brand/ethos-wordmark";
-import { PRODUCT_SCOPE_SHORT, PRODUCT_TAGLINE } from "@/lib/brand";
 
 const BASE_MAIN_NAV = [
   { href: "/", label: "Home", icon: Home },
@@ -119,11 +118,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen flex bg-background">
       <aside className="w-64 bg-sidebar text-sidebar-foreground flex flex-col shrink-0 border-r border-sidebar-border">
         <div className="p-5 border-b border-sidebar-border">
-          <EthOsWordmark
-            variant="sidebar"
-            companyName={companyName}
-            showTagline
-          />
+          <EthOsWordmark variant="sidebar" />
         </div>
         <nav className="flex-1 p-3 space-y-1">
           {mainNav.map(({ href, label, icon: Icon }) =>
@@ -137,6 +132,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           )}
 
           <div className="relative mt-3 rounded-xl border border-sidebar-border bg-sidebar-accent/40 p-2 space-y-0.5">
+            <p className="px-2 pt-1 pb-1.5 text-[10px] font-semibold uppercase tracking-wider text-sidebar-muted">
+              Dashboards
+            </p>
             {suiteNav.map(({ href, label, icon: Icon, ready }) =>
               navLink(href, label, Icon, !ready),
             )}
@@ -165,11 +163,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <div className="flex-1 flex flex-col min-w-0 bg-card">
         <header className="sticky top-0 z-40 flex items-center justify-between gap-4 border-b border-border bg-card/95 backdrop-blur-sm px-6 py-3 shrink-0">
           <div className="min-w-0 hidden sm:block">
-            <p className="text-sm font-semibold text-foreground truncate">
-              {PRODUCT_TAGLINE}
-            </p>
-            <p className="text-xs text-muted-foreground truncate">
-              {PRODUCT_SCOPE_SHORT}
+            <p className="text-xl sm:text-2xl font-bold tracking-tight text-foreground truncate">
+              {companyName}
             </p>
           </div>
           {user && (

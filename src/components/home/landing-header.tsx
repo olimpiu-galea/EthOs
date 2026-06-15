@@ -22,7 +22,7 @@ export function LandingHeader() {
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md">
       <div className="max-w-5xl mx-auto px-8 py-4 flex items-center justify-between gap-4">
         <Link href="/" className="shrink-0">
-          <EthOsWordmark showScope />
+          <EthOsWordmark />
         </Link>
 
         <div className="flex items-center gap-2 sm:gap-3">

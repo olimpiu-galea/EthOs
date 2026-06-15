@@ -256,16 +256,17 @@ export default function AgendaPage() {
   const minDateKey = isAgendaAdmin ? undefined : yesterdayKey;
 
   const viewDateKey = useMemo(
-    () => clampDateKey(agendaDateKey, minDateKey, todayKey),
-    [agendaDateKey, minDateKey, todayKey],
+    () => clampDateKey(agendaDateKey, minDateKey),
+    [agendaDateKey, minDateKey],
   );
 
   useEffect(() => {
-    const clamped = clampDateKey(agendaDateKey, minDateKey, todayKey);
+    const clamped = clampDateKey(agendaDateKey, minDateKey);
     if (clamped !== agendaDateKey) setAgendaDateKey(clamped);
-  }, [agendaDateKey, minDateKey, todayKey]);
+  }, [agendaDateKey, minDateKey]);
 
   const isViewingToday = viewDateKey === todayKey;
+  const isViewingFuture = viewDateKey > todayKey;
 
   const viewDateLabel = useMemo(
     () => formatAgendaDateLabel(viewDateKey),
@@ -551,7 +552,11 @@ export default function AgendaPage() {
                 )}
                 {filteredItems.length} alerts in your view · {active} active ·{" "}
                 {completed} completed · sorted by time
-                {!isViewingToday && " · historical day"}
+                {isViewingFuture
+                  ? " · upcoming day"
+                  : !isViewingToday
+                    ? " · historical day"
+                    : ""}
               </CardDescription>
             </div>
 
@@ -666,14 +671,18 @@ export default function AgendaPage() {
             <p className="text-muted-foreground">
               {isViewingToday
                 ? "No alerts on today's timeline yet."
-                : `No alerts recorded for ${viewDateLabel}.`}
+                : isViewingFuture
+                  ? `No alerts planned for ${viewDateLabel}.`
+                  : `No alerts recorded for ${viewDateLabel}.`}
             </p>
 
             <p className="text-sm text-muted-foreground max-w-md mx-auto">
-              {!isViewingToday ? (
+              {isViewingFuture ? (
+                "Active workspace daily playbooks generate one alert per team on each future day."
+              ) : !isViewingToday ? (
                 isAgendaAdmin
                   ? "Turn on Potential vs Temp or Acetic playbooks to load demo history across the calendar year."
-                  : "Yesterday's alerts only — older history is available to supervisors and admins."
+                  : "You can browse from yesterday forward — older history is available to supervisors and admins."
               ) : dayItems.length > 0 ? (
                 "This team lens may be hiding alerts — try All teams or another role."
               ) : lastSync ? (

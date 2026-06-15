@@ -6,7 +6,8 @@ import { FlowDiagram } from "@/components/home/flow-diagram";
 import { LandingHeader } from "@/components/home/landing-header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { PRODUCT_NAME, PRODUCT_SCOPE } from "@/lib/brand";
+import { PRODUCT_NAME } from "@/lib/brand";
+import { DEFAULT_COMPANY } from "@/lib/auth-constants";
 import { useAuthStore } from "@/stores/auth-store";
 import { LoggedInDashboard } from "@/components/home/logged-in-dashboard";
 
@@ -18,7 +19,7 @@ function GuestHome() {
       <div className="flex-1 p-6 sm:p-8 max-w-5xl mx-auto w-full space-y-8 pb-12">
         <section className="space-y-4 pt-2">
           <Badge variant="outline" className="border-border text-foreground">
-            Lakeview Ethanol · Demo
+            {DEFAULT_COMPANY.name} · Demo
           </Badge>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight max-w-2xl">
             Plant signals → playbooks → action
@@ -26,7 +27,7 @@ function GuestHome() {
           <p className="text-base text-muted-foreground max-w-2xl leading-relaxed">
             {PRODUCT_NAME} connects live plant feeds to role-specific alerts and
             workspace pages for operations, compliance, procurement, maintenance,
-            and finance. {PRODUCT_SCOPE}
+            and finance.
           </p>
           <div className="flex flex-wrap gap-3">
             <Button className="gap-2" disabled>

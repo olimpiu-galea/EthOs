@@ -2,7 +2,7 @@ import type { IndustryDomain, UserRole } from "./types";
 
 export const DEFAULT_COMPANY = {
   id: "lakeview",
-  name: "Lakeview Ethanol",
+  name: "Lakeview Energy",
   slug: "lakeview",
 } as const;
 
@@ -77,7 +77,7 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
     name: "Rachel Kim",
     role: "financial",
     companyId: "lakeview",
-    title: "Financial",
+    title: "Finance",
   },
   {
     id: "compliance",
@@ -103,7 +103,7 @@ export const ROLE_LABELS: Record<UserRole, string> = {
   platform_admin: "Platform Admin",
   company_admin: "Company Admin",
   supervisor: "Supervisor",
-  financial: "Financial",
+  financial: "Finance",
   operational: "Operational",
   maintenance: "Maintenance",
   qa_lab: "QA / Lab",

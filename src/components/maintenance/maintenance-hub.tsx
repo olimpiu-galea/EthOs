@@ -616,7 +616,7 @@ export function MaintenanceHub() {
           <p className="text-muted-foreground">
             <strong className="text-foreground font-medium">Demo only</strong> —
             maintenance actions, due dates, and statuses are fixture data for
-            Lakeview Ethanol.
+            Lakeview Energy.
           </p>
         </div>
       </div>

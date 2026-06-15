@@ -13,7 +13,7 @@ import { useAuthStore } from "@/stores/auth-store";
 import { DEMO_ACCOUNTS, DEFAULT_COMPANY } from "@/lib/auth-constants";
 import { workspaceHomePath } from "@/lib/role-access";
 import { cn } from "@/lib/utils";
-import { PRODUCT_SCOPE } from "@/lib/brand";
+import { PRODUCT_NAME } from "@/lib/brand";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -51,7 +51,7 @@ export default function LoginPage() {
       <header className="border-b border-border/60 bg-background/80 backdrop-blur-md px-6 py-3">
         <div className="max-w-lg mx-auto flex items-center justify-between gap-4">
           <Link href="/" className="shrink-0">
-            <EthOsWordmark showScope />
+            <EthOsWordmark />
           </Link>
         </div>
       </header>
@@ -59,13 +59,14 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center p-6">
       <div className="w-full max-w-lg space-y-8">
         <div className="text-center space-y-2">
-          <p className="text-muted-foreground">{PRODUCT_SCOPE}</p>
+          <h1 className="text-2xl font-bold tracking-tight">{DEFAULT_COMPANY.name}</h1>
+          <p className="text-sm text-muted-foreground">Sign in to {PRODUCT_NAME}</p>
         </div>
 
         <Card>
           <CardHeader>
             <CardTitle>Sign in</CardTitle>
-            <CardDescription>Lakeview Ethanol · demo environment</CardDescription>
+            <CardDescription>{DEFAULT_COMPANY.name} · demo environment</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-4">

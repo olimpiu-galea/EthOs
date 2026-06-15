@@ -5,7 +5,7 @@ import { PRODUCT_NAME } from "@/lib/brand";
 export const metadata: Metadata = {
   title: `Plant Compliance · ${PRODUCT_NAME}`,
   description:
-    "Lakeview Ethanol plant compliance — fermentation QA, lab schedule, shift documentation, and industry challenges.",
+    "Lakeview Energy plant compliance — fermentation QA, lab schedule, shift documentation, and industry challenges.",
 };
 
 export default function CompliancePage() {

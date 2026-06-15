@@ -21,6 +21,8 @@ type Props = {
   onChange: (dateKey: string) => void;
   /** Earliest selectable day (inclusive). Omit for unrestricted history. */
   minDateKey?: string;
+  /** Latest selectable day (inclusive). Omit for unrestricted future dates. */
+  maxDateKey?: string;
   /** When true, copy reflects a 2-day window (today + yesterday). */
   limitedRange?: boolean;
   className?: string;
@@ -31,12 +33,14 @@ export function AgendaDatePicker({
   todayKey,
   onChange,
   minDateKey,
+  maxDateKey,
   limitedRange = false,
   className,
 }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const isToday = value === todayKey;
-  const canGoNext = value < todayKey;
+  const isFuture = value > todayKey;
+  const canGoNext = !maxDateKey || value < maxDateKey;
   const canGoPrev = !minDateKey || value > minDateKey;
 
   const shortLabel = (() => {
@@ -51,6 +55,7 @@ export function AgendaDatePicker({
 
   const subLabel = (() => {
     if (isToday) return "Today · live timeline";
+    if (isFuture) return "Upcoming · planned alerts";
     if (limitedRange && minDateKey && value === minDateKey) {
       return "Yesterday · previous shift";
     }
@@ -58,7 +63,7 @@ export function AgendaDatePicker({
   })();
 
   function setDate(next: string) {
-    onChange(clampDateKey(next, minDateKey, todayKey));
+    onChange(clampDateKey(next, minDateKey, maxDateKey));
   }
 
   function openPicker() {
@@ -120,7 +125,7 @@ export function AgendaDatePicker({
         type="date"
         value={value}
         min={minDateKey}
-        max={todayKey}
+        max={maxDateKey}
         onChange={(e) => {
           if (e.target.value) setDate(e.target.value);
         }}

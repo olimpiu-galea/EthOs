@@ -85,7 +85,7 @@ export function SettingsGeneralPanel() {
             <CardTitle>Reset demo workspace</CardTitle>
             <CardDescription>
               Clear all playbooks, agenda alerts, reports, integrations, and
-              custom settings for Lakeview Ethanol. Demo playbooks are recreated
+              custom settings for Lakeview Energy. Demo playbooks are recreated
               automatically.
             </CardDescription>
           </CardHeader>

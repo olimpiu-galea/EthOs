@@ -1,4 +1,4 @@
-# EthOs
+# EthOS
 
 AI shift supervisor for ethanol plants — configurable for other industry domains.
 

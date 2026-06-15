@@ -197,14 +197,14 @@ export function MarginDesk() {
       <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
         <div className="space-y-2">
           <p className="text-xs uppercase tracking-widest text-primary font-medium">
-            Ethanol · Financial operations
+            Ethanol · Finance operations
           </p>
           <div className="flex items-center gap-3">
             <Wallet className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold tracking-tight">Financial</h1>
+            <h1 className="text-3xl font-bold tracking-tight">Finance</h1>
           </div>
           <p className="text-muted-foreground max-w-2xl text-sm leading-relaxed">
-            Financial view of plant economics from the Financial feed — net margin,
+            Finance view of plant economics from the commodity feed — net margin,
             surplus inventory, contract coverage, and rack-loadout signals. Dollar impact
             on an active fermenter is{" "}
             <strong className="text-foreground font-medium">opportunity cost</strong>,
@@ -214,7 +214,7 @@ export function MarginDesk() {
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant={connected ? "success" : "secondary"} className="gap-1">
             <Radio className="h-3 w-3" />
-            {connected ? "Financial feed connected" : "Not connected"}
+            {connected ? "Finance feed connected" : "Not connected"}
           </Badge>
           {lastSync && (
             <span className="text-xs text-muted-foreground tabular-nums">

@@ -14,7 +14,7 @@ const steps = [
   {
     title: "Integrations",
     subtitle: "Connect feeds",
-    desc: "DCS, Lab Sheet, Financial, and Procurement.",
+    desc: "DCS, Lab Sheet, Finance, and Procurement.",
     color: "border-primary/40 bg-primary/10",
   },
   {
@@ -42,7 +42,7 @@ const workspaces = [
   { label: "Compliance", icon: ShieldCheck, desc: "Deviations · posture" },
   { label: "Procurement", icon: Package, desc: "PO · suppliers" },
   { label: "Maintenance", icon: Wrench, desc: "Spare parts · assets" },
-  { label: "Financial", icon: Wallet, desc: "Margin · sell/hold" },
+  { label: "Finance", icon: Wallet, desc: "Margin · sell/hold" },
 ] as const;
 
 export function FlowDiagram() {
