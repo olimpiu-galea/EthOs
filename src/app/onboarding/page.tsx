@@ -24,6 +24,7 @@ import { useAuthStore } from "@/stores/auth-store";
 import { useSettingsStore } from "@/stores/settings-store";
 import { FEED_LABELS } from "@/lib/company-features";
 import { domainAccentLabel } from "@/lib/domain-config";
+import { EthOsWordmark } from "@/components/brand/ethos-wordmark";
 import type { SignalSource } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -67,16 +68,19 @@ export default function OnboardingPage() {
   return (
     <div className="min-h-screen bg-background p-8">
       <div className="max-w-3xl mx-auto space-y-8">
-        <header className="space-y-2">
-          <p className="text-sm text-primary font-medium">Getting started</p>
-          <h1 className="text-3xl font-bold">
-            Welcome{user ? `, ${user.name.split(" ")[0]}` : ""}
-          </h1>
-          <p className="text-muted-foreground">
-            <strong>{companyName}</strong> · {domainAccentLabel(domain)} — enable
-            feeds, connect sources, build playbooks, then watch alerts on the
-            Agenda.
-          </p>
+        <header className="space-y-4">
+          <EthOsWordmark size="lg" />
+          <div className="space-y-2">
+            <p className="text-sm text-primary font-medium">Getting started</p>
+            <h1 className="text-3xl font-bold">
+              Welcome{user ? `, ${user.name.split(" ")[0]}` : ""}
+            </h1>
+            <p className="text-muted-foreground">
+              <strong>{companyName}</strong> · {domainAccentLabel(domain)} — enable
+              feeds, connect sources, build playbooks, then watch alerts on the
+              Agenda.
+            </p>
+          </div>
         </header>
 
         <div className="flex gap-2">

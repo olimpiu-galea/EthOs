@@ -66,7 +66,7 @@ export default function SignupPage() {
       <div className="w-full max-w-lg space-y-8">
         <div className="text-center space-y-2">
           <div className="flex justify-center">
-            <EthOsWordmark />
+            <EthOsWordmark size="lg" />
           </div>
           <p className="text-muted-foreground">
             Register your company on {PRODUCT_NAME} — you&apos;ll be the Company Admin

@@ -24,6 +24,7 @@ import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth-store";
 import { useSettingsStore } from "@/stores/settings-store";
 import { ROLE_LABELS } from "@/lib/auth-constants";
+import { PRODUCT_NAME } from "@/lib/brand";
 
 type ContextSource = {
   id: string;
@@ -340,7 +341,7 @@ export function PlantCopilotDemo() {
             </p>
             <p className="rounded-lg border border-border/70 bg-muted/20 px-3 py-2 text-[13px]">
               This is exactly the kind of cross-table question operators ask mid-shift —
-              Copilot reads the same rules EthOS uses for live alerts, so answers stay
+              Copilot reads the same rules {PRODUCT_NAME} uses for live alerts, so answers stay
               aligned with what the floor sees.
             </p>
           </div>
@@ -383,7 +384,7 @@ export function PlantCopilotDemo() {
             </h1>
             <p className="text-base text-muted-foreground leading-relaxed">
               Plant Copilot sits on the same live signals, playbooks, batches, shift
-              handovers, and reports your team already uses in EthOS — so answers cite
+              handovers, and reports your team already uses in {PRODUCT_NAME} — so answers cite
               real plant state instead of generic chatbot guesses.
             </p>
           </div>

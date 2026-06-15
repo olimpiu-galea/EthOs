@@ -1,5 +1,6 @@
 "use client";
 
+import { PRODUCT_NAME } from "@/lib/brand";
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { workspaceHomePath } from "@/lib/role-access";
@@ -49,8 +50,11 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
 
   if (!isReady) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-muted-foreground">
-        Loading…
+      <div className="min-h-screen flex flex-col items-center justify-center gap-2 text-muted-foreground">
+        <p className="text-lg font-semibold tracking-tight text-foreground">
+          {PRODUCT_NAME}
+        </p>
+        <p className="text-sm">Loading…</p>
       </div>
     );
   }

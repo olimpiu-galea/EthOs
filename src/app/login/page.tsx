@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { LogIn } from "lucide-react";
+import { ArrowLeft, LogIn } from "lucide-react";
 import { EthOsWordmark } from "@/components/brand/ethos-wordmark";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,7 +13,6 @@ import { useAuthStore } from "@/stores/auth-store";
 import { DEMO_ACCOUNTS, DEFAULT_COMPANY } from "@/lib/auth-constants";
 import { workspaceHomePath } from "@/lib/role-access";
 import { cn } from "@/lib/utils";
-import { PRODUCT_NAME } from "@/lib/brand";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -47,20 +46,27 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      <header className="border-b border-border/60 bg-background/80 backdrop-blur-md px-6 py-3">
-        <div className="max-w-lg mx-auto flex items-center justify-between gap-4">
-          <Link href="/" className="shrink-0">
-            <EthOsWordmark />
-          </Link>
-        </div>
-      </header>
+    <div className="relative min-h-screen flex items-center justify-center bg-background p-6">
+      <Button
+        asChild
+        variant="ghost"
+        size="sm"
+        className="absolute top-6 left-6 gap-2 text-muted-foreground"
+      >
+        <Link href="/">
+          <ArrowLeft className="h-4 w-4" />
+          Back
+        </Link>
+      </Button>
 
-      <div className="flex-1 flex items-center justify-center p-6">
       <div className="w-full max-w-lg space-y-8">
         <div className="text-center space-y-2">
-          <h1 className="text-2xl font-bold tracking-tight">{DEFAULT_COMPANY.name}</h1>
-          <p className="text-sm text-muted-foreground">Sign in to {PRODUCT_NAME}</p>
+          <div className="flex justify-center">
+            <EthOsWordmark size="lg" />
+          </div>
+          <p className="text-muted-foreground">
+            Sign in to {DEFAULT_COMPANY.name}
+          </p>
         </div>
 
         <Card>
@@ -140,7 +146,6 @@ export default function LoginPage() {
             ))}
           </div>
         </div>
-      </div>
       </div>
     </div>
   );

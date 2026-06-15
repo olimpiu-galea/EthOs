@@ -54,6 +54,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { PREMIUM_CATALOG } from "@/lib/premium-playbooks";
+import { PRODUCT_NAME } from "@/lib/brand";
 import { usePlaybookFeedbackStore } from "@/stores/playbook-feedback-store";
 
 function PlaybookStats({
@@ -178,7 +179,7 @@ export default function PlaybooksPage() {
         </Button>
       </header>
 
-      {/* EthOS team CTA */}
+      {/* {PRODUCT_NAME} team CTA */}
       <div className="relative overflow-hidden rounded-2xl border border-primary/40 bg-gradient-to-br from-primary/15 via-violet-500/10 to-background p-6 sm:p-8">
         <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-primary/20 blur-3xl pointer-events-none" />
         <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-6">
@@ -186,11 +187,11 @@ export default function PlaybooksPage() {
             <div className="flex items-center gap-2 text-primary">
               <Sparkles className="h-5 w-5" />
               <span className="text-xs font-semibold uppercase tracking-widest">
-                EthOS Intelligence
+                {PRODUCT_NAME} Intelligence
               </span>
             </div>
             <h2 className="text-xl font-bold">
-              Ask the EthOS team to analyze your data
+              Ask the {PRODUCT_NAME} team to analyze your data
             </h2>
             <p className="text-sm text-muted-foreground">
               Our engineers review your connected feeds, historical alerts, and
