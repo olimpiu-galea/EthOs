@@ -1,6 +1,10 @@
 "use client";
 
 import type { AlertAgendaItem, Playbook } from "./types";
+import {
+  REMOVED_WORKSPACE_DAILY_OPERATIONAL_BUILTIN_ID,
+  REMOVED_WORKSPACE_DAILY_OPERATIONAL_NAME,
+} from "./lakeview-demo-constants";
 
 /** Legacy daily demo playbook — purged on boot */
 const LEGACY_DAILY_DEMO_BUILTIN_ID = "daily-shift-checkpoint";
@@ -19,6 +23,31 @@ const DEMO_PLAYBOOK_NAMES = new Set([
   LEGACY_DAILY_DEMO_PLAYBOOK_NAME,
 ]);
 
+export function isRemovedWorkspaceDailyPlaybook(
+  playbook: Pick<Playbook, "name" | "builtinId">,
+): boolean {
+  return (
+    playbook.builtinId === REMOVED_WORKSPACE_DAILY_OPERATIONAL_BUILTIN_ID ||
+    playbook.name === REMOVED_WORKSPACE_DAILY_OPERATIONAL_NAME
+  );
+}
+
+export function isRetiredBuiltinPlaybook(
+  playbook: Pick<Playbook, "name" | "builtinId">,
+): boolean {
+  return (
+    isDemoPlaybook(playbook) || isRemovedWorkspaceDailyPlaybook(playbook)
+  );
+}
+
+export function isRemovedWorkspaceDailyAlert(
+  item: Pick<AlertAgendaItem, "playbookName" | "mockAlertKey">,
+): boolean {
+  return (
+    item.playbookName === REMOVED_WORKSPACE_DAILY_OPERATIONAL_NAME ||
+    item.mockAlertKey?.startsWith("workspace-daily-operational-") === true
+  );
+}
 export function isLegacyDailyDemoPlaybook(
   playbook: Pick<Playbook, "name" | "builtinId">,
 ): boolean {
@@ -49,7 +78,11 @@ export function isLegacyDailyDemoAlert(
 export function isDemoAlertItem(
   item: Pick<AlertAgendaItem, "playbookName" | "mockAlertKey">,
 ): boolean {
-  return isDemoPlaybook({ name: item.playbookName }) || isLegacyDailyDemoAlert(item);
+  return (
+    isDemoPlaybook({ name: item.playbookName }) ||
+    isLegacyDailyDemoAlert(item) ||
+    isRemovedWorkspaceDailyAlert(item)
+  );
 }
 
 /** Remove legacy demo playbooks and their agenda alerts from persisted stores */
@@ -58,26 +91,32 @@ export async function purgeDemoPlaybooks(): Promise<void> {
   const { useAlertHistoryStore } = await import("@/stores/alert-history-store");
 
   const playbooks = usePlaybookStore.getState().playbooks;
-  const demoIds = new Set(
-    playbooks.filter(isDemoPlaybook).map((p) => p.id),
+  const retiredIds = new Set(
+    playbooks.filter(isRetiredBuiltinPlaybook).map((p) => p.id),
   );
   const items = useAlertHistoryStore.getState().items;
-  const hasDemoAlerts = items.some(
-    (i) => demoIds.has(i.playbookId) || isDemoAlertItem(i),
+  const hasRetiredAlerts = items.some(
+    (i) =>
+      retiredIds.has(i.playbookId) ||
+      isDemoAlertItem(i) ||
+      isRemovedWorkspaceDailyAlert(i),
   );
 
-  if (!demoIds.size && !hasDemoAlerts) return;
+  if (!retiredIds.size && !hasRetiredAlerts) return;
 
-  if (demoIds.size) {
+  if (retiredIds.size) {
     usePlaybookStore.setState({
-      playbooks: playbooks.filter((p) => !isDemoPlaybook(p)),
+      playbooks: playbooks.filter((p) => !isRetiredBuiltinPlaybook(p)),
     });
   }
 
-  if (hasDemoAlerts) {
+  if (hasRetiredAlerts) {
     useAlertHistoryStore.setState((s) => ({
       items: s.items.filter(
-        (i) => !demoIds.has(i.playbookId) && !isDemoAlertItem(i),
+        (i) =>
+          !retiredIds.has(i.playbookId) &&
+          !isDemoAlertItem(i) &&
+          !isRemovedWorkspaceDailyAlert(i),
       ),
     }));
   }

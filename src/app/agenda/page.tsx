@@ -81,6 +81,7 @@ import { canSeeAllAgendaTeams } from "@/lib/auth-constants";
 import { useSettingsStore } from "@/stores/settings-store";
 
 import { filterAlertsByActivePlaybooks } from "@/lib/agenda-playbook-filter";
+import { workspaceDailyAgendaItemsForDate } from "@/lib/mock-playbook-alerts";
 import { ShiftHandoverModal } from "@/components/agenda/shift-handover-modal";
 import { ActiveBatchesStatCard } from "@/components/batches/active-batches-stat-card";
 
@@ -273,8 +274,21 @@ export default function AgendaPage() {
 
   const dayItems = useMemo(() => {
     const dated = filterItemsForDate(items, viewDateKey);
-    return filterAlertsByActivePlaybooks(dated, playbooks, viewDateKey);
-  }, [items, viewDateKey, playbooks]);
+    const persistedMockKeys = new Set(
+      dated
+        .filter((i) => i.isMockAlert && i.mockAlertKey)
+        .map((i) => i.mockAlertKey as string),
+    );
+    const virtualWorkspace = workspaceDailyAgendaItemsForDate(
+      playbooks,
+      viewDateKey,
+      now,
+    ).filter((i) => !persistedMockKeys.has(i.mockAlertKey ?? ""));
+    const merged = [...dated, ...virtualWorkspace].sort(
+      (a, b) => a.triggeredAt - b.triggeredAt,
+    );
+    return filterAlertsByActivePlaybooks(merged, playbooks, viewDateKey);
+  }, [items, viewDateKey, playbooks, now]);
 
 
 
@@ -784,7 +798,7 @@ export default function AgendaPage() {
 
                         >
 
-                          <div className="flex items-center gap-1.5 min-h-[18px]">
+                          <div className="flex shrink-0 items-center gap-1.5 min-h-[18px]">
 
                             <span className="font-semibold tabular-nums">
 
@@ -817,13 +831,13 @@ export default function AgendaPage() {
 
                           </div>
 
-                          <p className="font-medium mt-1 leading-tight line-clamp-1">
+                          <p className="shrink-0 font-medium mt-1 leading-snug truncate">
 
                             {item.playbookName}
 
                           </p>
 
-                          <p className="text-muted-foreground leading-snug line-clamp-2 min-h-[2.5rem]">
+                          <p className="shrink-0 text-muted-foreground leading-snug line-clamp-2 min-h-[2rem]">
 
                             {item.alertTitle}
 

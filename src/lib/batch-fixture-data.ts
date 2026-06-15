@@ -168,7 +168,7 @@ export const MOCK_BATCHES: BatchRecord[] = [
     brixDrop: 4.6,
     fermenterAgeH: 18,
     operatorNote:
-      "Cooling response lagging vs setpoint — matches Operational daily checkpoint on Agenda. Valve opened to 72%; re-check at 24h sample.",
+      "Cooling response lagging vs setpoint — matches Potential vs Temp alert on Agenda. Valve opened to 72%; re-check at 24h sample.",
     phases: [
       { id: "prep", label: "Prep & pre-CIP", short: "Prep", durationH: 2, status: "done" },
       { id: "fill", label: "Fill", short: "Fill", durationH: 4, status: "done" },

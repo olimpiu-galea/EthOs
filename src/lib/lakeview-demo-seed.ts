@@ -6,7 +6,6 @@ import { DEFAULT_COMPANY } from "./auth-constants";
 import type { AuthUser } from "./types";
 
 export type LakeviewWorkspaceId =
-  | "operational"
   | "procurement"
   | "maintenance"
   | "financial"
@@ -38,28 +37,13 @@ export const LAKEVIEW_TEAM_MAINTENANCE = "lakeview-team-maintenance";
 export const LAKEVIEW_TEAM_FINANCIAL = "lakeview-team-financial";
 export const LAKEVIEW_TEAM_COMPLIANCE = "lakeview-team-compliance";
 
-const OPERATIONAL_ACTION_ITEMS: PlaybookActionItem[] = [
-  {
-    id: "review-batch",
-    title: "Review batch on Ferm B",
-    detail: "Confirm temp, agitator, and cooling in the Operational workspace.",
-  },
-  {
-    id: "compare-signals",
-    title: "Compare live signals with lab data",
-    detail: "Match latest lab row to DCS tags before setpoint changes.",
-  },
-  {
-    id: "corrective-action",
-    title: "Take corrective action",
-    detail: "Adjust cooling per SOP; watch trend 30 min.",
-  },
-  {
-    id: "log-and-close",
-    title: "Log outcome and resolve",
-    detail: "Record changes and resolve when batch is stable.",
-  },
-];
+const LAKEVIEW_OPERATIONAL_TEAM: OpsTeam = {
+  id: LAKEVIEW_TEAM_OPERATIONAL,
+  name: "Operations",
+  description: "Fermenter batches, DCS signals, and shift handover",
+  enabled: true,
+  memberUserIds: ["operational"],
+};
 
 const PROCUREMENT_ACTION_ITEMS: PlaybookActionItem[] = [
   {
@@ -154,52 +138,6 @@ const COMPLIANCE_ACTION_ITEMS: PlaybookActionItem[] = [
 ];
 
 export const LAKEVIEW_WORKSPACE_DEMOS: LakeviewWorkspaceDemo[] = [
-  {
-    workspaceId: "operational",
-    userId: "operational",
-    teamId: LAKEVIEW_TEAM_OPERATIONAL,
-    teamName: "Operations",
-    teamDescription: "Fermenter batches, DCS signals, and shift handover",
-    builtinId: "workspace-daily-operational",
-    playbookName: "Operational daily checkpoint",
-    playbookDescription:
-      "Daily operations alert for demos — Ferm B cooling review, tied to the Operations team on Agenda.",
-    triggerHour: 7,
-    triggerMinute: 0,
-    alertTitle: "Operational checkpoint",
-    alertMessage:
-      "Ferm B — cooling response is slower than expected. Review the batch trajectory and confirm corrective action.",
-    conditionsSummary: "Operational demo · one instance per day on the Agenda",
-    severity: "warning",
-    actionItems: OPERATIONAL_ACTION_ITEMS,
-    guidance: [
-      {
-        title: "Operational workspace",
-        body: "Use the Operational page for batch context while working this alert.",
-      },
-      {
-        title: "Work like live",
-        body: "Complete action items in order from the detail panel.",
-      },
-      {
-        title: "Resolve when done",
-        body: "Mark resolved after logging; new instance next day.",
-      },
-    ],
-    batchContext: {
-      batchId: "6418",
-      fermenter: "B",
-      phaseId: "ferm",
-      phaseLabel: "Fermentation",
-      batchAgeH: 18,
-      projectedYield: "15.1% projected",
-      labSamples: [
-        { label: "Fermenter temp", value: "91.4 °F" },
-        { label: "Cooling valve", value: "72% open" },
-        { label: "Status", value: "Review recommended" },
-      ],
-    },
-  },
   {
     workspaceId: "procurement",
     userId: "procurement",
@@ -362,13 +300,20 @@ export function isWorkspaceDailyBuiltinId(builtinId: string | undefined): boolea
 }
 
 export function buildLakeviewDemoTeams(): OpsTeam[] {
-  return LAKEVIEW_WORKSPACE_DEMOS.map((d) => ({
+  const fromDemos = LAKEVIEW_WORKSPACE_DEMOS.map((d) => ({
     id: d.teamId,
     name: d.teamName,
     description: d.teamDescription,
     enabled: true,
     memberUserIds: [d.userId],
   }));
+  const byId = new Map<string, OpsTeam>([
+    [LAKEVIEW_OPERATIONAL_TEAM.id, { ...LAKEVIEW_OPERATIONAL_TEAM }],
+  ]);
+  for (const team of fromDemos) {
+    byId.set(team.id, team);
+  }
+  return Array.from(byId.values());
 }
 
 export function mergeLakeviewDemoTeams(existing: OpsTeam[]): OpsTeam[] {

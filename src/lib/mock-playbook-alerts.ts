@@ -24,7 +24,10 @@ import {
   LAKEVIEW_WORKSPACE_DEMOS,
   workspaceDemoByBuiltinId,
 } from "./lakeview-demo-seed";
-import { mapWorkspaceDailyAlertsForYear } from "./workspace-daily-alerts-adapter";
+import {
+  workspaceDailyAlertForDate,
+} from "./workspace-daily-alerts-adapter";
+import { localDateKey } from "./dcs-timeline";
 import { mapAceticAlerts } from "./acetic-alerts-adapter";
 import {
   mapPotentialTempAlerts,
@@ -94,9 +97,61 @@ function mockRecordsForPlaybook(playbook: Playbook): MappedMockAlert[] {
   if (!playbook.builtinId) return [];
   if (isWorkspaceDailyMockPlaybook(playbook)) {
     const demo = workspaceDemoByBuiltinId(playbook.builtinId);
-    return demo ? mapWorkspaceDailyAlertsForYear(demo) : [];
+    return demo ? [workspaceDailyAlertForDate(demo, localDateKey())] : [];
   }
   return MOCK_DATASETS[playbook.builtinId] ?? [];
+}
+
+const MOCK_ALERT_TRIM_PER_PLAYBOOK = 64;
+
+function trimMockAlertsPerPlaybook(
+  items: AlertAgendaItem[],
+  limit = MOCK_ALERT_TRIM_PER_PLAYBOOK,
+): AlertAgendaItem[] {
+  const nonMock = items.filter((i) => !i.isMockAlert);
+  const byPlaybook = new Map<string, AlertAgendaItem[]>();
+
+  for (const item of items) {
+    if (!item.isMockAlert) continue;
+    const list = byPlaybook.get(item.playbookId) ?? [];
+    list.push(item);
+    byPlaybook.set(item.playbookId, list);
+  }
+
+  const trimmed = Array.from(byPlaybook.values()).flatMap((list) =>
+    [...list]
+      .sort((a, b) => b.triggeredAt - a.triggeredAt)
+      .slice(0, limit),
+  );
+
+  return [...nonMock, ...trimmed].sort(
+    (a, b) => a.triggeredAt - b.triggeredAt,
+  );
+}
+
+/** Virtual workspace-daily rows for a date (not persisted — keeps localStorage small). */
+export function workspaceDailyAgendaItemsForDate(
+  playbooks: Playbook[],
+  dateKey: string,
+  now = agendaNow(),
+): AlertAgendaItem[] {
+  return playbooks
+    .filter(
+      (pb) =>
+        isWorkspaceDailyMockPlaybook(pb) &&
+        pb.status === "active" &&
+        pb.builtinId,
+    )
+    .map((playbook) => {
+      const demo = workspaceDemoByBuiltinId(playbook.builtinId!);
+      if (!demo) return null;
+      return recordToAgendaItem(
+        workspaceDailyAlertForDate(demo, dateKey),
+        playbook,
+        now,
+      );
+    })
+    .filter((item): item is AlertAgendaItem => item != null);
 }
 
 function recordToAgendaItem(
@@ -191,8 +246,10 @@ export async function syncMockPlaybookAlerts(playbook: Playbook): Promise<void> 
   });
 
   useAlertHistoryStore.setState({
-    items: [...otherItems, ...fresh].sort(
-      (a, b) => a.triggeredAt - b.triggeredAt,
+    items: trimMockAlertsPerPlaybook(
+      [...otherItems, ...fresh].sort(
+        (a, b) => a.triggeredAt - b.triggeredAt,
+      ),
     ),
   });
 }

@@ -81,7 +81,7 @@ export const LAKEVIEW_OPEN_DEVIATIONS: DeviationRow[] = [
     id: "dev-6418-cool",
     batchId: "6418",
     fermenter: "Ferm B",
-    issue: "Cooling response lag — Operational daily checkpoint open on Agenda",
+    issue: "Cooling response lag — operations playbook alert open on Agenda",
     source: "Daily Demo playbook · DCS + 18h lab",
     status: "investigating",
     owner: "Operational → Supervisor",

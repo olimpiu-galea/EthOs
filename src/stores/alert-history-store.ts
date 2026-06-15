@@ -19,6 +19,7 @@ import {
   agendaNow,
   resolveAlertStatus,
 } from "@/lib/agenda-time";
+import { localDateKey } from "@/lib/dcs-timeline";
 
 import { isDemoAlertItem } from "@/lib/demo-playbook";
 import { isMockPlaybook } from "@/lib/mock-playbook-alerts";
@@ -693,28 +694,32 @@ export const useAlertHistoryStore = create<AlertHistoryState>()(
 
       name: "playbook-editor-alert-history",
 
-      version: 9,
+      version: 10,
 
       skipHydration: true,
 
       partialize: (s) => ({ items: s.items }),
 
       migrate: (persisted: unknown) => {
+        try {
+          const raw = persisted as { items?: AlertAgendaItem[] };
+          const now = agendaNow();
+          const todayKey = localDateKey();
 
-        const raw = persisted as { items?: AlertAgendaItem[] };
-
-        const now = agendaNow();
-
-        return {
-
-          items: (raw.items ?? [])
-
+          const items = (raw.items ?? [])
             .filter((i) => !isDemoAlertItem(i) && !isLegacyHealthAlert(i))
+            .filter((i) => {
+              if (!i.isMockAlert || !i.mockAlertKey?.startsWith("workspace-daily-")) {
+                return true;
+              }
+              return i.mockAlertKey.endsWith(todayKey);
+            })
+            .map((i) => finalizeItem(migrateAlertItem(i), now));
 
-            .map((i) => finalizeItem(migrateAlertItem(i), now)),
-
-        };
-
+          return { items: trimPerPlaybook(items) };
+        } catch {
+          return { items: [] };
+        }
       },
 
       onRehydrateStorage: () => (state) => {
