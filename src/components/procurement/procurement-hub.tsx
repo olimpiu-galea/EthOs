@@ -3,7 +3,13 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
+  Activity,
   AlertTriangle,
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  BookOpen,
+  CalendarDays,
   Clock,
   Lock,
   Package,
@@ -12,6 +18,7 @@ import {
   Truck,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -25,6 +32,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { toast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 import {
   criticalPurchaseRisks,
@@ -38,6 +46,10 @@ import {
   type ProcurementItem,
   type ProcurementRiskLevel,
 } from "@/lib/procurement-fixture";
+import {
+  procurementWatchItems,
+  type ProcurementWatchStatus,
+} from "@/lib/procurement-playbooks";
 import { useInventoryStore } from "@/stores/inventory-store";
 
 const RISK_BADGE: Record<
@@ -50,10 +62,94 @@ const RISK_BADGE: Record<
   low: "outline",
 };
 
+const RISK_RANK: Record<ProcurementRiskLevel, number> = {
+  critical: 3,
+  high: 2,
+  medium: 1,
+  low: 0,
+};
+
+/** Mirrors the Batches "Playbook watch" status styling */
+const WATCH_STATUS_STYLES: Record<ProcurementWatchStatus, string> = {
+  clear: "border-success/30 text-success",
+  watch: "border-critical/30 bg-critical-muted text-critical-foreground",
+  flagged: "border-critical/40 text-critical",
+};
+
+type KpiFilterId =
+  | "critical"
+  | "belowMin"
+  | "stockout"
+  | "openPos"
+  | "supplier";
+
+type SortKey =
+  | "itemId"
+  | "itemName"
+  | "category"
+  | "area"
+  | "currentStock"
+  | "riskLevel";
+
+type SortDir = "asc" | "desc";
+
+const KPI_FILTERS: {
+  id: KpiFilterId;
+  label: string;
+  tone: "danger" | "warn" | "default" | "muted";
+  predicate: (items: ProcurementItem[]) => ProcurementItem[];
+  kpiKey: "criticalRisks" | "belowMinimum" | "stockoutBeforeLead" | "openPos" | "supplierIssues";
+}[] = [
+  {
+    id: "critical",
+    label: "Critical purchase risks",
+    tone: "danger",
+    predicate: criticalPurchaseRisks,
+    kpiKey: "criticalRisks",
+  },
+  {
+    id: "belowMin",
+    label: "Below minimum",
+    tone: "warn",
+    predicate: itemsBelowMinimum,
+    kpiKey: "belowMinimum",
+  },
+  {
+    id: "stockout",
+    label: "Stockout before lead time",
+    tone: "warn",
+    predicate: stockoutBeforeLeadTime,
+    kpiKey: "stockoutBeforeLead",
+  },
+  {
+    id: "openPos",
+    label: "Open purchase orders",
+    tone: "default",
+    predicate: openPurchaseOrders,
+    kpiKey: "openPos",
+  },
+  {
+    id: "supplier",
+    label: "Supplier / lead-time issues",
+    tone: "muted",
+    predicate: supplierLeadTimeIssues,
+    kpiKey: "supplierIssues",
+  },
+];
+
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString(undefined, {
     month: "short",
     day: "numeric",
+  });
+}
+
+function formatDateTime(iso: string) {
+  return new Date(iso).toLocaleString(undefined, {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 }
 
@@ -65,94 +161,45 @@ function formatCurrency(n: number) {
   });
 }
 
-function ProcurementRow({
-  item,
-  onOpen,
+function SortHeader({
+  label,
+  sortKey,
+  activeKey,
+  dir,
+  onSort,
+  align = "left",
 }: {
-  item: ProcurementItem;
-  onOpen: () => void;
+  label: string;
+  sortKey: SortKey;
+  activeKey: SortKey | null;
+  dir: SortDir;
+  onSort: (key: SortKey) => void;
+  align?: "left" | "right";
 }) {
-  const belowMin = item.currentStock <= item.minimumStock;
-  const stockoutRisk = item.daysOfCover < item.leadTimeDays;
-
+  const active = activeKey === sortKey;
   return (
-    <button
-      type="button"
-      onClick={onOpen}
-      className={cn(
-        "w-full text-left rounded-lg border border-border/60 bg-card px-4 py-3 transition-colors hover:border-primary/40 hover:bg-primary/5",
-        item.riskLevel === "critical" && "border-destructive/30 bg-destructive/5",
-        item.riskLevel === "high" && !belowMin && "border-amber-500/25",
-      )}
-    >
-      <div className="flex flex-wrap items-start justify-between gap-2">
-        <div className="min-w-0 space-y-1">
-          <p className="font-mono text-[10px] text-primary/80">{item.itemId}</p>
-          <p className="font-medium text-sm">{item.itemName}</p>
-          <p className="text-[11px] text-muted-foreground">
-            {item.area} · {item.plantId} · {item.supplierName}
-          </p>
-        </div>
-        <Badge variant={RISK_BADGE[item.riskLevel]} className="text-[10px] shrink-0">
-          {item.riskLevel}
-        </Badge>
-      </div>
-      <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-muted-foreground">
-        <span>
-          Stock{" "}
-          <strong className="text-foreground tabular-nums">
-            {item.currentStock.toLocaleString()} {item.unitOfMeasure}
-          </strong>
-        </span>
-        <span>
-          Cover{" "}
-          <strong
-            className={cn(
-              "tabular-nums",
-              stockoutRisk && "text-amber-500",
-            )}
-          >
-            {item.daysOfCover}d
-          </strong>
-        </span>
-        <span>
-          Lead{" "}
-          <strong className="tabular-nums">{item.leadTimeDays}d</strong>
-        </span>
-        {item.purchaseOrderId && (
-          <span className="font-mono">{item.purchaseOrderId}</span>
+    <th className={cn("pb-3 px-3 font-medium", align === "right" && "text-right")}>
+      <button
+        type="button"
+        onClick={() => onSort(sortKey)}
+        className={cn(
+          "inline-flex items-center gap-1 transition-colors hover:text-foreground",
+          align === "right" && "flex-row-reverse",
+          active && "text-foreground",
         )}
-      </div>
-      <p className="mt-2 text-xs text-primary/90">{item.recommendedAction}</p>
-    </button>
-  );
-}
-
-function Section({
-  title,
-  description,
-  items,
-  onOpen,
-}: {
-  title: string;
-  description: string;
-  items: ProcurementItem[];
-  onOpen: (item: ProcurementItem) => void;
-}) {
-  if (items.length === 0) return null;
-
-  return (
-    <Card>
-      <CardHeader className="pb-3">
-        <CardTitle className="text-base">{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-2">
-        {items.map((item) => (
-          <ProcurementRow key={item.id} item={item} onOpen={() => onOpen(item)} />
-        ))}
-      </CardContent>
-    </Card>
+      >
+        {label}
+        {active ? (
+          dir === "asc" ? (
+            <ArrowUp className="h-3.5 w-3.5" />
+          ) : (
+            <ArrowDown className="h-3.5 w-3.5" />
+          )
+        ) : (
+          <ArrowUpDown className="h-3.5 w-3.5 opacity-40" />
+        )}
+      </button>
+    </th>
   );
 }
 
@@ -160,12 +207,30 @@ function ItemDetailDialog({
   item,
   open,
   onOpenChange,
+  onPurchase,
 }: {
   item: ProcurementItem | null;
   open: boolean;
   onOpenChange: (v: boolean) => void;
+  onPurchase: (item: ProcurementItem) => void;
 }) {
   if (!item) return null;
+
+  const detailRows: { label: string; value: string }[] = [
+    { label: "Plant", value: item.plantId },
+    { label: "Area", value: item.area },
+    { label: "Unit of measure", value: item.unitOfMeasure },
+    { label: "Minimum stock", value: `${item.minimumStock.toLocaleString()} ${item.unitOfMeasure}` },
+    { label: "Target stock", value: `${item.targetStock.toLocaleString()} ${item.unitOfMeasure}` },
+    { label: "Required by", value: formatDate(item.requiredByDate) },
+    { label: "Supplier", value: item.supplierName },
+    { label: "Last purchase price", value: `${formatCurrency(item.lastPurchasePrice)} ${item.priceUnit}` },
+    { label: "Estimated order cost", value: formatCurrency(item.estimatedCost) },
+    { label: "PO status", value: PURCHASE_ORDER_LABELS[item.purchaseOrderStatus] },
+    { label: "PO ID", value: item.purchaseOrderId ?? "—" },
+    { label: "Owner", value: item.owner },
+    { label: "Last updated", value: formatDateTime(item.lastUpdatedAt) },
+  ];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -215,26 +280,20 @@ function ItemDetailDialog({
             </div>
           </div>
 
-          <div className="rounded-lg border border-border/60 p-3 space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              Purchase workflow
+          <div className="rounded-lg border border-border/60 p-3">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">
+              Procurement details
             </p>
-            <p>
-              Status:{" "}
-              <strong>{PURCHASE_ORDER_LABELS[item.purchaseOrderStatus]}</strong>
-              {item.purchaseOrderId && (
-                <span className="font-mono text-xs ml-2">{item.purchaseOrderId}</span>
-              )}
-            </p>
-            <p>Supplier: {item.supplierName}</p>
-            <p>
-              Required by: <strong>{formatDate(item.requiredByDate)}</strong>
-            </p>
-            <p>
-              Est. cost: {formatCurrency(item.estimatedCost)} (
-              {item.lastPurchasePrice}
-              {item.priceUnit})
-            </p>
+            <dl className="grid grid-cols-2 gap-x-4 gap-y-1.5">
+              {detailRows.map((row) => (
+                <div key={row.label} className="flex flex-col">
+                  <dt className="text-[10px] uppercase text-muted-foreground">
+                    {row.label}
+                  </dt>
+                  <dd className="tabular-nums">{row.value}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
 
           <div className="rounded-lg border border-amber-500/25 bg-amber-500/5 p-3">
@@ -255,9 +314,71 @@ function ItemDetailDialog({
               for spare-part coverage.
             </p>
           )}
+
+          <div className="flex justify-end">
+            <Button className="gap-2" onClick={() => onPurchase(item)}>
+              <ShoppingCart className="h-4 w-4" />
+              Purchase
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function PlaybookWatchPanel({ items }: { items: ProcurementItem[] }) {
+  const watch = procurementWatchItems(items);
+
+  return (
+    <div className="rounded-xl border border-border bg-card p-4 space-y-3">
+      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+        <BookOpen className="h-3.5 w-3.5 text-primary" />
+        Playbook watch
+      </p>
+      <ul className="space-y-2">
+        {watch.map((item) => (
+          <li
+            key={item.id}
+            className="flex items-start gap-3 rounded-lg border border-border/60 bg-muted/10 px-3 py-2"
+          >
+            <span
+              className={cn(
+                "mt-0.5 h-2 w-2 rounded-full shrink-0",
+                item.status === "clear" && "bg-success",
+                item.status === "watch" && "bg-critical",
+                item.status === "flagged" && "bg-destructive",
+              )}
+            />
+            <div className="min-w-0">
+              <Link
+                href="/playbooks"
+                className="text-sm font-medium hover:underline"
+              >
+                {item.name}
+              </Link>
+              <p className="text-xs text-muted-foreground">{item.rule}</p>
+            </div>
+            <Badge
+              variant="outline"
+              className={cn(
+                "shrink-0 text-[9px] capitalize",
+                WATCH_STATUS_STYLES[item.status],
+              )}
+            >
+              {item.status}
+            </Badge>
+          </li>
+        ))}
+      </ul>
+      <Link
+        href="/agenda"
+        className="text-xs text-primary hover:underline inline-flex items-center gap-1"
+      >
+        <Activity className="h-3 w-3" />
+        Open Agenda for active alerts
+      </Link>
+    </div>
   );
 }
 
@@ -265,32 +386,61 @@ export function ProcurementHub() {
   const feedConnected = useInventoryStore((s) => s.connected);
   const lastSync = useInventoryStore((s) => s.lastSync);
   const [selected, setSelected] = useState<ProcurementItem | null>(null);
+  const [activeFilter, setActiveFilter] = useState<KpiFilterId | null>(null);
+  const [sortKey, setSortKey] = useState<SortKey | null>(null);
+  const [sortDir, setSortDir] = useState<SortDir>("asc");
 
   const items = LAKEVIEW_PROCUREMENT_ITEMS;
   const kpis = useMemo(() => procurementKpis(items), [items]);
 
-  const sections = useMemo(
-    () => ({
-      critical: criticalPurchaseRisks(items),
-      belowMin: itemsBelowMinimum(items),
-      stockout: stockoutBeforeLeadTime(items),
-      openPos: openPurchaseOrders(items),
-      supplier: supplierLeadTimeIssues(items),
-    }),
-    [items],
-  );
+  const activeFilterConfig = KPI_FILTERS.find((f) => f.id === activeFilter);
 
-  const recommended = useMemo(
-    () =>
-      [...items]
-        .filter((i) => i.riskLevel !== "low")
-        .sort((a, b) => {
-          const order = { critical: 0, high: 1, medium: 2, low: 3 };
-          return order[a.riskLevel] - order[b.riskLevel];
-        })
-        .slice(0, 5),
-    [items],
-  );
+  const visibleItems = useMemo(() => {
+    const base = activeFilterConfig ? activeFilterConfig.predicate(items) : items;
+
+    if (!sortKey) return base;
+
+    const sorted = [...base].sort((a, b) => {
+      let cmp = 0;
+      switch (sortKey) {
+        case "currentStock":
+          cmp = a.currentStock - b.currentStock;
+          break;
+        case "riskLevel":
+          cmp = RISK_RANK[a.riskLevel] - RISK_RANK[b.riskLevel];
+          break;
+        default:
+          cmp = String(a[sortKey]).localeCompare(String(b[sortKey]));
+          break;
+      }
+      return sortDir === "asc" ? cmp : -cmp;
+    });
+
+    return sorted;
+  }, [items, activeFilterConfig, sortKey, sortDir]);
+
+  function handleSort(key: SortKey) {
+    if (key === sortKey) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+      return;
+    }
+    setSortKey(key);
+    setSortDir(key === "currentStock" || key === "riskLevel" ? "desc" : "asc");
+  }
+
+  function handleKpiClick(id: KpiFilterId) {
+    setActiveFilter((current) => (current === id ? null : id));
+  }
+
+  function handlePurchase(item: ProcurementItem) {
+    toast({
+      title: "Purchase requested",
+      description: `${item.itemName} (${item.itemId}) routed to Procurement${
+        item.purchaseOrderId ? ` · ${item.purchaseOrderId}` : ""
+      }.`,
+      href: "/agenda",
+    });
+  }
 
   return (
     <div className="min-h-full bg-background">
@@ -330,6 +480,12 @@ export function ProcurementHub() {
                 risk if it is late? Sourcing, purchase orders, suppliers, and lead
                 times. Not spare-part storeroom coverage.
               </p>
+              <Button asChild variant="outline" size="sm" className="gap-2 mt-1">
+                <Link href="/agenda">
+                  <CalendarDays className="h-4 w-4" />
+                  View procurement alerts in Agenda
+                </Link>
+              </Button>
             </div>
             {lastSync && (
               <span className="text-xs text-muted-foreground tabular-nums">
@@ -339,97 +495,194 @@ export function ProcurementHub() {
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            {[
-              { label: "Critical purchase risks", value: kpis.criticalRisks, tone: "danger" },
-              { label: "Below minimum", value: kpis.belowMinimum, tone: "warn" },
-              { label: "Stockout before lead time", value: kpis.stockoutBeforeLead, tone: "warn" },
-              { label: "Open purchase orders", value: kpis.openPos, tone: "default" },
-              { label: "Supplier / lead-time issues", value: kpis.supplierIssues, tone: "muted" },
-            ].map((k) => (
-              <Card
-                key={k.label}
-                className={cn(
-                  "border-border/60 bg-background/80",
-                  k.tone === "danger" && "border-destructive/25",
-                  k.tone === "warn" && "border-amber-500/25",
-                )}
-              >
-                <CardContent className="pt-4 pb-3">
-                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground leading-tight">
-                    {k.label}
-                  </p>
-                  <p
+            {KPI_FILTERS.map((k) => {
+              const isActive = activeFilter === k.id;
+              return (
+                <button
+                  key={k.id}
+                  type="button"
+                  onClick={() => handleKpiClick(k.id)}
+                  aria-pressed={isActive}
+                  className="text-left"
+                >
+                  <Card
                     className={cn(
-                      "text-2xl font-bold tabular-nums mt-1",
-                      k.tone === "danger" && "text-destructive",
-                      k.tone === "warn" && "text-amber-500",
+                      "border-border/60 bg-background/80 transition-colors hover:border-primary/40",
+                      k.tone === "danger" && "border-destructive/25",
+                      k.tone === "warn" && "border-amber-500/25",
+                      isActive && "border-primary ring-2 ring-primary/40 bg-primary/5",
                     )}
                   >
-                    {k.value}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
+                    <CardContent className="pt-4 pb-3">
+                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground leading-tight">
+                        {k.label}
+                      </p>
+                      <p
+                        className={cn(
+                          "text-2xl font-bold tabular-nums mt-1",
+                          k.tone === "danger" && "text-destructive",
+                          k.tone === "warn" && "text-amber-500",
+                        )}
+                      >
+                        {kpis[k.kpiKey]}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
 
       <div className="mx-auto max-w-6xl px-6 py-8 space-y-6">
-        <Section
-          title="Critical purchase risks"
-          description="High or critical operational risk — commercial ownership sits with Procurement."
-          items={sections.critical}
-          onOpen={setSelected}
-        />
-        <Section
-          title="Items below minimum stock"
-          description="Safety threshold breached — review reorder or expedite existing PO."
-          items={sections.belowMin.filter((i) => !sections.critical.includes(i))}
-          onOpen={setSelected}
-        />
-        <Section
-          title="Stockout before supplier lead time"
-          description="Forecast cover is shorter than supplier lead time."
-          items={sections.stockout.filter(
-            (i) => !sections.critical.includes(i) && !sections.belowMin.includes(i),
-          )}
-          onOpen={setSelected}
-        />
-        <Section
-          title="Open purchase orders"
-          description="Requested through shipped — track buying workflow state."
-          items={sections.openPos}
-          onOpen={setSelected}
-        />
-        <Section
-          title="Supplier & long lead-time issues"
-          description="Lead time ≥ 14 days with cover shorter than replenishment window."
-          items={sections.supplier}
-          onOpen={setSelected}
-        />
+        <div className="grid gap-6 lg:grid-cols-[1fr_320px] items-start">
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Truck className="h-4 w-4 text-primary" />
+                  Procurement inventory
+                </CardTitle>
+                <CardDescription>
+                  {activeFilterConfig
+                    ? `Filtered by “${activeFilterConfig.label}” · showing ${visibleItems.length} of ${items.length}`
+                    : `${items.length} items · sortable by each data column`}
+                </CardDescription>
+              </div>
+              {activeFilter && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setActiveFilter(null)}
+                >
+                  Clear filter
+                </Button>
+              )}
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b text-left text-muted-foreground">
+                    <SortHeader
+                      label="Item ID"
+                      sortKey="itemId"
+                      activeKey={sortKey}
+                      dir={sortDir}
+                      onSort={handleSort}
+                    />
+                    <SortHeader
+                      label="Name"
+                      sortKey="itemName"
+                      activeKey={sortKey}
+                      dir={sortDir}
+                      onSort={handleSort}
+                    />
+                    <SortHeader
+                      label="Category"
+                      sortKey="category"
+                      activeKey={sortKey}
+                      dir={sortDir}
+                      onSort={handleSort}
+                    />
+                    <SortHeader
+                      label="Area"
+                      sortKey="area"
+                      activeKey={sortKey}
+                      dir={sortDir}
+                      onSort={handleSort}
+                    />
+                    <SortHeader
+                      label="Current stock"
+                      sortKey="currentStock"
+                      activeKey={sortKey}
+                      dir={sortDir}
+                      onSort={handleSort}
+                      align="right"
+                    />
+                    <SortHeader
+                      label="Risk"
+                      sortKey="riskLevel"
+                      activeKey={sortKey}
+                      dir={sortDir}
+                      onSort={handleSort}
+                    />
+                    <th className="pb-3 px-3 font-medium text-right">Purchase</th>
+                    <th className="pb-3 px-3 font-medium text-right">Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {visibleItems.map((item) => {
+                    const belowMin = item.currentStock <= item.minimumStock;
+                    return (
+                      <tr
+                        key={item.id}
+                        className="border-b border-border/40 hover:bg-muted/20"
+                      >
+                        <td className="py-3 px-3 font-mono text-[11px] text-primary/80 whitespace-nowrap">
+                          {item.itemId}
+                        </td>
+                        <td className="py-3 px-3 font-medium">{item.itemName}</td>
+                        <td className="py-3 px-3 text-muted-foreground">
+                          {item.category}
+                        </td>
+                        <td className="py-3 px-3 text-muted-foreground">{item.area}</td>
+                        <td className="py-3 px-3 text-right tabular-nums whitespace-nowrap">
+                          <span className={cn(belowMin && "text-amber-500 font-medium")}>
+                            {item.currentStock.toLocaleString()} {item.unitOfMeasure}
+                          </span>
+                        </td>
+                        <td className="py-3 px-3">
+                          <Badge
+                            variant={RISK_BADGE[item.riskLevel]}
+                            className="text-[10px] capitalize"
+                          >
+                            {item.riskLevel}
+                          </Badge>
+                        </td>
+                        <td className="py-3 px-3 text-right">
+                          <Button
+                            size="sm"
+                            className="gap-1.5"
+                            onClick={() => handlePurchase(item)}
+                          >
+                            <ShoppingCart className="h-3.5 w-3.5" />
+                            Purchase
+                          </Button>
+                        </td>
+                        <td className="py-3 px-3 text-right">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => setSelected(item)}
+                          >
+                            Details
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                  {visibleItems.length === 0 && (
+                    <tr>
+                      <td
+                        colSpan={8}
+                        className="py-10 text-center text-muted-foreground"
+                      >
+                        No items match this filter.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
 
-        {recommended.length > 0 && (
-          <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-card">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base flex items-center gap-2">
-                <Truck className="h-4 w-4 text-primary" />
-                Recommended actions
-              </CardTitle>
-              <CardDescription>
-                Next buying steps from playbook and ERP analytics (demo).
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              {recommended.map((item) => (
-                <ProcurementRow
-                  key={item.id}
-                  item={item}
-                  onOpen={() => setSelected(item)}
-                />
-              ))}
-            </CardContent>
-          </Card>
-        )}
+        <PlaybookWatchPanel items={items} />
+        </div>
 
         <div className="rounded-xl border border-border/60 bg-muted/20 px-4 py-3 flex gap-3 text-sm">
           <Clock className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
@@ -457,6 +710,7 @@ export function ProcurementHub() {
         item={selected}
         open={selected != null}
         onOpenChange={(v) => !v && setSelected(null)}
+        onPurchase={handlePurchase}
       />
     </div>
   );
