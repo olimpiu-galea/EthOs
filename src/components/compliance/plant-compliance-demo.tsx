@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
+  Activity,
   ArrowRight,
   BookOpen,
   ClipboardCheck,
@@ -23,6 +24,10 @@ import {
   LAKEVIEW_OPEN_DEVIATIONS,
   type ComplianceStatus,
 } from "@/lib/lakeview-plant-compliance-fixture";
+import {
+  complianceWatchItems,
+  type ComplianceWatchStatus,
+} from "@/lib/compliance-playbooks";
 
 const STATUS_STYLES: Record<
   ComplianceStatus,
@@ -51,14 +56,43 @@ const DEV_STATUS: Record<string, string> = {
   closed: "border-success/30 text-success",
 };
 
+/** Mirrors the Batches "Playbook watch" status styling */
+const WATCH_STATUS_STYLES: Record<ComplianceWatchStatus, string> = {
+  clear: "border-success/30 text-success",
+  watch: "border-critical/30 bg-critical-muted text-critical-foreground",
+  flagged: "border-critical/40 text-critical",
+};
+
+const SEVERITY_RANK: Record<ComplianceStatus, number> = {
+  critical: 2,
+  watch: 1,
+  good: 0,
+};
+
+type FilterId = "zones" | "deviations" | "docs";
+
 function ZoneCard({
   zone,
+  selected,
+  onSelect,
 }: {
   zone: (typeof LAKEVIEW_COMPLIANCE_ZONES)[number];
+  selected: boolean;
+  onSelect: () => void;
 }) {
   const s = STATUS_STYLES[zone.status];
   return (
-    <div className="rounded-xl border border-border bg-card p-4 space-y-2 shadow-sm">
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-pressed={selected}
+      className={cn(
+        "w-full rounded-xl border bg-card p-4 space-y-2 text-left shadow-sm transition",
+        "hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md",
+        "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        selected ? "border-primary ring-2 ring-primary/30" : "border-border",
+      )}
+    >
       <div className="flex items-start justify-between gap-2">
         <p className="text-sm font-semibold">{zone.label}</p>
         <span className={cn("h-2 w-2 rounded-full shrink-0 mt-1.5", s.dot)} />
@@ -68,6 +102,104 @@ function ZoneCard({
       <Badge variant="outline" className={cn("text-[9px]", s.badge)}>
         {s.label}
       </Badge>
+    </button>
+  );
+}
+
+function KpiFilterCard({
+  label,
+  value,
+  active,
+  alert,
+  onClick,
+}: {
+  label: string;
+  value: number;
+  active: boolean;
+  alert: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={cn(
+        "rounded-xl border bg-card p-4 text-left shadow-sm transition",
+        "hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md",
+        "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        active ? "border-primary ring-2 ring-primary/30" : "border-border",
+      )}
+    >
+      <p className="text-xs uppercase tracking-wide text-muted-foreground">
+        {label}
+      </p>
+      <p
+        className={cn(
+          "mt-1 text-2xl font-bold tabular-nums",
+          alert && value > 0 ? "text-critical" : "text-foreground",
+        )}
+      >
+        {value}
+      </p>
+      <p className="text-[11px] text-muted-foreground mt-1">
+        {active ? "Filtering · click to clear" : "Click to filter"}
+      </p>
+    </button>
+  );
+}
+
+function PlaybookWatchPanel() {
+  const watch = complianceWatchItems();
+
+  return (
+    <div className="rounded-xl border border-border bg-card p-4 space-y-3 shadow-sm">
+      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+        <BookOpen className="h-3.5 w-3.5 text-primary" />
+        Playbook watch
+      </p>
+      <ul className="space-y-2">
+        {watch.map((item) => (
+          <li
+            key={item.id}
+            className="flex items-start gap-3 rounded-lg border border-border/60 bg-muted/10 px-3 py-2"
+          >
+            <span
+              className={cn(
+                "mt-0.5 h-2 w-2 rounded-full shrink-0",
+                item.status === "clear" && "bg-success",
+                item.status === "watch" && "bg-critical",
+                item.status === "flagged" && "bg-destructive",
+              )}
+            />
+            <div className="min-w-0">
+              <Link
+                href="/playbooks"
+                className="text-sm font-medium hover:underline"
+              >
+                {item.title}
+              </Link>
+              <p className="text-xs text-muted-foreground">{item.rule}</p>
+            </div>
+            <Badge
+              variant="outline"
+              className={cn(
+                "shrink-0 text-[9px] capitalize",
+                WATCH_STATUS_STYLES[item.status],
+              )}
+            >
+              {item.status}
+            </Badge>
+          </li>
+        ))}
+      </ul>
+      <Link
+        href="/agenda"
+        className="text-xs text-primary hover:underline inline-flex items-center gap-1"
+      >
+        <Activity className="h-3 w-3" />
+        Open Agenda for active alerts
+      </Link>
     </div>
   );
 }
@@ -77,6 +209,9 @@ export function PlantComplianceDemo() {
   const companyName = useSettingsStore((s) => s.companyName);
   const domain = useSettingsStore((s) => s.domain);
   const phase2Enabled = useSettingsStore((s) => s.operationsSuiteEnabled);
+
+  const [activeFilter, setActiveFilter] = useState<FilterId | null>(null);
+  const [selectedZoneId, setSelectedZoneId] = useState<string | null>(null);
 
   useEffect(() => {
     if (domain !== "ethanol" || !phase2Enabled) {
@@ -89,9 +224,34 @@ export function PlantComplianceDemo() {
   const watchCount = LAKEVIEW_COMPLIANCE_ZONES.filter(
     (z) => z.status !== "good",
   ).length;
-  const openDeviations = LAKEVIEW_OPEN_DEVIATIONS.filter(
+  const openDeviationCount = LAKEVIEW_OPEN_DEVIATIONS.filter(
     (d) => d.status !== "closed",
   ).length;
+  const missingDocCount = LAKEVIEW_DOC_CADENCE.filter(
+    (d) => d.todayStatus === "missing",
+  ).length;
+
+  function toggleFilter(id: FilterId) {
+    setActiveFilter((prev) => (prev === id ? null : id));
+  }
+
+  const sortedZones = [...LAKEVIEW_COMPLIANCE_ZONES].sort(
+    (a, b) => SEVERITY_RANK[b.status] - SEVERITY_RANK[a.status],
+  );
+  const visibleZones =
+    activeFilter === "zones"
+      ? sortedZones.filter((z) => z.status !== "good")
+      : sortedZones;
+  const visibleDeviations =
+    activeFilter === "deviations"
+      ? LAKEVIEW_OPEN_DEVIATIONS.filter((d) => d.status !== "closed")
+      : LAKEVIEW_OPEN_DEVIATIONS;
+  const visibleDocs =
+    activeFilter === "docs"
+      ? LAKEVIEW_DOC_CADENCE.filter(
+          (d) => d.todayStatus === "missing" || d.todayStatus === "draft",
+        )
+      : LAKEVIEW_DOC_CADENCE;
 
   return (
     <div className="min-h-full bg-background">
@@ -113,6 +273,9 @@ export function PlantComplianceDemo() {
               <Lock className="h-3 w-3" />
               Demo · {companyName} ethanol operations
             </Badge>
+            <Badge variant="outline" className="gap-1 text-[11px]">
+              Plant standard · 2.85 gal/bu
+            </Badge>
           </div>
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl max-w-3xl">
             Lakeview compliance — fermentation, lab, product & shift proof
@@ -122,44 +285,88 @@ export function PlantComplianceDemo() {
             defensible: batch records, Ferm Data samples, playbook responses,
             and SHO/DOR/BPR documentation.
           </p>
-          <div className="flex flex-wrap gap-3 pt-1">
-            <div className="rounded-lg border border-border bg-background/80 px-4 py-2 text-sm">
-              <span className="text-muted-foreground">Zones on watch </span>
-              <span className="font-bold tabular-nums">{watchCount}</span>
-            </div>
-            <div className="rounded-lg border border-border bg-background/80 px-4 py-2 text-sm">
-              <span className="text-muted-foreground">Open deviations </span>
-              <span className="font-bold tabular-nums">{openDeviations}</span>
-            </div>
-            <div className="rounded-lg border border-border bg-background/80 px-4 py-2 text-sm">
-              <span className="text-muted-foreground">Plant standard </span>
-              <span className="font-bold">2.85 gal/bu</span>
-            </div>
-          </div>
         </div>
       </div>
 
       <div className="mx-auto max-w-[1400px] px-6 py-8 space-y-10">
-        <section className="space-y-4">
-          <div className="flex items-center gap-2">
-            <Shield className="h-5 w-5 text-primary" />
-            <h2 className="text-lg font-bold">Plant posture today</h2>
+        <section className="grid gap-3 sm:grid-cols-3">
+          <KpiFilterCard
+            label="Zones on watch"
+            value={watchCount}
+            active={activeFilter === "zones"}
+            alert
+            onClick={() => toggleFilter("zones")}
+          />
+          <KpiFilterCard
+            label="Open deviations"
+            value={openDeviationCount}
+            active={activeFilter === "deviations"}
+            alert
+            onClick={() => toggleFilter("deviations")}
+          />
+          <KpiFilterCard
+            label="Docs missing today"
+            value={missingDocCount}
+            active={activeFilter === "docs"}
+            alert
+            onClick={() => toggleFilter("docs")}
+          />
+        </section>
+
+        <section className="grid gap-6 lg:grid-cols-[1fr_320px]">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <Shield className="h-5 w-5 text-primary" />
+                <h2 className="text-lg font-bold">Plant posture today</h2>
+              </div>
+              {activeFilter === "zones" && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 text-xs"
+                  onClick={() => setActiveFilter(null)}
+                >
+                  Clear filter
+                </Button>
+              )}
+            </div>
+            <div className="grid sm:grid-cols-2 gap-3">
+              {visibleZones.map((z) => (
+                <ZoneCard
+                  key={z.id}
+                  zone={z}
+                  selected={selectedZoneId === z.id}
+                  onSelect={() =>
+                    setSelectedZoneId((prev) => (prev === z.id ? null : z.id))
+                  }
+                />
+              ))}
+            </div>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {LAKEVIEW_COMPLIANCE_ZONES.map((z) => (
-              <ZoneCard key={z.id} zone={z} />
-            ))}
-          </div>
+          <PlaybookWatchPanel />
         </section>
 
         <div className="grid gap-6 lg:grid-cols-2">
           <section className="rounded-xl border border-border bg-card p-5 space-y-3 shadow-sm">
-            <h2 className="text-sm font-bold flex items-center gap-2">
-              <TriangleAlert className="h-4 w-4 text-critical" />
-              Deviation register
-            </h2>
+            <div className="flex items-center justify-between gap-2">
+              <h2 className="text-sm font-bold flex items-center gap-2">
+                <TriangleAlert className="h-4 w-4 text-critical" />
+                Deviation register
+              </h2>
+              {activeFilter === "deviations" && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 text-xs"
+                  onClick={() => setActiveFilter(null)}
+                >
+                  Clear filter
+                </Button>
+              )}
+            </div>
             <ul className="space-y-2">
-              {LAKEVIEW_OPEN_DEVIATIONS.map((d) => (
+              {visibleDeviations.map((d) => (
                 <li
                   key={d.id}
                   className="rounded-lg border border-border/70 bg-muted/10 p-3 space-y-1.5"
@@ -200,12 +407,24 @@ export function PlantComplianceDemo() {
           </section>
 
           <section className="rounded-xl border border-border bg-card p-5 space-y-3 shadow-sm">
-            <h2 className="text-sm font-bold flex items-center gap-2">
-              <FileBarChart className="h-4 w-4 text-primary" />
-              Required documentation
-            </h2>
+            <div className="flex items-center justify-between gap-2">
+              <h2 className="text-sm font-bold flex items-center gap-2">
+                <FileBarChart className="h-4 w-4 text-primary" />
+                Required documentation
+              </h2>
+              {activeFilter === "docs" && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 text-xs"
+                  onClick={() => setActiveFilter(null)}
+                >
+                  Clear filter
+                </Button>
+              )}
+            </div>
             <ul className="space-y-2">
-              {LAKEVIEW_DOC_CADENCE.map((doc) => (
+              {visibleDocs.map((doc) => (
                 <li
                   key={doc.abbr}
                   className="rounded-lg border border-border/60 px-3 py-2.5 space-y-1"

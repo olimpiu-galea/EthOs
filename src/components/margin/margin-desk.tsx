@@ -204,9 +204,9 @@ export function MarginDesk() {
             <h1 className="text-3xl font-bold tracking-tight">Financial</h1>
           </div>
           <p className="text-muted-foreground max-w-2xl text-sm leading-relaxed">
-            Plant margin from the Financial feed. Fermenter batches drop beer to
-            the beer well; ethanol commingles in product tanks before denaturing and rack
-            loadout — dollar impact on an active fermenter is{" "}
+            Financial view of plant economics from the Financial feed — net margin,
+            surplus inventory, contract coverage, and rack-loadout signals. Dollar impact
+            on an active fermenter is{" "}
             <strong className="text-foreground font-medium">opportunity cost</strong>,
             not invoiced revenue per batch.
           </p>
@@ -224,7 +224,7 @@ export function MarginDesk() {
         </div>
       </header>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <KpiCard
           label="Plant margin (net)"
           value={
@@ -245,18 +245,6 @@ export function MarginDesk() {
               : "After contract fulfillment"
           }
           sparkTag="MKT-SURPLUS/_.Gal"
-          connected={connected}
-          lastSync={lastSync}
-        />
-        <KpiCard
-          label="Contract coverage"
-          value={
-            data.contract
-              ? `${numericValue(data.contract.value).toFixed(1)}%`
-              : "—"
-          }
-          sub="Production under contract"
-          sparkTag="MKT-CONTRACT/_.Coverage"
           connected={connected}
           lastSync={lastSync}
         />
@@ -319,6 +307,14 @@ export function MarginDesk() {
                 <MarginLine
                   label="Plant margin (feed)"
                   value={`$${plant.deskMarginPerGal.toFixed(2)}`}
+                />
+                <MarginLine
+                  label="Contract coverage"
+                  value={
+                    data.contract
+                      ? `${numericValue(data.contract.value).toFixed(1)}%`
+                      : "—"
+                  }
                 />
               </div>
               <p className="text-[10px] text-muted-foreground pt-2 leading-snug">

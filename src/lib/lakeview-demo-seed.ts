@@ -48,7 +48,7 @@ const LAKEVIEW_OPERATIONAL_TEAM: OpsTeam = {
 const PROCUREMENT_ACTION_ITEMS: PlaybookActionItem[] = [
   {
     id: "check-stock",
-    title: "Confirm alpha amylase below minimum",
+    title: "Confirm alpha amylase within 5% of minimum",
     detail: "Open Procurement · buying desk and verify on-hand vs reorder point.",
   },
   {
@@ -145,15 +145,15 @@ export const LAKEVIEW_WORKSPACE_DEMOS: LakeviewWorkspaceDemo[] = [
     teamName: "Procurement",
     teamDescription: "Buying desk, PO expediting, and supplier lead times",
     builtinId: "workspace-daily-procurement",
-    playbookName: "Procurement daily checkpoint",
+    playbookName: "5% Near Minimum Stock",
     playbookDescription:
-      "Daily procurement alert for demos — enzyme stock below minimum, tied to the Procurement team on Agenda.",
+      "Daily procurement alert for demos — Alpha Amylase Enzyme within 5% of its minimum stock, tied to the Procurement team on Agenda.",
     triggerHour: 8,
     triggerMinute: 0,
-    alertTitle: "Procurement checkpoint",
+    alertTitle: "Alpha Amylase Enzyme within 5% of minimum stock",
     alertMessage:
-      "Alpha amylase is below minimum stock. Expedite PO-2026-0142 or approve an alternate before the next cook.",
-    conditionsSummary: "Procurement demo · one instance per day on the Agenda",
+      "Alpha Amylase Enzyme has 312 L available against a 300 L minimum — within 5% of the reorder threshold. Review usage and expedite PO-2026-0142 before the next cook.",
+    conditionsSummary: "Procurement demo · current stock within 5% above minimum",
     severity: "warning",
     actionItems: PROCUREMENT_ACTION_ITEMS,
     guidance: [
