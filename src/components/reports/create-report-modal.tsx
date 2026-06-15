@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import type { AlertAgendaItem, ReportTemplateId } from "@/lib/types";
+import type { AlertAgendaItem, AlertSeverity, ReportTemplateId } from "@/lib/types";
 import {
   REPORT_TEMPLATES,
   defaultReportTitle,
@@ -46,6 +46,12 @@ import { useReportsStore } from "@/stores/reports-store";
 import { useCommodityStore } from "@/stores/commodity-store";
 import { useAuthStore } from "@/stores/auth-store";
 import { toast } from "@/components/ui/use-toast";
+
+const LINKED_ALERT_SURFACE: Record<AlertSeverity, string> = {
+  critical: "border-critical/30 bg-critical-muted text-critical-foreground",
+  warning: "border-critical/25 bg-critical-muted text-critical-foreground",
+  info: "border-border bg-muted/20 text-foreground",
+};
 
 type CreateReportModalProps = {
   open: boolean;
@@ -429,18 +435,21 @@ export function CreateReportModal({
                       {linkedAlerts.map((alert) => (
                         <div
                           key={alert.id}
-                          className="rounded-lg border border-primary/30 bg-primary/5 p-3 space-y-1"
+                          className={cn(
+                            "rounded-lg border p-3 space-y-1",
+                            LINKED_ALERT_SURFACE[alert.severity],
+                          )}
                         >
                           <div className="flex items-center gap-1.5">
-                            <AlertTriangle className="h-3.5 w-3.5 text-primary shrink-0" />
+                            <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
                             <span className="font-medium text-xs">
                               {alert.alertTitle}
                             </span>
                           </div>
-                          <p className="text-[11px] text-muted-foreground">
+                          <p className="text-[11px] font-medium">
                             {alert.playbookName}
                           </p>
-                          <p className="text-[11px] line-clamp-2">
+                          <p className="text-[11px] text-muted-foreground line-clamp-2">
                             {alert.alertMessage}
                           </p>
                         </div>

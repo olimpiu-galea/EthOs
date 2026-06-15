@@ -23,9 +23,11 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 const SEVERITY_CLASS = {
-  critical: "border-rose-500/40 bg-rose-500/10 text-rose-300",
-  warning: "border-amber-500/40 bg-amber-500/10 text-amber-300",
-  info: "border-primary/40 bg-primary/10 text-primary",
+  critical:
+    "border-critical/30 bg-critical-muted text-critical-foreground",
+  warning:
+    "border-critical/25 bg-critical-muted text-critical-foreground",
+  info: "border-border bg-muted/20 text-foreground",
 };
 
 type ReportDocumentViewProps = {
@@ -191,16 +193,18 @@ export function ReportDocumentView({
                         {alert.teamName ?? alert.teamId}
                       </Badge>
                     )}
-                    <span className="text-xs opacity-80 ml-auto tabular-nums">
+                    <span className="text-xs text-muted-foreground ml-auto tabular-nums">
                       {formatAlertTime(alert.triggeredAt)}
                     </span>
                   </div>
                   <p className="text-sm font-medium">{alert.playbookName}</p>
-                  <p className="text-sm opacity-90">{alert.alertMessage}</p>
-                  <p className="text-xs opacity-75 font-mono">
+                  <p className="text-sm text-muted-foreground">
+                    {alert.alertMessage}
+                  </p>
+                  <p className="text-xs text-muted-foreground font-mono">
                     Conditions: {alert.conditionsSummary}
                   </p>
-                  <p className="text-xs opacity-75 capitalize">
+                  <p className="text-xs text-muted-foreground capitalize">
                     Status at save: {alert.status}
                   </p>
                 </div>
