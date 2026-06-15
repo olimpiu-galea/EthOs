@@ -1,9 +1,8 @@
 import type { UserRole } from "@/lib/types";
-import { shouldAutoConnectIntegrations } from "@/lib/role-access";
 import { SKIP_INTEGRATION_AUTO_CONNECT_KEY } from "@/lib/reset-lakeview-workspace";
 
 /** Connect all company-enabled signal feeds (respects Phrase 2 for commodity/procurement). */
-export async function autoConnectIntegrationsForRole(role: UserRole): Promise<void> {
+export async function autoConnectCompanyFeeds(): Promise<void> {
   if (
     typeof sessionStorage !== "undefined" &&
     sessionStorage.getItem(SKIP_INTEGRATION_AUTO_CONNECT_KEY)
@@ -11,8 +10,6 @@ export async function autoConnectIntegrationsForRole(role: UserRole): Promise<vo
     sessionStorage.removeItem(SKIP_INTEGRATION_AUTO_CONNECT_KEY);
     return;
   }
-
-  if (!shouldAutoConnectIntegrations(role)) return;
 
   const [
     { useDcsStore },
@@ -54,4 +51,10 @@ export async function autoConnectIntegrationsForRole(role: UserRole): Promise<vo
   }
 
   await Promise.all(tasks);
+}
+
+export async function autoConnectIntegrationsForRole(
+  _role: UserRole,
+): Promise<void> {
+  await autoConnectCompanyFeeds();
 }

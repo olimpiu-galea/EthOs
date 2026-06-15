@@ -92,6 +92,10 @@ const HOUR_END = 23;
 
 const HOUR_ROW_HEIGHT = 56;
 
+const ALERT_CARD_WIDTH = 220;
+
+const ALERT_CARD_HEIGHT = 108;
+
 
 
 function formatTime(ts: number) {
@@ -737,7 +741,7 @@ export default function AgendaPage() {
 
                   </div>
 
-                  <div className="px-3 py-2 flex flex-wrap gap-2 items-center">
+                  <div className="px-3 py-2 flex flex-wrap gap-2 items-start content-start">
 
                     {slotAlerts.length === 0 ? (
 
@@ -761,9 +765,14 @@ export default function AgendaPage() {
 
                           }}
 
+                          style={{
+                            width: ALERT_CARD_WIDTH,
+                            height: ALERT_CARD_HEIGHT,
+                          }}
+
                           className={cn(
 
-                            "text-left rounded-lg border px-3 py-2 text-xs max-w-full transition-all hover:border-primary/50",
+                            "shrink-0 flex flex-col text-left rounded-lg border px-3 py-2 text-xs transition-all hover:border-primary/50 overflow-hidden",
 
                             item.status === "active"
                               ? "border-critical/35 bg-critical-muted ethos-critical-surface"
@@ -775,13 +784,52 @@ export default function AgendaPage() {
 
                         >
 
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1.5 min-h-[18px]">
 
                             <span className="font-semibold tabular-nums">
 
                               {formatTime(item.triggeredAt)}
 
                             </span>
+
+                            <div className="ml-auto flex items-center gap-1 shrink-0">
+
+                              <AlertChatTrigger
+                                size="xs"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setChatAlert(item);
+                                  setChatOpen(true);
+                                }}
+                              />
+
+                              {item.status === "completed" ? (
+
+                                <CheckCircle2 className="h-3 w-3 text-emerald-400" />
+
+                              ) : (
+
+                                <Circle className="h-3 w-3 text-amber-400 animate-pulse" />
+
+                              )}
+
+                            </div>
+
+                          </div>
+
+                          <p className="font-medium mt-1 leading-tight line-clamp-1">
+
+                            {item.playbookName}
+
+                          </p>
+
+                          <p className="text-muted-foreground leading-snug line-clamp-2 min-h-[2.5rem]">
+
+                            {item.alertTitle}
+
+                          </p>
+
+                          <div className="mt-auto flex flex-wrap gap-1 pt-1 max-h-[34px] overflow-hidden content-start">
 
                             {resolveAlertTeamIds(item, teams).map((teamId) => (
                               <Badge
@@ -811,39 +859,7 @@ export default function AgendaPage() {
                               </Badge>
                             )}
 
-                            <AlertChatTrigger
-                              size="xs"
-                              className="ml-auto"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setChatAlert(item);
-                                setChatOpen(true);
-                              }}
-                            />
-
-                            {item.status === "completed" ? (
-
-                              <CheckCircle2 className="h-3 w-3 text-emerald-400" />
-
-                            ) : (
-
-                              <Circle className="h-3 w-3 text-amber-400 animate-pulse" />
-
-                            )}
-
                           </div>
-
-                          <p className="font-medium mt-0.5 truncate">
-
-                            {item.playbookName}
-
-                          </p>
-
-                          <p className="text-muted-foreground truncate">
-
-                            {item.alertTitle}
-
-                          </p>
 
                         </button>
 

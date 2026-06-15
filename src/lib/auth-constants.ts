@@ -32,7 +32,7 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
     name: "Emily Crawford",
     role: "company_admin",
     companyId: "lakeview",
-    title: "Company Admin · Lakeview",
+    title: "Company Admin",
   },
   {
     id: "supervisor",
@@ -50,7 +50,7 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
     name: "James Reed",
     role: "operational",
     companyId: "lakeview",
-    title: "Operational · Ferm B & batches",
+    title: "Operational",
   },
   {
     id: "procurement",
@@ -59,7 +59,7 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
     name: "Sofia Martinez",
     role: "procurement",
     companyId: "lakeview",
-    title: "Procurement · buying desk",
+    title: "Procurement",
   },
   {
     id: "maintenance",
@@ -68,7 +68,7 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
     name: "Marcus Chen",
     role: "maintenance",
     companyId: "lakeview",
-    title: "Maintenance · reliability",
+    title: "Maintenance",
   },
   {
     id: "financial",
@@ -77,7 +77,7 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
     name: "Rachel Kim",
     role: "financial",
     companyId: "lakeview",
-    title: "Financial · margin desk",
+    title: "Financial",
   },
   {
     id: "compliance",
@@ -86,7 +86,7 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
     name: "Nina Okafor",
     role: "qa_lab",
     companyId: "lakeview",
-    title: "Compliance · plant QA",
+    title: "Compliance",
   },
   {
     id: "healthcare-supervisor",

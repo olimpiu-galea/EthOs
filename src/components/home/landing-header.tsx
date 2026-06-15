@@ -52,11 +52,9 @@ export function LandingHeader() {
                   Sign in
                 </Link>
               </Button>
-              <Button asChild size="sm" className="gap-2">
-                <Link href="/signup">
-                  <UserPlus className="h-4 w-4" />
-                  Create account
-                </Link>
+              <Button size="sm" className="gap-2" disabled>
+                <UserPlus className="h-4 w-4" />
+                Create account
               </Button>
             </>
           )}

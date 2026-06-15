@@ -31,7 +31,7 @@ const PHASE2_FEEDS: SignalSource[] = ["commodity", "inventory"];
 
 const STEPS = [
   { id: 1, title: "Features", icon: Sparkles },
-  { id: 2, title: "Integrations", icon: PlugZap },
+  { id: 2, title: "Signal feeds", icon: PlugZap },
   { id: 3, title: "Playbooks", icon: BookOpen },
   { id: 4, title: "Agenda", icon: Radio },
 ];
@@ -61,7 +61,7 @@ export default function OnboardingPage() {
 
   function finishOnboarding() {
     completeOnboarding();
-    router.push("/integrations");
+    router.push("/agenda");
   }
 
   return (
@@ -97,8 +97,7 @@ export default function OnboardingPage() {
               <CardTitle>Step 1 — Enable signal feeds</CardTitle>
               <CardDescription>
                 Signal feeds are enabled by default for this workspace. Turn off
-                any source you do not need — connection happens on Integrations
-                in the next step.
+                any source you do not need — enabled feeds connect automatically.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
@@ -162,11 +161,10 @@ export default function OnboardingPage() {
         {step === 2 && (
           <Card>
             <CardHeader>
-              <CardTitle>Step 2 — Connect on Integrations</CardTitle>
+              <CardTitle>Step 2 — Signal feeds</CardTitle>
               <CardDescription>
-                Open Integrations and connect the feeds you enabled. Only enabled
-                sources appear there — specialists cannot connect feeds you
-                have not turned on.
+                Enabled feeds connect automatically when you sign in. Specialists
+                only see data from feeds you have turned on for the company.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -183,8 +181,8 @@ export default function OnboardingPage() {
                 </div>
               </div>
               <p className="text-sm text-muted-foreground">
-                Connect DCS first for live process tags, then add Lab Sheet or
-                Phrase 2 feeds as needed.
+                DCS, Lab Sheet, and Phrase 2 feeds connect in the background —
+                no manual setup required.
               </p>
               <Button onClick={() => setStep(3)} className="gap-2 mt-2">
                 Next <ArrowRight className="h-4 w-4" />
@@ -227,8 +225,7 @@ export default function OnboardingPage() {
             <CardContent className="space-y-4">
               <div className="flex items-center gap-2 text-sm text-emerald-400">
                 <CheckCircle2 className="h-4 w-4" />
-                Setup overview complete. Next, connect your enabled feeds on
-                Integrations.
+                Setup overview complete. Open the Agenda to see team alerts.
               </div>
               <Button onClick={finishOnboarding} className="gap-2">
                 Next <ArrowRight className="h-4 w-4" />

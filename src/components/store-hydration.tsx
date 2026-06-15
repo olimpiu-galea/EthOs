@@ -12,7 +12,7 @@ import { useAuditStore } from "@/stores/audit-store";
 import { usePlaybookFeedbackStore } from "@/stores/playbook-feedback-store";
 import { ensureDefaultPlaybooks } from "@/lib/default-playbooks";
 import { purgeDemoPlaybooks } from "@/lib/demo-playbook";
-import { autoConnectIntegrationsForRole } from "@/lib/auto-connect-integrations";
+import { autoConnectCompanyFeeds } from "@/lib/auto-connect-integrations";
 
 const STORES = [
   usePlaybookStore,
@@ -46,10 +46,9 @@ function allStoresHydrated(): boolean {
 function runDeferredBootTasks() {
   const run = () => {
     void (async () => {
-      const user = useAuthStore.getState().user;
-      if (user) await autoConnectIntegrationsForRole(user.role);
       await purgeDemoPlaybooks();
       await ensureDefaultPlaybooks();
+      await autoConnectCompanyFeeds();
     })();
   };
 

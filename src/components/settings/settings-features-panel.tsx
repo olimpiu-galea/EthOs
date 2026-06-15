@@ -1,25 +1,20 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
 import {
   Check,
   Eye,
   Pencil,
-  PlugZap,
   Plus,
-  Radio,
   Search,
   Trash2,
   Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { FEED_LABELS } from "@/lib/company-features";
 import { ROLE_LABELS } from "@/lib/auth-constants";
 import { listTeamAssignableUsers } from "@/lib/company-registry";
 import { useAuthStore } from "@/stores/auth-store";
 import { useSettingsStore } from "@/stores/settings-store";
-import type { SignalSource } from "@/lib/types";
 import type { OpsTeam } from "@/lib/teams";
 import { agendaLensesForTeams, enabledTeams } from "@/lib/teams";
 import {
@@ -40,8 +35,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-const PHASE2_FEEDS: SignalSource[] = ["commodity", "inventory"];
 
 function userInitials(name: string): string {
   return name
@@ -64,10 +57,7 @@ function emptyTeamDraft(): Omit<OpsTeam, "id"> {
 
 export function SettingsFeaturesPanel() {
   const companyId = useSettingsStore((s) => s.companyId);
-  const companyFeeds = useSettingsStore((s) => s.companyFeeds);
   const teams = useSettingsStore((s) => s.teams);
-  const phrase2 = useSettingsStore((s) => s.operationsSuiteEnabled);
-  const toggleCompanyFeed = useSettingsStore((s) => s.toggleCompanyFeed);
   const addTeam = useSettingsStore((s) => s.addTeam);
   const updateTeam = useSettingsStore((s) => s.updateTeam);
   const deleteTeam = useSettingsStore((s) => s.deleteTeam);
@@ -150,64 +140,6 @@ export function SettingsFeaturesPanel() {
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <PlugZap className="h-4 w-4" />
-            Signal integrations
-          </CardTitle>
-          <CardDescription>
-            Enable feeds for this company. Only enabled sources appear on
-            Integrations and can be connected for playbooks.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {(Object.keys(FEED_LABELS) as SignalSource[]).map((feed) => {
-            const meta = FEED_LABELS[feed];
-            const needsPhrase2 = PHASE2_FEEDS.includes(feed);
-            const locked = needsPhrase2 && !phrase2;
-
-            return (
-              <div
-                key={feed}
-                className="flex items-start justify-between gap-4 rounded-lg border px-4 py-3"
-              >
-                <div className="min-w-0 space-y-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <p className="text-sm font-medium">{meta.label}</p>
-                    {needsPhrase2 && (
-                      <Badge variant="outline" className="text-[10px]">
-                        Phrase 2
-                      </Badge>
-                    )}
-                    {locked && (
-                      <Badge variant="secondary" className="text-[10px]">
-                        Requires Phrase 2
-                      </Badge>
-                    )}
-                  </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    {meta.description}
-                  </p>
-                </div>
-                <Switch
-                  checked={companyFeeds[feed] && !locked}
-                  disabled={locked}
-                  onCheckedChange={() => toggleCompanyFeed(feed)}
-                  aria-label={`Toggle ${meta.label}`}
-                />
-              </div>
-            );
-          })}
-          <Button asChild variant="outline" size="sm" className="gap-2 mt-2">
-            <Link href="/integrations">
-              <Radio className="h-3.5 w-3.5" />
-              Open Integrations
-            </Link>
-          </Button>
-        </CardContent>
-      </Card>
-
       <Card>
         <CardHeader className="flex flex-row items-start justify-between gap-4">
           <div>

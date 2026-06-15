@@ -102,9 +102,14 @@ export default function LoginPage() {
             </form>
             <p className="text-center text-sm text-muted-foreground mt-4">
               New here?{" "}
-              <Link href="/signup" className="text-primary hover:underline">
+              <Button
+                type="button"
+                variant="link"
+                className="h-auto p-0 text-muted-foreground"
+                disabled
+              >
                 Create account
-              </Link>
+              </Button>
             </p>
           </CardContent>
         </Card>

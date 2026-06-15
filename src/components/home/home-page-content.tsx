@@ -29,11 +29,9 @@ function GuestHome() {
             and finance. {PRODUCT_SCOPE}
           </p>
           <div className="flex flex-wrap gap-3">
-            <Button asChild className="gap-2">
-              <Link href="/signup">
-                <UserPlus className="h-4 w-4" />
-                Create account
-              </Link>
+            <Button className="gap-2" disabled>
+              <UserPlus className="h-4 w-4" />
+              Create account
             </Button>
             <Button asChild variant="outline" className="gap-2">
               <Link href="/login">

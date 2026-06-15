@@ -7,8 +7,8 @@ import {
 } from "@/lib/domain-config";
 import { Package, Wallet, Wrench } from "lucide-react";
 
-export function canSeeIntegrations(role: UserRole): boolean {
-  return role === "company_admin" || role === "platform_admin";
+export function canSeeIntegrations(_role: UserRole): boolean {
+  return false;
 }
 
 export function canSeeFinancial(role: UserRole): boolean {
@@ -64,8 +64,8 @@ export function signalFeedsForRole(role: UserRole): SignalFeed[] {
   }
 }
 
-export function shouldAutoConnectIntegrations(role: UserRole): boolean {
-  return signalFeedsForRole(role).length > 0;
+export function shouldAutoConnectIntegrations(_role: UserRole): boolean {
+  return true;
 }
 
 export function buildSuiteNav(
