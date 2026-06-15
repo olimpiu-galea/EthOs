@@ -168,4 +168,9 @@ export async function ensureDefaultPlaybooks(): Promise<void> {
     "@/lib/lab-gated-mock-playbooks-gate"
   );
   await applyLabGatedMockPlaybooksGate();
+
+  const { ensureLakeviewDemoReports } = await import(
+    "@/lib/lakeview-demo-reports-seed"
+  );
+  await ensureLakeviewDemoReports();
 }

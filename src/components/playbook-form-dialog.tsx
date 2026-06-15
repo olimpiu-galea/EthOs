@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type {
   LegacyPlaybook,
   Playbook,
@@ -85,6 +85,59 @@ function formTeamIds(form: Pick<Playbook, "teamId" | "teamIds">): string[] {
   return [];
 }
 
+function createFormWithDefaultTeam(
+  teams: { id: string }[],
+): Omit<Playbook, "id"> {
+  const base = createEmptyPlaybook();
+  if (!teams[0]) return base;
+  return { ...base, teamIds: [teams[0].id], teamId: teams[0].id };
+}
+
+function playbookFromRecord(
+  playbook: Playbook,
+  teams: { id: string }[],
+): Omit<Playbook, "id"> {
+  const pb = migratePlaybook(playbook as LegacyPlaybook);
+  const teamIds =
+    pb.teamIds?.length
+      ? pb.teamIds
+      : pb.teamId
+        ? [pb.teamId]
+        : teams[0]
+          ? [teams[0].id]
+          : [];
+  return {
+    name: pb.name,
+    description: pb.description ?? "",
+    status: pb.status,
+    builtinId: pb.builtinId,
+    conditions: pb.conditions,
+    matchMode: pb.matchMode,
+    conditionGroups: pb.conditionGroups,
+    groupMatchMode: pb.groupMatchMode,
+    alert: pb.alert,
+    teamIds,
+    teamId: teamIds[0],
+    actionItems: pb.actionItems,
+    guidance: pb.guidance,
+  };
+}
+
+function submitBlockers(
+  form: Omit<Playbook, "id">,
+  teams: { id: string }[],
+): string[] {
+  const blockers: string[] = [];
+  if (!form.name.trim()) blockers.push("Enter a playbook name");
+  if (!hasValidPlaybookConditions(form)) {
+    blockers.push("Add at least one signal condition");
+  }
+  if (teams.length > 0 && formTeamIds(form).length === 0) {
+    blockers.push("Select at least one team");
+  }
+  return blockers;
+}
+
 export function PlaybookFormDialog({
   open,
   onOpenChange,
@@ -119,40 +172,36 @@ export function PlaybookFormDialog({
   const [backtestResult, setBacktestResult] = useState<BacktestResult | null>(
     null,
   );
+  const dialogInitKey = useRef<string | null>(null);
 
   useEffect(() => {
+    if (!open) {
+      dialogInitKey.current = null;
+      return;
+    }
+
+    const initKey = playbook?.id ?? "new";
+    if (dialogInitKey.current === initKey) return;
+    dialogInitKey.current = initKey;
+
     if (playbook) {
-      const pb = migratePlaybook(playbook as LegacyPlaybook);
-      setForm({
-        name: pb.name,
-        description: pb.description ?? "",
-        status: pb.status,
-        builtinId: pb.builtinId,
-        conditions: pb.conditions,
-        matchMode: pb.matchMode,
-        conditionGroups: pb.conditionGroups,
-        groupMatchMode: pb.groupMatchMode,
-        alert: pb.alert,
-        teamIds:
-          pb.teamIds?.length
-            ? pb.teamIds
-            : pb.teamId
-              ? [pb.teamId]
-              : teams[0]
-                ? [teams[0].id]
-                : [],
-        teamId: pb.teamId ?? teams[0]?.id,
-        actionItems: pb.actionItems,
-        guidance: pb.guidance,
-      });
+      setForm(playbookFromRecord(playbook, teams));
       setMode("manual");
     } else {
-      setForm(createEmptyPlaybook());
+      setForm(createFormWithDefaultTeam(teams));
       setMode("manual");
       setAiPrompt("");
       setAiPreview(null);
     }
-  }, [playbook, open, teams]);
+  }, [open, playbook, teams]);
+
+  useEffect(() => {
+    if (!open || teams.length === 0) return;
+    setForm((f) => {
+      if (formTeamIds(f).length > 0) return f;
+      return { ...f, teamIds: [teams[0].id], teamId: teams[0].id };
+    });
+  }, [open, teams]);
 
   const allFormConditions = [
     ...form.conditions,
@@ -168,6 +217,9 @@ export function PlaybookFormDialog({
     fermCatalog.length > 0 ||
     !fermCatalogReady;
   const disabled = !canEditConditions;
+  const blockers = submitBlockers(form, teams);
+  const canSubmit = blockers.length === 0;
+  const canRunBacktest = hasValidPlaybookConditions(form);
 
   function handleSubmit() {
     const selectedTeamIds = formTeamIds(form);
@@ -211,7 +263,21 @@ export function PlaybookFormDialog({
   function runAiGenerate() {
     const generated = generatePlaybookFromDescription(aiPrompt);
     setAiPreview(generated);
-    setForm(generated);
+    setForm((prev) => {
+      const teamIds =
+        generated.teamIds?.length
+          ? generated.teamIds
+          : formTeamIds(prev).length
+            ? formTeamIds(prev)
+            : teams[0]
+              ? [teams[0].id]
+              : [];
+      return {
+        ...generated,
+        teamIds,
+        teamId: teamIds[0],
+      };
+    });
   }
 
   function runBacktest() {
@@ -268,8 +334,8 @@ export function PlaybookFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-6xl w-[95vw] max-h-[92vh] p-0 gap-0 overflow-hidden">
-        <DialogHeader className="px-6 pt-6 pb-4 border-b bg-muted/20">
+      <DialogContent className="max-w-6xl w-[95vw] max-h-[92vh] p-0 gap-0 overflow-hidden flex flex-col">
+        <DialogHeader className="shrink-0 px-6 pt-6 pb-4 border-b bg-muted/20">
           <div className="flex items-start justify-between gap-4 pr-8">
             <div className="space-y-1 min-w-0">
               <DialogTitle className="text-xl">
@@ -328,7 +394,7 @@ export function PlaybookFormDialog({
           )}
         </DialogHeader>
 
-        <div className="px-6 py-5 space-y-8 max-h-[calc(92vh-11rem)] overflow-y-auto">
+        <div className="flex-1 min-h-0 overflow-y-auto px-6 py-5 space-y-8">
           {disabled && (
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm text-amber-400 bg-amber-500/10 border border-amber-500/25 rounded-lg px-4 py-3">
               <p>
@@ -468,6 +534,7 @@ export function PlaybookFormDialog({
                         onChange={() => {
                           setForm((f) => {
                             const current = formTeamIds(f);
+                            if (selected && current.length <= 1) return f;
                             const next = selected
                               ? current.filter((id) => id !== team.id)
                               : [...current, team.id];
@@ -706,30 +773,29 @@ export function PlaybookFormDialog({
           </section>
         </div>
 
-        <div className="flex justify-end gap-2 px-6 py-4 border-t bg-muted/10">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            size="lg"
-            disabled={!hasValidPlaybookConditions(form) || backtestLoading}
-            onClick={runBacktest}
-          >
-            Run backtest
-          </Button>
-          <Button
-            size="lg"
-            onClick={handleSubmit}
-            disabled={
-              !form.name.trim() ||
-              !hasValidPlaybookConditions(form) ||
-              (teams.length > 0 && formTeamIds(form).length === 0)
-            }
-          >
-            {playbook ? "Save playbook" : "Create playbook"}
-          </Button>
+        <div className="shrink-0 flex flex-col items-end gap-2 px-6 py-4 border-t bg-muted/10">
+          {blockers.length > 0 && (
+            <p className="text-xs text-amber-400/90 text-right w-full">
+              {blockers.join(" · ")}
+            </p>
+          )}
+          <div className="flex flex-wrap justify-end gap-2 w-full">
+            <Button variant="outline" onClick={() => onOpenChange(false)}>
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="lg"
+              disabled={!canRunBacktest || backtestLoading}
+              onClick={runBacktest}
+            >
+              Run backtest
+            </Button>
+            <Button size="lg" onClick={handleSubmit} disabled={!canSubmit}>
+              {playbook ? "Save playbook" : "Create playbook"}
+            </Button>
+          </div>
         </div>
       </DialogContent>
 

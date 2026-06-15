@@ -199,14 +199,16 @@ export function generatePlaybookFromDescription(
   const teams = useSettingsStore.getState().teams;
   const companyId = useSettingsStore.getState().companyId;
   const users = listUsersForCompany(companyId, useAuthStore.getState().users);
-  const teamId = inferTeamIdFromPlaybook(result, teams);
+  const activeTeams = teams.filter((t) => t.enabled !== false);
+  const teamId =
+    inferTeamIdFromPlaybook(result, teams) ?? activeTeams[0]?.id;
   const teamIds = teamId ? [teamId] : [];
   const routedRoles =
     routedRolesForTeams(teamIds, teams, users) ?? inferRoutedRoles(result);
   return {
     ...result,
     teamId,
-    teamIds: teamIds.length ? teamIds : undefined,
+    teamIds,
     routedRoles,
   };
 }

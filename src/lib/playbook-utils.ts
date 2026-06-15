@@ -56,7 +56,10 @@ export function hasValidPlaybookConditions(
   if (usesConditionGroups(playbook)) {
     return hasValidConditionGroups(playbook.conditionGroups);
   }
-  return hasValidConditions(playbook.conditions);
+  if (hasValidConditions(playbook.conditions)) {
+    return true;
+  }
+  return hasValidConditionGroups(playbook.conditionGroups);
 }
 
 export function flattenConditionsToPlaybook(
