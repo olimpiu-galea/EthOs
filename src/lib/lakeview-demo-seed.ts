@@ -45,28 +45,13 @@ const LAKEVIEW_OPERATIONAL_TEAM: OpsTeam = {
   memberUserIds: ["operational"],
 };
 
-const PROCUREMENT_ACTION_ITEMS: PlaybookActionItem[] = [
-  {
-    id: "check-stock",
-    title: "Confirm alpha amylase within 5% of minimum",
-    detail: "Open Procurement · buying desk and verify on-hand vs reorder point.",
-  },
-  {
-    id: "expedite-po",
-    title: "Expedite open PO",
-    detail: "Contact supplier on PO-2026-0142; confirm ETA before next cook.",
-  },
-  {
-    id: "approve-alt",
-    title: "Approve alternate vendor if needed",
-    detail: "Use approved substitute list if primary lead time exceeds 5 days.",
-  },
-  {
-    id: "log-procurement",
-    title: "Log decision and resolve",
-    detail: "Note PO action in buying desk and close alert.",
-  },
-];
+const LAKEVIEW_PROCUREMENT_TEAM: OpsTeam = {
+  id: LAKEVIEW_TEAM_PROCUREMENT,
+  name: "Procurement",
+  description: "Buying desk, PO expediting, and supplier lead times",
+  enabled: true,
+  memberUserIds: ["procurement"],
+};
 
 const MAINTENANCE_ACTION_ITEMS: PlaybookActionItem[] = [
   {
@@ -138,39 +123,6 @@ const COMPLIANCE_ACTION_ITEMS: PlaybookActionItem[] = [
 ];
 
 export const LAKEVIEW_WORKSPACE_DEMOS: LakeviewWorkspaceDemo[] = [
-  {
-    workspaceId: "procurement",
-    userId: "procurement",
-    teamId: LAKEVIEW_TEAM_PROCUREMENT,
-    teamName: "Procurement",
-    teamDescription: "Buying desk, PO expediting, and supplier lead times",
-    builtinId: "workspace-daily-procurement",
-    playbookName: "5% Near Minimum Stock",
-    playbookDescription:
-      "Daily procurement alert for demos — Alpha Amylase Enzyme within 5% of its minimum stock, tied to the Procurement team on Agenda.",
-    triggerHour: 8,
-    triggerMinute: 0,
-    alertTitle: "Alpha Amylase Enzyme within 5% of minimum stock",
-    alertMessage:
-      "Alpha Amylase Enzyme has 312 L available against a 300 L minimum — within 5% of the reorder threshold. Review usage and expedite PO-2026-0142 before the next cook.",
-    conditionsSummary: "Procurement demo · current stock within 5% above minimum",
-    severity: "warning",
-    actionItems: PROCUREMENT_ACTION_ITEMS,
-    guidance: [
-      {
-        title: "Procurement workspace",
-        body: "Open Procurement · buying desk for PO and supplier context.",
-      },
-      {
-        title: "Buying vs maintenance",
-        body: "This alert is about purchased materials — spare parts live under Maintenance.",
-      },
-      {
-        title: "Resolve when done",
-        body: "Log the PO action and resolve; new instance next day.",
-      },
-    ],
-  },
   {
     workspaceId: "maintenance",
     userId: "maintenance",
@@ -309,6 +261,7 @@ export function buildLakeviewDemoTeams(): OpsTeam[] {
   }));
   const byId = new Map<string, OpsTeam>([
     [LAKEVIEW_OPERATIONAL_TEAM.id, { ...LAKEVIEW_OPERATIONAL_TEAM }],
+    [LAKEVIEW_PROCUREMENT_TEAM.id, { ...LAKEVIEW_PROCUREMENT_TEAM }],
   ]);
   for (const team of fromDemos) {
     byId.set(team.id, team);

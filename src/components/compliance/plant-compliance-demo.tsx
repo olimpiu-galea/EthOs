@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -16,6 +16,12 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { useSettingsStore } from "@/stores/settings-store";
 import {
@@ -23,6 +29,9 @@ import {
   LAKEVIEW_DOC_CADENCE,
   LAKEVIEW_OPEN_DEVIATIONS,
   type ComplianceStatus,
+  type ComplianceZone,
+  type DeviationRow,
+  type DocCadenceRow,
 } from "@/lib/lakeview-plant-compliance-fixture";
 import {
   complianceWatchItems,
@@ -56,7 +65,6 @@ const DEV_STATUS: Record<string, string> = {
   closed: "border-success/30 text-success",
 };
 
-/** Mirrors the Batches "Playbook watch" status styling */
 const WATCH_STATUS_STYLES: Record<ComplianceWatchStatus, string> = {
   clear: "border-success/30 text-success",
   watch: "border-critical/30 bg-critical-muted text-critical-foreground",
@@ -71,26 +79,27 @@ const SEVERITY_RANK: Record<ComplianceStatus, number> = {
 
 type FilterId = "zones" | "deviations" | "docs";
 
+type ComplianceDetail =
+  | { kind: "zone"; item: ComplianceZone }
+  | { kind: "deviation"; item: DeviationRow }
+  | { kind: "doc"; item: DocCadenceRow };
+
 function ZoneCard({
   zone,
-  selected,
-  onSelect,
+  onOpen,
 }: {
-  zone: (typeof LAKEVIEW_COMPLIANCE_ZONES)[number];
-  selected: boolean;
-  onSelect: () => void;
+  zone: ComplianceZone;
+  onOpen: () => void;
 }) {
   const s = STATUS_STYLES[zone.status];
   return (
     <button
       type="button"
-      onClick={onSelect}
-      aria-pressed={selected}
+      onClick={onOpen}
       className={cn(
-        "w-full rounded-xl border bg-card p-4 space-y-2 text-left shadow-sm transition",
+        "w-full rounded-xl border border-border bg-card p-4 space-y-2 text-left shadow-sm transition",
         "hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md",
         "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        selected ? "border-primary ring-2 ring-primary/30" : "border-border",
       )}
     >
       <div className="flex items-start justify-between gap-2">
@@ -177,7 +186,7 @@ function PlaybookWatchPanel() {
                 href="/playbooks"
                 className="text-sm font-medium hover:underline"
               >
-                {item.title}
+                {item.name}
               </Link>
               <p className="text-xs text-muted-foreground">{item.rule}</p>
             </div>
@@ -204,6 +213,174 @@ function PlaybookWatchPanel() {
   );
 }
 
+function ComplianceDetailDialog({
+  detail,
+  open,
+  onOpenChange,
+}: {
+  detail: ComplianceDetail | null;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  if (!detail) {
+    return null;
+  }
+
+  if (detail.kind === "zone") {
+    const zone = detail.item;
+    const s = STATUS_STYLES[zone.status];
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <div className="flex flex-wrap gap-2 mb-1">
+              <Badge variant="outline" className="text-xs">
+                Plant zone
+              </Badge>
+              <Badge variant="outline" className={cn("text-xs", s.badge)}>
+                {s.label}
+              </Badge>
+            </div>
+            <DialogTitle>{zone.label}</DialogTitle>
+            <p className="text-sm text-muted-foreground text-left">{zone.metric}</p>
+          </DialogHeader>
+          <div className="space-y-4 text-sm">
+            <div className="rounded-lg border border-border/60 p-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">
+                Summary
+              </p>
+              <p className="text-muted-foreground">{zone.summary}</p>
+            </div>
+            <div className="rounded-lg border border-border/60 p-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">
+                Details
+              </p>
+              <p className="text-muted-foreground">{zone.details}</p>
+              <p className="mt-3 text-[10px] uppercase text-muted-foreground">Owner</p>
+              <p>{zone.owner}</p>
+            </div>
+            <div className="rounded-lg border border-amber-500/25 bg-amber-500/5 p-3">
+              <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1">
+                Recommended action
+              </p>
+              <p className="text-muted-foreground">{zone.recommendedAction}</p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  if (detail.kind === "deviation") {
+    const deviation = detail.item;
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <div className="flex flex-wrap gap-2 mb-1">
+              <Badge variant="outline" className="font-mono text-xs">
+                {deviation.batchId}
+              </Badge>
+              <Badge variant="outline" className="text-xs">
+                {deviation.fermenter}
+              </Badge>
+              <Badge
+                variant="outline"
+                className={cn("text-xs capitalize", DEV_STATUS[deviation.status])}
+              >
+                {deviation.status}
+              </Badge>
+            </div>
+            <DialogTitle>{deviation.issue}</DialogTitle>
+            <p className="text-sm text-muted-foreground text-left">{deviation.source}</p>
+          </DialogHeader>
+          <div className="space-y-4 text-sm">
+            <div className="rounded-lg border border-border/60 p-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">
+                Deviation details
+              </p>
+              <p className="text-muted-foreground">{deviation.details}</p>
+              <dl className="grid grid-cols-2 gap-x-4 gap-y-2 mt-3">
+                <div>
+                  <dt className="text-[10px] uppercase text-muted-foreground">Owner</dt>
+                  <dd>{deviation.owner}</dd>
+                </div>
+                <div>
+                  <dt className="text-[10px] uppercase text-muted-foreground">Due</dt>
+                  <dd>{deviation.due}</dd>
+                </div>
+              </dl>
+            </div>
+            <div className="rounded-lg border border-destructive/25 bg-destructive/5 p-3">
+              <p className="text-xs font-semibold text-destructive mb-1">Impact</p>
+              <p className="text-muted-foreground">{deviation.impact}</p>
+            </div>
+            <div className="rounded-lg border border-amber-500/25 bg-amber-500/5 p-3">
+              <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1">
+                Recommended action
+              </p>
+              <p className="text-muted-foreground">{deviation.recommendedAction}</p>
+            </div>
+            <Button asChild variant="outline" size="sm" className="gap-2">
+              <Link href={deviation.link}>
+                Open batch workspace
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  const doc = detail.item;
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <div className="flex flex-wrap gap-2 mb-1">
+            <Badge variant="outline" className="font-mono text-xs">
+              {doc.abbr}
+            </Badge>
+            <DocStatusBadge status={doc.todayStatus} />
+          </div>
+          <DialogTitle>{doc.template}</DialogTitle>
+          <p className="text-sm text-muted-foreground text-left">{doc.cadence}</p>
+        </DialogHeader>
+        <div className="space-y-4 text-sm">
+          <div className="rounded-lg border border-border/60 p-3">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">
+              Latest record
+            </p>
+            <p className="font-medium">{doc.lastTitle}</p>
+            <p className="text-muted-foreground mt-2">{doc.details}</p>
+            <p className="mt-3 text-[10px] uppercase text-muted-foreground">Owner</p>
+            <p>{doc.owner}</p>
+          </div>
+          <div className="rounded-lg border border-border/60 p-3">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">
+              Compliance note
+            </p>
+            <p className="text-muted-foreground italic">{doc.complianceNote}</p>
+          </div>
+          <div className="rounded-lg border border-amber-500/25 bg-amber-500/5 p-3">
+            <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1">
+              Recommended action
+            </p>
+            <p className="text-muted-foreground">{doc.recommendedAction}</p>
+          </div>
+          <Button asChild variant="outline" size="sm" className="gap-2">
+            <Link href="/reports">
+              Open Reports
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export function PlantComplianceDemo() {
   const router = useRouter();
   const companyName = useSettingsStore((s) => s.companyName);
@@ -211,7 +388,11 @@ export function PlantComplianceDemo() {
   const phase2Enabled = useSettingsStore((s) => s.operationsSuiteEnabled);
 
   const [activeFilter, setActiveFilter] = useState<FilterId | null>(null);
-  const [selectedZoneId, setSelectedZoneId] = useState<string | null>(null);
+  const [detail, setDetail] = useState<ComplianceDetail | null>(null);
+
+  const zonesRef = useRef<HTMLElement>(null);
+  const deviationsRef = useRef<HTMLElement>(null);
+  const docsRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (domain !== "ethanol" || !phase2Enabled) {
@@ -231,8 +412,24 @@ export function PlantComplianceDemo() {
     (d) => d.todayStatus === "missing",
   ).length;
 
+  function scrollToFilter(id: FilterId) {
+    const target =
+      id === "zones"
+        ? zonesRef.current
+        : id === "deviations"
+          ? deviationsRef.current
+          : docsRef.current;
+    target?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   function toggleFilter(id: FilterId) {
-    setActiveFilter((prev) => (prev === id ? null : id));
+    setActiveFilter((prev) => {
+      const next = prev === id ? null : id;
+      if (next) {
+        requestAnimationFrame(() => scrollToFilter(next));
+      }
+      return next;
+    });
   }
 
   const sortedZones = [...LAKEVIEW_COMPLIANCE_ZONES].sort(
@@ -248,10 +445,12 @@ export function PlantComplianceDemo() {
       : LAKEVIEW_OPEN_DEVIATIONS;
   const visibleDocs =
     activeFilter === "docs"
-      ? LAKEVIEW_DOC_CADENCE.filter(
-          (d) => d.todayStatus === "missing" || d.todayStatus === "draft",
-        )
+      ? LAKEVIEW_DOC_CADENCE.filter((d) => d.todayStatus === "missing")
       : LAKEVIEW_DOC_CADENCE;
+
+  const showZones = activeFilter === null || activeFilter === "zones";
+  const showDeviations = activeFilter === null || activeFilter === "deviations";
+  const showDocs = activeFilter === null || activeFilter === "docs";
 
   return (
     <div className="min-h-full bg-background">
@@ -289,171 +488,220 @@ export function PlantComplianceDemo() {
       </div>
 
       <div className="mx-auto max-w-[1400px] px-6 py-8 space-y-10">
-        <section className="grid gap-3 sm:grid-cols-3">
-          <KpiFilterCard
-            label="Zones on watch"
-            value={watchCount}
-            active={activeFilter === "zones"}
-            alert
-            onClick={() => toggleFilter("zones")}
-          />
-          <KpiFilterCard
-            label="Open deviations"
-            value={openDeviationCount}
-            active={activeFilter === "deviations"}
-            alert
-            onClick={() => toggleFilter("deviations")}
-          />
-          <KpiFilterCard
-            label="Docs missing today"
-            value={missingDocCount}
-            active={activeFilter === "docs"}
-            alert
-            onClick={() => toggleFilter("docs")}
-          />
+        <section className="space-y-3">
+          <div className="grid gap-3 sm:grid-cols-3">
+            <KpiFilterCard
+              label="Zones on watch"
+              value={watchCount}
+              active={activeFilter === "zones"}
+              alert
+              onClick={() => toggleFilter("zones")}
+            />
+            <KpiFilterCard
+              label="Open deviations"
+              value={openDeviationCount}
+              active={activeFilter === "deviations"}
+              alert
+              onClick={() => toggleFilter("deviations")}
+            />
+            <KpiFilterCard
+              label="Docs missing today"
+              value={missingDocCount}
+              active={activeFilter === "docs"}
+              alert
+              onClick={() => toggleFilter("docs")}
+            />
+          </div>
+          {activeFilter && (
+            <div className="flex justify-end">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 text-xs"
+                onClick={() => setActiveFilter(null)}
+              >
+                Clear all filters
+              </Button>
+            </div>
+          )}
         </section>
 
-        <section className="grid gap-6 lg:grid-cols-[1fr_320px]">
-          <div className="space-y-4">
+        <section className="grid gap-6 lg:grid-cols-[1fr_320px] items-start">
+          <div className="space-y-10 min-w-0">
+        {showZones && (
+          <section ref={zonesRef} className="space-y-4 scroll-mt-6">
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 <Shield className="h-5 w-5 text-primary" />
                 <h2 className="text-lg font-bold">Plant posture today</h2>
+                {activeFilter === "zones" && (
+                  <Badge variant="outline" className="text-[10px]">
+                    Showing zones on watch · {visibleZones.length}
+                  </Badge>
+                )}
               </div>
-              {activeFilter === "zones" && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-7 text-xs"
-                  onClick={() => setActiveFilter(null)}
-                >
-                  Clear filter
-                </Button>
+            </div>
+            {visibleZones.length === 0 ? (
+              <p className="text-sm text-muted-foreground rounded-xl border border-dashed border-border p-6 text-center">
+                No zones match this filter.
+              </p>
+            ) : (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {visibleZones.map((z) => (
+                  <ZoneCard
+                    key={z.id}
+                    zone={z}
+                    onOpen={() => setDetail({ kind: "zone", item: z })}
+                  />
+                ))}
+              </div>
+            )}
+          </section>
+        )}
+
+        <div
+          className={cn(
+            "grid gap-6",
+            showDeviations && showDocs ? "lg:grid-cols-2" : "grid-cols-1",
+          )}
+        >
+          {showDeviations && (
+            <section
+              ref={deviationsRef}
+              className="rounded-xl border border-border bg-card p-5 space-y-3 shadow-sm scroll-mt-6"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="text-sm font-bold flex items-center gap-2">
+                  <TriangleAlert className="h-4 w-4 text-critical" />
+                  Deviation register
+                  {activeFilter === "deviations" && (
+                    <Badge variant="outline" className="text-[10px] font-normal">
+                      Open only · {visibleDeviations.length}
+                    </Badge>
+                  )}
+                </h2>
+              </div>
+              {visibleDeviations.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-6">
+                  No deviations match this filter.
+                </p>
+              ) : (
+                <ul className="space-y-2">
+                  {visibleDeviations.map((d) => (
+                    <li key={d.id}>
+                      <button
+                        type="button"
+                        onClick={() => setDetail({ kind: "deviation", item: d })}
+                        className={cn(
+                          "w-full rounded-lg border border-border/70 bg-muted/10 p-3 space-y-1.5 text-left transition",
+                          "hover:border-primary/40 hover:bg-muted/20",
+                          "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                        )}
+                      >
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="font-mono font-bold text-sm">{d.batchId}</span>
+                          <span className="text-xs text-muted-foreground">{d.fermenter}</span>
+                          <Badge
+                            variant="outline"
+                            className={cn(
+                              "text-[9px] capitalize ml-auto",
+                              DEV_STATUS[d.status],
+                            )}
+                          >
+                            {d.status}
+                          </Badge>
+                        </div>
+                        <p className="text-xs font-medium">{d.issue}</p>
+                        <p className="text-[10px] text-muted-foreground">{d.source}</p>
+                        <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
+                          <span className="text-[10px] text-muted-foreground">
+                            {d.owner} · due {d.due}
+                          </span>
+                          <span className="text-[10px] text-primary inline-flex items-center gap-0.5">
+                            View details
+                            <ArrowRight className="h-3 w-3" />
+                          </span>
+                        </div>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
               )}
-            </div>
-            <div className="grid sm:grid-cols-2 gap-3">
-              {visibleZones.map((z) => (
-                <ZoneCard
-                  key={z.id}
-                  zone={z}
-                  selected={selectedZoneId === z.id}
-                  onSelect={() =>
-                    setSelectedZoneId((prev) => (prev === z.id ? null : z.id))
-                  }
-                />
-              ))}
-            </div>
+              <Link href="/agenda">
+                <Button variant="outline" size="sm" className="w-full gap-2 text-xs">
+                  <BookOpen className="h-3.5 w-3.5" />
+                  Review open alerts on Agenda
+                </Button>
+              </Link>
+            </section>
+          )}
+
+          {showDocs && (
+            <section
+              ref={docsRef}
+              className="rounded-xl border border-border bg-card p-5 space-y-3 shadow-sm scroll-mt-6"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="text-sm font-bold flex items-center gap-2">
+                  <FileBarChart className="h-4 w-4 text-primary" />
+                  Required documentation
+                  {activeFilter === "docs" && (
+                    <Badge variant="outline" className="text-[10px] font-normal">
+                      Missing today · {visibleDocs.length}
+                    </Badge>
+                  )}
+                </h2>
+              </div>
+              {visibleDocs.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-6">
+                  No documentation matches this filter.
+                </p>
+              ) : (
+                <ul className="space-y-2">
+                  {visibleDocs.map((doc) => (
+                    <li key={doc.abbr}>
+                      <button
+                        type="button"
+                        onClick={() => setDetail({ kind: "doc", item: doc })}
+                        className={cn(
+                          "w-full rounded-lg border border-border/60 px-3 py-2.5 space-y-1 text-left transition",
+                          "hover:border-primary/40 hover:bg-muted/10",
+                          "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                        )}
+                      >
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-sm font-medium">
+                            {doc.abbr}
+                            <span className="text-muted-foreground font-normal ml-1.5 text-xs">
+                              {doc.template}
+                            </span>
+                          </span>
+                          <DocStatusBadge status={doc.todayStatus} />
+                        </div>
+                        <p className="text-[10px] text-muted-foreground">{doc.cadence}</p>
+                        <p className="text-xs">{doc.lastTitle}</p>
+                        <p className="text-[10px] text-primary inline-flex items-center gap-0.5 pt-1">
+                          View details
+                          <ArrowRight className="h-3 w-3" />
+                        </p>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <Link href="/reports">
+                <Button variant="outline" size="sm" className="w-full gap-2 text-xs">
+                  Open Reports · filtered by today
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Button>
+              </Link>
+            </section>
+          )}
+        </div>
           </div>
+
           <PlaybookWatchPanel />
         </section>
-
-        <div className="grid gap-6 lg:grid-cols-2">
-          <section className="rounded-xl border border-border bg-card p-5 space-y-3 shadow-sm">
-            <div className="flex items-center justify-between gap-2">
-              <h2 className="text-sm font-bold flex items-center gap-2">
-                <TriangleAlert className="h-4 w-4 text-critical" />
-                Deviation register
-              </h2>
-              {activeFilter === "deviations" && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-7 text-xs"
-                  onClick={() => setActiveFilter(null)}
-                >
-                  Clear filter
-                </Button>
-              )}
-            </div>
-            <ul className="space-y-2">
-              {visibleDeviations.map((d) => (
-                <li
-                  key={d.id}
-                  className="rounded-lg border border-border/70 bg-muted/10 p-3 space-y-1.5"
-                >
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-mono font-bold text-sm">{d.batchId}</span>
-                    <span className="text-xs text-muted-foreground">{d.fermenter}</span>
-                    <Badge
-                      variant="outline"
-                      className={cn("text-[9px] capitalize ml-auto", DEV_STATUS[d.status])}
-                    >
-                      {d.status}
-                    </Badge>
-                  </div>
-                  <p className="text-xs font-medium">{d.issue}</p>
-                  <p className="text-[10px] text-muted-foreground">{d.source}</p>
-                  <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
-                    <span className="text-[10px] text-muted-foreground">
-                      {d.owner} · due {d.due}
-                    </span>
-                    <Link
-                      href={d.link}
-                      className="text-[10px] text-primary hover:underline inline-flex items-center gap-0.5"
-                    >
-                      Batch workspace
-                      <ArrowRight className="h-3 w-3" />
-                    </Link>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <Link href="/agenda">
-              <Button variant="outline" size="sm" className="w-full gap-2 text-xs">
-                <BookOpen className="h-3.5 w-3.5" />
-                Review open alerts on Agenda
-              </Button>
-            </Link>
-          </section>
-
-          <section className="rounded-xl border border-border bg-card p-5 space-y-3 shadow-sm">
-            <div className="flex items-center justify-between gap-2">
-              <h2 className="text-sm font-bold flex items-center gap-2">
-                <FileBarChart className="h-4 w-4 text-primary" />
-                Required documentation
-              </h2>
-              {activeFilter === "docs" && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-7 text-xs"
-                  onClick={() => setActiveFilter(null)}
-                >
-                  Clear filter
-                </Button>
-              )}
-            </div>
-            <ul className="space-y-2">
-              {visibleDocs.map((doc) => (
-                <li
-                  key={doc.abbr}
-                  className="rounded-lg border border-border/60 px-3 py-2.5 space-y-1"
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-sm font-medium">
-                      {doc.abbr}
-                      <span className="text-muted-foreground font-normal ml-1.5 text-xs">
-                        {doc.template}
-                      </span>
-                    </span>
-                    <DocStatusBadge status={doc.todayStatus} />
-                  </div>
-                  <p className="text-[10px] text-muted-foreground">{doc.cadence}</p>
-                  <p className="text-xs">{doc.lastTitle}</p>
-                  <p className="text-[10px] text-muted-foreground italic">
-                    {doc.complianceNote}
-                  </p>
-                </li>
-              ))}
-            </ul>
-            <Link href="/reports">
-              <Button variant="outline" size="sm" className="w-full gap-2 text-xs">
-                Open Reports · filtered by today
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Button>
-            </Link>
-          </section>
-        </div>
 
         <section className="rounded-xl border border-border bg-muted/20 p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="space-y-1">
@@ -485,6 +733,16 @@ export function PlantComplianceDemo() {
           </div>
         </section>
       </div>
+
+      <ComplianceDetailDialog
+        detail={detail}
+        open={detail != null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setDetail(null);
+          }
+        }}
+      />
     </div>
   );
 }
@@ -492,7 +750,7 @@ export function PlantComplianceDemo() {
 function DocStatusBadge({
   status,
 }: {
-  status: (typeof LAKEVIEW_DOC_CADENCE)[number]["todayStatus"];
+  status: DocCadenceRow["todayStatus"];
 }) {
   const map = {
     complete: { label: "Complete", className: "border-success/30 text-success" },

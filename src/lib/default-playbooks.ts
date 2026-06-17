@@ -169,6 +169,11 @@ export async function ensureDefaultPlaybooks(): Promise<void> {
   );
   await applyLabGatedMockPlaybooksGate();
 
+  const { ensureWorkspaceWatchPlaybooks } = await import(
+    "@/lib/workspace-watch-playbook-seed"
+  );
+  await ensureWorkspaceWatchPlaybooks(teams, users);
+
   const { ensureLakeviewDemoReports } = await import(
     "@/lib/lakeview-demo-reports-seed"
   );

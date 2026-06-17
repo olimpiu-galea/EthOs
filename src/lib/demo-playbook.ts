@@ -4,6 +4,7 @@ import type { AlertAgendaItem, Playbook } from "./types";
 import {
   REMOVED_WORKSPACE_DAILY_OPERATIONAL_BUILTIN_ID,
   REMOVED_WORKSPACE_DAILY_OPERATIONAL_NAME,
+  REMOVED_WORKSPACE_DAILY_PROCUREMENT_BUILTIN_ID,
 } from "./lakeview-demo-constants";
 
 /** Legacy daily demo playbook — purged on boot */
@@ -28,7 +29,8 @@ export function isRemovedWorkspaceDailyPlaybook(
 ): boolean {
   return (
     playbook.builtinId === REMOVED_WORKSPACE_DAILY_OPERATIONAL_BUILTIN_ID ||
-    playbook.name === REMOVED_WORKSPACE_DAILY_OPERATIONAL_NAME
+    playbook.name === REMOVED_WORKSPACE_DAILY_OPERATIONAL_NAME ||
+    playbook.builtinId === REMOVED_WORKSPACE_DAILY_PROCUREMENT_BUILTIN_ID
   );
 }
 
@@ -45,7 +47,8 @@ export function isRemovedWorkspaceDailyAlert(
 ): boolean {
   return (
     item.playbookName === REMOVED_WORKSPACE_DAILY_OPERATIONAL_NAME ||
-    item.mockAlertKey?.startsWith("workspace-daily-operational-") === true
+    item.mockAlertKey?.startsWith("workspace-daily-operational-") === true ||
+    item.mockAlertKey?.startsWith("workspace-daily-procurement-") === true
   );
 }
 export function isLegacyDailyDemoPlaybook(

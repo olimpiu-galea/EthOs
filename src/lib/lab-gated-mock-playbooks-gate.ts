@@ -1,4 +1,5 @@
 import { isLabGatedMockPlaybook } from "@/lib/lab-sheet-availability";
+import { isWorkspaceWatchBuiltinId } from "@/lib/workspace-watch-playbook-seed";
 
 /** Keep all mock/builtin playbooks active and agenda alerts in sync. */
 export async function applyLabGatedMockPlaybooksGate(): Promise<void> {
@@ -20,7 +21,10 @@ export async function applyLabGatedMockPlaybooksGate(): Promise<void> {
   }
 
   for (const pb of store.playbooks.filter(
-    (p) => p.builtinId && !isMockPlaybook(p),
+    (p) =>
+      p.builtinId &&
+      !isMockPlaybook(p) &&
+      !isWorkspaceWatchBuiltinId(p.builtinId),
   )) {
     if (pb.status !== "active") {
       store.updatePlaybook(pb.id, { status: "active" });

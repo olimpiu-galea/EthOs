@@ -308,7 +308,7 @@ function PlaybookWatchPanel({ items }: { items: MaintenanceAction[] }) {
                 href="/playbooks"
                 className="text-sm font-medium hover:underline"
               >
-                {item.title}
+                {item.name}
               </Link>
               <p className="text-xs text-muted-foreground">{item.rule}</p>
             </div>
@@ -490,7 +490,7 @@ export function MaintenanceHub() {
 
       <div className="mx-auto max-w-6xl px-6 max-lg:px-4 py-8 max-lg:py-6 space-y-6">
         <div className="grid gap-6 lg:grid-cols-[1fr_320px] items-start">
-          <Card>
+        <Card>
             <CardHeader className="pb-3">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
@@ -593,7 +593,7 @@ export function MaintenanceHub() {
             </CardContent>
           </Card>
 
-          <PlaybookWatchPanel items={items} />
+        <PlaybookWatchPanel items={items} />
         </div>
 
         <div className="rounded-xl border border-border/60 bg-muted/20 px-4 py-3 flex gap-3 text-sm">

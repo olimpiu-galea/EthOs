@@ -81,22 +81,28 @@ export type MaintenanceWatchStatus = "clear" | "watch" | "flagged";
 
 export type MaintenanceWatchItem = {
   id: string;
-  /** Min title (placeholder-based) */
-  title: string;
+  /** Playbook name shown in the watch panel */
+  name: string;
   /** Min rule (trigger condition) */
   rule: string;
   status: MaintenanceWatchStatus;
   count: number;
 };
 
+const MAINTENANCE_WATCH_PLAYBOOKS = MAINTENANCE_PLAYBOOKS.filter(
+  (pb) =>
+    pb.id === MAINTENANCE_DUE_SOON_PLAYBOOK_ID ||
+    pb.id === "mnt-pb-critical-overdue",
+);
+
 /**
- * Top-3 maintenance playbook watch items (batches-style panel).
+ * Maintenance playbook watch items (batches-style panel).
  * "Maintenance Due Soon" is always listed first.
  */
 export function maintenanceWatchItems(
   items: MaintenanceAction[],
 ): MaintenanceWatchItem[] {
-  return MAINTENANCE_PLAYBOOKS.slice(0, 3).map((pb) => {
+  return MAINTENANCE_WATCH_PLAYBOOKS.map((pb) => {
     const matched = pb.match(items);
     const status: MaintenanceWatchStatus =
       matched.length === 0
@@ -106,7 +112,7 @@ export function maintenanceWatchItems(
           : "watch";
     return {
       id: pb.id,
-      title: pb.titleTemplate,
+      name: pb.name,
       rule: pb.rule,
       status,
       count: matched.length,

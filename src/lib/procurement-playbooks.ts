@@ -4,7 +4,6 @@ import type { ProcurementItem } from "./procurement-fixture";
 import {
   itemsBelowMinimum,
   nearMinimumStock,
-  stockoutBeforeLeadTime,
 } from "./procurement-fixture";
 
 export type ProcurementPlaybookSeverity = "Warning" | "Medium" | "Critical";
@@ -131,7 +130,7 @@ export type ProcurementWatchItem = {
 };
 
 /**
- * Top-3 procurement playbook watch items (batches-style panel).
+ * Procurement playbook watch items (batches-style panel).
  * The "5% Near Minimum Stock" playbook is always listed first.
  */
 export function procurementWatchItems(
@@ -139,7 +138,6 @@ export function procurementWatchItems(
 ): ProcurementWatchItem[] {
   const near = nearMinimumStock(items);
   const below = itemsBelowMinimum(items);
-  const stockout = stockoutBeforeLeadTime(items);
 
   return [
     {
@@ -155,13 +153,6 @@ export function procurementWatchItems(
       rule: "Current stock at or below minimum",
       status: below.length > 0 ? "flagged" : "clear",
       count: below.length,
-    },
-    {
-      id: "proc-pb-stockout-before-lead",
-      name: "Stockout Before Lead Time",
-      rule: "Days of cover below supplier lead time",
-      status: stockout.length > 0 ? "watch" : "clear",
-      count: stockout.length,
     },
   ];
 }
