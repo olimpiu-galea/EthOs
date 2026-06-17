@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
@@ -31,7 +32,9 @@ import {
   canSeeIntegrations,
 } from "@/lib/role-access";
 import { ROLE_LABELS, canManageSettings } from "@/lib/auth-constants";
-import { EthOsWordmark } from "@/components/brand/ethos-wordmark";
+import { PRODUCT_NAME } from "@/lib/brand";
+import ethOsLogo from "@mockAlerts/ethOsLogo-tight.png";
+import lakeviewLogo from "@mockAlerts/lakeviewLogo-dark.png";
 
 const BASE_MAIN_NAV = [
   { href: "/", label: "Home", icon: Home },
@@ -132,9 +135,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   const sidebar = (
     <>
-      <div className="p-5 border-b border-sidebar-border">
-        <EthOsWordmark variant="sidebar" />
+      <div className="shrink-0 border-b border-sidebar-border px-3 py-2.5 flex justify-center">
+        <Link href="/" className="flex w-full justify-center" onClick={() => setNavOpen(false)}>
+          <Image
+            src={ethOsLogo}
+            alt={PRODUCT_NAME}
+            priority
+            className="h-12 w-full max-w-[15rem] object-contain"
+          />
+        </Link>
       </div>
+
       <nav className="flex-1 overflow-y-auto p-3 space-y-1">
         {mainNav.map(({ href, label, icon: Icon }) =>
           navLink(href, label, Icon),
@@ -189,7 +200,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       )}
       <aside
         className={cn(
-          "w-64 bg-sidebar text-sidebar-foreground flex-col shrink-0 border-r border-sidebar-border",
+          "w-64 bg-sidebar text-sidebar-foreground flex flex-col shrink-0 border-r border-sidebar-border",
           "lg:flex",
           "max-lg:fixed max-lg:inset-y-0 max-lg:left-0 max-lg:z-50 max-lg:flex max-lg:transition-transform max-lg:duration-200 max-lg:ease-out",
           navOpen ? "max-lg:translate-x-0" : "max-lg:-translate-x-full",
@@ -197,6 +208,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       >
         {sidebar}
       </aside>
+
       <div className="flex-1 flex flex-col min-w-0 bg-card">
         <header className="sticky top-0 z-40 flex items-center justify-between gap-4 border-b border-border bg-card/95 backdrop-blur-sm px-6 max-lg:px-4 py-3 shrink-0">
           <div className="flex items-center gap-3 min-w-0">
@@ -210,17 +222,20 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             >
               <Menu className="h-4 w-4" />
             </Button>
-            <div className="min-w-0 hidden sm:block">
-              <p className="text-xl sm:text-2xl font-bold tracking-tight text-foreground truncate">
-                {companyName}
-              </p>
-            </div>
-            <div className="min-w-0 sm:hidden">
-              <p className="text-lg font-bold tracking-tight text-foreground truncate">
+
+            <div className="flex items-center gap-2.5 min-w-0">
+              <Image
+                src={lakeviewLogo}
+                alt=""
+                aria-hidden
+                className="h-8 w-8 sm:h-9 sm:w-9 shrink-0 object-contain"
+              />
+              <p className="text-lg sm:text-2xl font-bold tracking-tight text-foreground truncate">
                 {companyName}
               </p>
             </div>
           </div>
+
           {user && (
             <div className="flex items-center gap-3 shrink-0">
               <span className="text-sm text-muted-foreground hidden md:inline text-right">
@@ -243,6 +258,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </div>
           )}
         </header>
+
         <main className="flex-1 overflow-auto bg-background">{children}</main>
       </div>
     </div>

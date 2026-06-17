@@ -60,10 +60,7 @@ import { usePlaybookStore } from "@/stores/playbook-store";
 import { useCombinedLastSync } from "@/hooks/use-all-signal-tags";
 
 import { AlertDetailModal } from "@/components/agenda/alert-detail-modal";
-import {
-  AlertContextChatModal,
-  AlertChatTrigger,
-} from "@/components/agenda/alert-context-chat";
+import { AlertChatTrigger } from "@/components/agenda/alert-context-chat";
 
 import type { AlertAgendaItem } from "@/lib/types";
 
@@ -143,9 +140,7 @@ export default function AgendaPage() {
 
   const [detailOpen, setDetailOpen] = useState(false);
 
-  const [chatAlert, setChatAlert] = useState<AlertAgendaItem | null>(null);
-
-  const [chatOpen, setChatOpen] = useState(false);
+  const [openDetailWithChat, setOpenDetailWithChat] = useState(false);
 
   const [agendaLens, setAgendaLens] = useState<AgendaLensId>("all");
 
@@ -404,7 +399,11 @@ export default function AgendaPage() {
 
   }, [currentHour, scrollToFocusHour]);
 
-
+  function openAlert(item: AlertAgendaItem, withChat = false) {
+    setSelectedAlert(item);
+    setOpenDetailWithChat(withChat);
+    setDetailOpen(true);
+  }
 
   return (
 
@@ -524,23 +523,22 @@ export default function AgendaPage() {
 
         <CardHeader className="pb-3">
 
-          <div className="flex items-center gap-3">
-
-            <CalendarDays className="h-8 w-8 text-primary" />
-
-            <div className="min-w-0 flex-1 space-y-2">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-                <CardTitle className="text-xl shrink-0">Agenda</CardTitle>
-                <AgendaDatePicker
-                  value={viewDateKey}
-                  todayKey={todayKey}
-                  minDateKey={minDateKey}
-                  limitedRange={!isAgendaAdmin}
-                  onChange={setAgendaDateKey}
-                />
+          <div className="min-w-0 space-y-2">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+              <div className="flex items-center gap-2.5 shrink-0">
+                <CalendarDays className="h-7 w-7 text-primary shrink-0" />
+                <CardTitle className="text-xl">Agenda</CardTitle>
               </div>
+              <AgendaDatePicker
+                value={viewDateKey}
+                todayKey={todayKey}
+                minDateKey={minDateKey}
+                limitedRange={!isAgendaAdmin}
+                onChange={setAgendaDateKey}
+              />
+            </div>
 
-              <CardDescription>
+            <CardDescription>
                 {!isViewingToday && (
                   <span className="block text-foreground/90 mb-0.5">
                     {viewDateLabel}
@@ -554,8 +552,6 @@ export default function AgendaPage() {
                     ? " · historical day"
                     : ""}
               </CardDescription>
-            </div>
-
           </div>
 
         </CardHeader>
@@ -776,13 +772,7 @@ export default function AgendaPage() {
 
                           type="button"
 
-                          onClick={() => {
-
-                            setSelectedAlert(item);
-
-                            setDetailOpen(true);
-
-                          }}
+                          onClick={() => openAlert(item)}
 
                           className={cn(
                             "shrink-0 flex flex-col text-left rounded-lg border px-3 py-2.5 text-xs transition-all hover:border-primary/50",
@@ -809,8 +799,7 @@ export default function AgendaPage() {
                                 size="xs"
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  setChatAlert(item);
-                                  setChatOpen(true);
+                                  openAlert(item, true);
                                 }}
                               />
 
@@ -895,19 +884,13 @@ export default function AgendaPage() {
 
 
       <AlertDetailModal
-
         alert={selectedAlert}
-
         open={detailOpen}
-
-        onOpenChange={setDetailOpen}
-
-      />
-
-      <AlertContextChatModal
-        alert={chatAlert}
-        open={chatOpen}
-        onOpenChange={setChatOpen}
+        onOpenChange={(open) => {
+          setDetailOpen(open);
+          if (!open) setOpenDetailWithChat(false);
+        }}
+        initialChatOpen={openDetailWithChat}
       />
 
       <ShiftHandoverModal

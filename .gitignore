@@ -10,6 +10,11 @@ next-env.d.ts
 # Excel lock files (open workbook)
 ~$*
 
+# Local reference assets (not part of the app build)
+/.tmp-photo-scan
+/localPhotos
+/mockAlerts/procurement_vs_maintenance_inventory_model.docx
+
 # Codex / agent artifacts
 /outputs
 .codex-start.log

@@ -12,7 +12,6 @@ import {
   Link2,
 } from "lucide-react";
 import type { AlertAgendaItem, AuthUser } from "@/lib/types";
-import { ROLE_LABELS } from "@/lib/auth-constants";
 import { filterAgendaForViewer } from "@/lib/agenda-filter";
 import { filterAlertsByActivePlaybooks } from "@/lib/agenda-playbook-filter";
 import { agendaTodayKey } from "@/lib/agenda-time";
@@ -90,9 +89,7 @@ function ActiveAlarmRow({ alert }: { alert: AlertAgendaItem }) {
 }
 
 export function LoggedInDashboard({ user }: { user: AuthUser }) {
-  const role = user.role;
   const teams = useSettingsStore((s) => s.teams);
-  const companyName = useSettingsStore((s) => s.companyName);
   const items = useAlertHistoryStore((s) => s.items);
   const alertsHydrated = useAlertHistoryStore((s) => s._hasHydrated);
   const refreshStatuses = useAlertHistoryStore((s) => s.refreshStatuses);
@@ -158,18 +155,10 @@ export function LoggedInDashboard({ user }: { user: AuthUser }) {
 
   return (
     <div className="p-8 max-lg:p-4 max-w-6xl mx-auto w-full space-y-8">
-      <header className="space-y-2">
+      <header className="space-y-1">
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
-          {companyName}
-        </h1>
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="outline" className="text-primary border-primary/40">
-            {ROLE_LABELS[role]}
-          </Badge>
-        </div>
-        <p className="text-xl sm:text-2xl font-semibold tracking-tight">
           Good {getDayPart()}, {user.name.split(" ")[0]}
-        </p>
+        </h1>
         <p className="text-muted-foreground">{greetingDate}</p>
       </header>
 

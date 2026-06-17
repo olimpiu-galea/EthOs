@@ -36,7 +36,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { AlertContextChatModal } from "@/components/agenda/alert-context-chat";
+import { AlertContextChatPanel } from "@/components/agenda/alert-context-chat";
+import { AlertTriggerInsightPanel } from "@/components/agenda/alert-trigger-insight";
 
 const SEVERITY_THEME: Record<
   AlertSeverity,
@@ -94,12 +95,15 @@ type AlertDetailModalProps = {
   alert: AlertAgendaItem | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  /** Open with AI split panel visible (e.g. from agenda card bot icon). */
+  initialChatOpen?: boolean;
 };
 
 export function AlertDetailModal({
   alert: alertProp,
   open,
   onOpenChange,
+  initialChatOpen = false,
 }: AlertDetailModalProps) {
   const user = useAuthStore((s) => s.user);
   const teams = useSettingsStore((s) => s.teams);
@@ -122,9 +126,14 @@ export function AlertDetailModal({
     if (!open) return;
     setCommentDraft("");
     setNow(Date.now());
+    setChatOpen(initialChatOpen);
     const t = setInterval(() => setNow(Date.now()), 30_000);
     return () => clearInterval(t);
-  }, [open, alertId]);
+  }, [open, alertId, initialChatOpen]);
+
+  useEffect(() => {
+    if (!open) setChatOpen(false);
+  }, [open]);
 
   const actionItems = alert?.actionItems ?? [];
   const guidance = alert?.guidance ?? [];
@@ -155,11 +164,12 @@ export function AlertDetailModal({
   const isClosed = lifecycle === "resolved" || lifecycle === "false_alarm";
 
   return (
-    <>
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className={cn(
-          "max-w-6xl w-[min(96vw,72rem)] max-h-[92vh] border-border/80 bg-card/95 p-0 gap-0 overflow-hidden backdrop-blur-xl shadow-2xl",
+          "w-[min(96vw,72rem)] max-h-[92vh] border-border/80 bg-card/95 p-0 gap-0 overflow-hidden backdrop-blur-xl shadow-2xl flex flex-col",
+          chatOpen && "w-[min(98vw,90rem)] max-w-[min(98vw,90rem)]",
+          !chatOpen && "max-w-6xl",
           theme.glow,
         )}
       >
@@ -169,69 +179,80 @@ export function AlertDetailModal({
             theme.ring,
           )}
         >
-          <Button
-            type="button"
-            size="sm"
-            className={cn(
-              "absolute top-4 right-14 z-20 gap-2 h-9 px-4 text-xs font-semibold max-lg:static max-lg:w-full max-lg:mb-3 max-lg:right-auto",
-              "bg-gradient-to-r from-primary via-primary to-primary/85 text-primary-foreground",
-              "shadow-lg shadow-primary/30 ring-2 ring-primary/25 ring-offset-2 ring-offset-background",
-              "hover:brightness-110 hover:shadow-primary/40 transition-all",
-            )}
-            onClick={() => setChatOpen(true)}
-          >
-            <Sparkles className="h-4 w-4" />
-            Ask about this alert
-          </Button>
-          <DialogHeader className="relative space-y-2.5 text-left pr-36 max-lg:pr-0">
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge variant={theme.badge} className="gap-1">
-                <AlertTriangle className="h-3 w-3" />
-                {alert.alertTitle}
-              </Badge>
-              <Badge variant="outline">{LIFECYCLE_LABELS[lifecycle]}</Badge>
-              {(alert.escalationLevel ?? 0) > 0 && (
-                <Badge variant="warning" className="gap-1">
-                  <ArrowUpRight className="h-3 w-3" />
-                  Escalated L{alert.escalationLevel}
+          <div className="flex flex-wrap items-start justify-between gap-3 pr-10">
+            <DialogHeader className="relative flex-1 min-w-0 space-y-2.5 text-left">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge variant={theme.badge} className="gap-1">
+                  <AlertTriangle className="h-3 w-3" />
+                  {alert.alertTitle}
                 </Badge>
+                <Badge variant="outline">{LIFECYCLE_LABELS[lifecycle]}</Badge>
+                {(alert.escalationLevel ?? 0) > 0 && (
+                  <Badge variant="warning" className="gap-1">
+                    <ArrowUpRight className="h-3 w-3" />
+                    Escalated L{alert.escalationLevel}
+                  </Badge>
+                )}
+                {alert.assignedRole && (
+                  <Badge variant="secondary">
+                    → {ROLE_LABELS[alert.assignedRole]}
+                  </Badge>
+                )}
+                {teamNames && teamNames !== "Unassigned" && (
+                  <Badge variant="outline" className="text-xs">
+                    {teamNames}
+                  </Badge>
+                )}
+              </div>
+              <DialogTitle className="text-2xl font-bold tracking-tight leading-tight">
+                {alert.playbookName}
+              </DialogTitle>
+              <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
+                <span className="inline-flex items-center gap-1.5">
+                  <Clock className="h-4 w-4 text-primary" />
+                  {formatTime(alert.triggeredAt)} · slot until {formatTime(endsAt)} ·{" "}
+                  {formatElapsed(now - alert.triggeredAt)}
+                </span>
+              </div>
+              <p className="font-mono text-xs text-primary/90">
+                IF {alert.conditionsSummary}
+              </p>
+            </DialogHeader>
+            <Button
+              type="button"
+              size="sm"
+              className={cn(
+                "shrink-0 gap-2 h-9 px-4 text-xs font-semibold",
+                chatOpen
+                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
+                  : "bg-gradient-to-r from-primary via-primary to-primary/85 text-primary-foreground shadow-lg shadow-primary/30 ring-2 ring-primary/25 ring-offset-2 ring-offset-background hover:brightness-110",
               )}
-              {alert.assignedRole && (
-                <Badge variant="secondary">
-                  → {ROLE_LABELS[alert.assignedRole]}
-                </Badge>
-              )}
-              {teamNames && teamNames !== "Unassigned" && (
-                <Badge variant="outline" className="text-xs">
-                  {teamNames}
-                </Badge>
-              )}
-            </div>
-            <DialogTitle className="text-2xl font-bold tracking-tight leading-tight">
-              {alert.playbookName}
-            </DialogTitle>
-            <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
-              <span className="inline-flex items-center gap-1.5">
-                <Clock className="h-4 w-4 text-primary" />
-                {formatTime(alert.triggeredAt)} · slot until {formatTime(endsAt)} ·{" "}
-                {formatElapsed(now - alert.triggeredAt)}
-              </span>
-            </div>
-            <p className="font-mono text-xs text-primary/90">
-              IF {alert.conditionsSummary}
-            </p>
-          </DialogHeader>
+              onClick={() => setChatOpen((v) => !v)}
+            >
+              <Sparkles className="h-4 w-4" />
+              {chatOpen ? "Hide AI" : "Ask AI"}
+            </Button>
+          </div>
         </div>
 
-        <div className="grid lg:grid-cols-5 gap-0 overflow-y-auto max-h-[calc(92vh-9rem)]">
+        <div
+          className={cn(
+            "flex flex-1 min-h-0 overflow-hidden",
+            chatOpen ? "flex-col lg:flex-row" : "flex-col",
+          )}
+        >
+          <div
+            className={cn(
+              "overflow-y-auto min-h-0",
+              chatOpen
+                ? "lg:w-1/2 lg:border-r lg:border-border/60 max-lg:max-h-[45vh] max-lg:border-b max-lg:border-border/60"
+                : "w-full max-h-[calc(92vh-9rem)]",
+              !chatOpen && "max-h-[calc(92vh-9rem)]",
+            )}
+          >
+        <div className="grid lg:grid-cols-5 gap-0">
           <div className="lg:col-span-2 p-5 space-y-4 border-b lg:border-b-0 lg:border-r border-border/60">
-            <div className="space-y-2">
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                <Sparkles className="h-3.5 w-3.5 text-primary" />
-                Situation
-              </p>
-              <p className="text-base leading-relaxed">{alert.alertMessage}</p>
-            </div>
+            <AlertTriggerInsightPanel alert={alert} />
 
             {alert.batchContext && (
               <div className="rounded-xl border border-primary/25 bg-primary/5 p-4 space-y-3">
@@ -536,13 +557,20 @@ export function AlertDetailModal({
             </div>
           </div>
         </div>
+          </div>
+
+          {chatOpen && (
+            <div className="flex flex-col min-h-0 lg:w-1/2 max-lg:min-h-[42vh]">
+              <AlertContextChatPanel
+                alert={alert}
+                embedded
+                onClose={() => setChatOpen(false)}
+                className="h-full"
+              />
+            </div>
+          )}
+        </div>
       </DialogContent>
     </Dialog>
-    <AlertContextChatModal
-      alert={alert}
-      open={chatOpen}
-      onOpenChange={setChatOpen}
-    />
-    </>
   );
 }
